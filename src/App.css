@@ -19,77 +19,15 @@ button{
   color: white;
 }
 
-/* NavBar */
-.navbar {
-  /* position: fixed; */
-  display: flex;
-  align-items: center;
-  padding: .8125rem 2.5rem;
-  height: 4.25rem;
-  width: 100vw;
-  background: white;
-  transition: background 0.3s ease;
-}
-.navbar.dark-mode{
-  background: #343434;
-}
-
-.logo {
-  font-size: 24px;
-  font-weight: bold;
-}
-
-.menu-toggle {
-  font-size: 24px;
-  display: none;
-  background: none;
-  color: #1A3D8F;
-  border: none;
-  cursor: pointer;
-  transition: transform 0.3s ease, color 0.3s ease;
-}
-
-.menu-toggle.close {
-  content: '✖'; /* Optional, for text-based icon switching */
-  color: white; /* Change color to indicate close state */
-  transform: rotate(90deg); /* Optional rotation for visual feedback */
-}
-
-.nav-links {
-  display: flex;
-  list-style: none;
-  align-items: center;
-  width: 100%;
-}
-
-.nav-links li {
-  padding: 0 .625rem;
-  width: 7.5rem;
-  text-align: center;
-  color: #343434;
-  /* transition: all 0.5s; */
-}
-
-.nav-links li:last-child {
-  padding: 0;
-  margin-left: auto; 
-}
-
-.nav-links a {
-  text-decoration: none;
-  font-size: 16px;
-  color: #343434;
-  transition: color 0.3s;
-}
-
-.nav-links a:hover {
-  color: #00bcd4;
+.no-transitions * {
+  transition: none !important;
 }
 
 .navbar .inquire-btn{
 width: 8rem;
 height: 2.625rem;
-background: #E1A000;;
+background: #E1A000;
+font-size: 12px;
 }
 
 /* Initial state when element is entering */
@@ -119,62 +57,19 @@ background: #E1A000;;
 }
 
 /* Responsive styles */
-@media (max-width: 48rem) {
-  .navbar{
-    justify-content: space-between;
-  }
-  .menu-toggle {
-    display: block;
-  }
+@media (max-width: 960px) {
 
-  .nav-links {
-    /* display: none; */
-    flex-direction: column;
-    /* height: 100vh; */
-    width: 100%;
-    background-color: beige;
-    position: absolute;
-    top: 4.25rem;
-    left: 0;
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.3s ease, color 0.3s ease;
-  }
-  
-  .nav-links.open{
-    display: flex;
-    visibility: visible;
-    opacity: 1;
-    background: #343434;
-    transition: opacity 0.3s ease, color 0.3s ease;
-  }
-  
-  .nav-links li {
-    width: 100%;
-    padding: 18px 0;
-    text-align: center;
-    opacity: 0; /* Initially invisible */
-    transform: translateY(-100px); 
-    transition: opacity 0.3s ease, transform 0.3s ease;
-  }
-  .nav-links a{
-    color: white;
-  }
-  
-  .nav-links.open li{
-    opacity: 1; 
-    transform: translateY(0);
-  }
-
-  .nav-links li:last-child {
-    padding: 0;
-    margin-top: auto; 
-  }
   .navbar .inquire-btn{
     width: 100%;
     border-radius: 0;
+    padding: 18px;
+    height: auto;
     font-size: 16px;
   }
 
 
 }
+
+@media (max-width: 480px) {
+
+} 
