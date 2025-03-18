@@ -1,5 +1,3 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
 import { Route, Routes } from 'react-router-dom'
 import './App.css'
 import Navbar from './components/NavBar'
@@ -11,7 +9,6 @@ import Faqs from './pages/Faqs'
 import Inquire from './pages/Inquire'
 
 function App() {
-  const [count, setCount] = useState(0)
 
   return (
       <div>
