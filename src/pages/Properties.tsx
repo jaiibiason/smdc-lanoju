@@ -1,5 +1,3 @@
-import { useState } from 'react'
-import Navbar from '../components/NavBar.tsx'
 import '.././App.css'
 
 function Properties() {
