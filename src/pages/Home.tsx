@@ -1,13 +1,17 @@
-import '.././App.css'
+import Hero from '../sections/Hero'
+import Filter from '../components/Filter'
+import '../App.css'
+import '../css/Hero.css'
 
 function Home() {
 
   return (
       <>
-        <main>
-          <h1>Welcome to MyApp</h1>
-          <p>This is the main content of the app.</p>
-        </main>
+      <div className="home-pg">
+        <Hero/>
+        <Filter/>
+
+      </div>
       </>
   )
 }
