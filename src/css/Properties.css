@@ -99,3 +99,162 @@
   outline: none;
   border-color: #1a3d8f;
 }
+
+.main-body {
+  display: flex;
+  padding: 20px;
+  margin: 0 20px; /* Align with properties-body-container */
+}
+
+.left-main-section {
+  width: 30%;
+  /* Add additional styles as needed */
+}
+
+.search-bar-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.search-bar {
+  width: 100%;
+  padding: 8px 32px 8px 8px; /* Add padding to make space for the icon */
+  margin: 8px 0;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.search-icon {
+  position: absolute;
+  right: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.search-icon img {
+  width: 16px;
+  height: 16px;
+  /* Add additional styles as needed */
+}
+
+.right-main-section {
+  width: 70%;
+  /* Add additional styles as needed */
+}
+
+.property-slider-container {
+  background-color: #F5F9FA;
+  padding: 15px;
+  border-radius: 10px;
+  border: 1px solid #CDCDCD;
+}
+
+.min-max-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+.min-section, .max-section {
+    display: flex;
+    flex-direction: column;
+    width: 48%;
+}
+
+.min-section label, .max-section label {
+    margin-bottom: 5px;
+    font-size: 14px;
+    color: #333;
+}
+
+.min-section .dropdown, .max-section .dropdown {
+    padding: 8px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #fff;
+    color: #333;
+    cursor: pointer;
+}
+
+.location-container {
+    margin-top: 20px;
+    border: 1px solid #CDCDCD;
+    border-radius: 8px;
+    padding: 10px;
+    background-color: #F5F9FA;
+}
+
+.location-header {
+    margin-bottom: 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.location-arrow-icon {
+    width: 16px;
+    height: 16px;
+    margin: 0 10px;
+}
+
+.location-options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.location-options label {
+    font-size: 14px;
+    color: #333;
+    display: flex;
+    align-items: center;
+}
+
+.location-options input[type="checkbox"] {
+    margin-right: 8px;
+}
+
+.unit-type-container, .property-type-container {
+    margin-top: 20px;
+    border: 1px solid #CDCDCD;
+    border-radius: 8px;
+    padding: 10px;
+    background-color: #F5F9FA;
+}
+
+.unit-type-header, .property-type-header {
+    margin-bottom: 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.unit-type-arrow-icon, .property-type-arrow-icon {
+    width: 16px;
+    height: 16px;
+    margin: 0 10px;
+}
+
+.unit-type-options, .property-type-options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.unit-type-options label, .property-type-options label {
+    font-size: 14px;
+    color: #333;
+    display: flex;
+    align-items: center;
+}
+
+.unit-type-options input[type="checkbox"], .property-type-options input[type="checkbox"] {
+    margin-right: 8px;
+}
