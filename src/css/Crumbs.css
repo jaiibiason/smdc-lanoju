@@ -1,0 +1,50 @@
+/* Container for the breadcrumbs */
+.crumbs-container {
+    display: flex;
+    align-items: center;
+    padding: 10px 50px;
+
+  }
+  
+  /* Style for breadcrumb links */
+  .crumb-link {
+    text-decoration: none;
+    color: #1a3d8f; /* Primary color for links */
+    margin-right: 5px;
+    transition: color 0.3s ease;
+    width: 42px;
+    height: 24px;
+    font-family: 'Inter';
+    font-style: normal;
+    font-size: 14px;
+    line-height: 150%;
+    color: #777777;
+  }
+  
+  .crumb-link:hover {
+    color: #0d2a6d; /* Darker shade on hover */
+  }
+  
+  /* Style for the active breadcrumb link */
+  .crumb-link-active {
+    text-decoration: none;
+    margin-left: 5px;
+    /* Properties */
+    width: 85px;
+    height: 24px;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 150%;
+    color: #1A3D8F;
+  }
+  
+  /* Style for the arrow icon */
+  .crumb-icon {
+    width: 12px;
+    height: 24px;
+    margin: 0 5px;
+    vertical-align: middle;
+    opacity: 0.6; /* Slightly faded for subtlety */
+  }

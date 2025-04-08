@@ -1,6 +1,6 @@
 import { Fragment } from "react";
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import temp_logo from "../assets/temp_logo.png"
 import "../App.css";
 import "../css/NavBar.css";
@@ -37,32 +37,36 @@ const Navbar: React.FC = () => {
     }, []);
     // Toggle menu open/close
     const toggleMenu = () => {
-      setIsOpen((prev) => !prev); // Update React state
-      // Dynamically set menu height when opening
-      if (!isOpen) {
-        setMenuHeight();
-      }
-    };
+    setIsOpen((prev) => !prev); // Update React state
+    const bodyElement = document.body;
+
+    if (!isOpen) {
+      setMenuHeight();
+      bodyElement.classList.add('no-scroll'); // Disable scrolling when menu opens
+    } else {
+      bodyElement.classList.remove('no-scroll'); // Enable scrolling when menu closes
+    }
+  };
 
     return (
       <Fragment>
     
       <nav className={`navbar ${isOpen ? 'dark-mode' : ''}`}>
-        <Link to="/">
+        <NavLink to="/">
           <img src={temp_logo} alt="Brand Logo" />
-        </Link>
+        </NavLink>
         <button className={`menu-toggle ${isOpen ? 'close' : ''}`} onClick={toggleMenu}>
           {isOpen ? '✖' : '☰'}
         </button>
         <ul className={`nav-links ${isOpen ? 'open' : ''}`}>
-          <li><Link to="/properties">Properties</Link></li>
-          <li><Link to="/aboutme">About Me</Link></li>
-          <li><Link to="/articles">Articles</Link></li>
-          <li><Link to="/FAQs">FAQs</Link></li>
+          <li><NavLink to="/properties">Properties</NavLink></li>
+          <li><NavLink to="/aboutme">About Me</NavLink></li>
+          <li><NavLink to="/articles">Articles</NavLink></li>
+          <li><NavLink to="/FAQs">FAQs</NavLink></li>
           <li>
-            <Link to="/inquirenow">
+            <NavLink to="/inquirenow">
               <button className="inquire-btn">Inquire Now</button>
-            </Link>
+            </NavLink>
           </li>
         </ul>
       </nav>

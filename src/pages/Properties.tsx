@@ -1,15 +1,17 @@
 import '.././App.css'
+import PropertiesHeader from '../sections/PropertiesHeader'
+import Crumbs from '../components/Crumbs' // Adjust the path as necessary
+import PropertiesBody from '../sections/PropertiesBody'
+import '.././css/Properties.css' // Adjust the path as necessary
 
 function Properties() {
-
-  return (
-      <>
-        <main>
-          <h1>Welcome to Properties</h1>
-          <p>This is the main content of the app.</p>
-        </main>
-      </>
-  )
+    return (
+        <div>
+          <Crumbs />
+          <PropertiesHeader /> 
+          <PropertiesBody /> 
+        </div>
+      );
 }
 
 export default Properties

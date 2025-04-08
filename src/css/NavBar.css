@@ -23,6 +23,10 @@ button{
   transition: none !important;
 }
 
+.no-scroll {
+  overflow: hidden;
+}
+
 /* NavBar */
 .navbar {
   /* position: fixed; */
@@ -56,6 +60,7 @@ button{
   list-style: none;
   align-items: center;
   width: 100%;
+  z-index: 999;
 }
 
 .nav-links li {
@@ -74,10 +79,18 @@ button{
   text-decoration: none;
   font-size: 14px;
   color: #343434;
-  transition: color 0.3s;
+  transition: color 0.3s, border 0.3s;
 }
 .nav-links a:hover {
-  color: #00bcd4;
+  color: rgba(225, 160, 0, 0.8);
+  border-bottom: 1.5px solid rgba(225, 160, 0, 0.8);
+  padding-bottom: 3px;
+}
+.nav-links a.active { 
+  font-weight: 600;
+  color: #E1A000;
+  border-bottom: 2px solid #E1A000;
+  padding-bottom: 3px;
 }
 
 .inquire-btn{
@@ -114,7 +127,7 @@ font-size: 12px;
 }
 
 /* Responsive styles */
-@media (max-width: 960px) {
+@media all and (max-width: 960px)  {
   .navbar{
     justify-content: space-between;
     transition: background 0.3s ease;
@@ -156,6 +169,17 @@ font-size: 12px;
   .nav-links a{
     color: white;
     font-size: 16px;
+  }
+  .nav-links a:hover {
+    border: none;
+  }
+  .nav-links a.active {
+    font-weight: 600;
+    color: #E1A000;
+    border: none;
+  }
+  .nav-links li:has(a.active) {
+    background: white;
   }
 
   .nav-links li:last-child {
