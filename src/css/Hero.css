@@ -1,11 +1,9 @@
 .hero-cont {
     display: flex;
     width: 100%;
-    height: 80vh;
+    height: 65vh;
 }
-.home-pg section{
-    padding: 0 40px;
-}
+
 .home-pg section.hero {
     position: relative;
     background-color: #212121;
@@ -38,7 +36,7 @@
 .hero-cont h1 {
     font-weight: 500;
     font-size: 48px;
-    color: #E1A000;
+    color: var(--yellow);
 }
 
 .hero-cont p {
@@ -47,13 +45,6 @@
 
 .hero-cont .inquire-btn {
     margin-top: 28px;
-}
-
-.hero-cont .right-cont {
-    /* display: flex; */
-    /* background-image: url(../assets/temp\ profile\ landing.png);
-    background-size: cover;
-    background-position: bottom; */
 }
 
 @media (max-width: 960px) {

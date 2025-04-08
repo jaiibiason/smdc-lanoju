@@ -1,7 +1,11 @@
 import Hero from '../sections/Hero'
 import Filter from '../components/Filter'
+import FeaturedProperties from '../sections/FeaturedProperties'
+import ClientStories from '../sections/ClientSuccessStories'
+import LatestNews from '../sections/LatestNews'
+import Footer from '../components/Footer'
 import '../App.css'
-import '../css/Hero.css'
+
 
 function Home() {
 
@@ -10,6 +14,10 @@ function Home() {
       <div className="home-pg">
         <Hero/>
         <Filter/>
+        <FeaturedProperties/>
+        <ClientStories/>
+        <LatestNews/>
+        <Footer/>
 
       </div>
       </>

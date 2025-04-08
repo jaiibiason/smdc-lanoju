@@ -1,6 +1,6 @@
 .filter-cont {
   position: relative;
-  height: 100%;
+  height: 75px;
   width: 100%;
   padding: 0 43px;
 }
@@ -19,28 +19,20 @@
   padding: 20px;
   gap: 10px;
 
-  background: #FFFFFF;
-  border: 1px solid #C2C2C2;
+  background: #ffffff;
+  border: 1px solid #c2c2c2;
   box-shadow: 4px 4px 16px rgba(0, 0, 0, 0.15);
   border-radius: 8px;
   font-size: 14px;
-
 }
-
 .filter-card * {
   font-family: "Inter", sans-serif;
-  ;
 }
-
-.filter-card>div {
+.filter-card > div {
   /* flex: auto; */
   display: flex;
   align-items: baseline;
 }
-
-/* .filter-card .dropdowns, .filter-card .checkboxes {
-  display: flex;
-} */
 
 .filter-card .dropdowns {
   gap: 10px;
@@ -61,10 +53,7 @@
 }
 
 .multi-select-dropdown {
-  /* width: 200px; */
   position: relative;
-  /* font-family: Arial, sans-serif; */
-  /* margin-bottom: 16px; */
 }
 
 .dropdown-placeholder {
@@ -95,7 +84,6 @@
   z-index: 1000;
   max-height: 150px;
   overflow-y: auto;
-  /* Add scroll if options exceed max height */
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
 }
 
@@ -120,11 +108,10 @@
   /* margin: 0 15px 0 0; */
 }
 
-
 .slider-container {
   width: 100%;
   flex-direction: column;
-  flex-basis: 40%;
+  flex-basis: 35%;
   margin: 0 10px 0 0;
 }
 
@@ -162,7 +149,7 @@
   justify-content: center;
   height: 46px;
   width: 46px;
-  background: #1A3D8F;
+  background: #1a3d8f;
   content: "Search";
 }
 
@@ -173,6 +160,11 @@
 
 /* Responsive Styles */
 @media (max-width: 960px) {
+  .filter-cont {
+    height: 100%;
+    padding: 0 24px;
+  }
+
   .filter-card {
     flex-wrap: wrap;
     height: auto;
@@ -213,6 +205,9 @@
 }
 
 @media (max-width: 480px) {
+  .filter-cont {
+    height: 380px;
+  }
   .filter-card .dropdowns {
     flex-direction: column;
     flex-basis: 100%;
@@ -220,9 +215,9 @@
 
   .slider-container {
     flex-basis: 100%;
-}
+  }
 
-div:has(.search-btn) {
-  flex-basis: 100%;
-}
+  div:has(.search-btn) {
+    flex-basis: 100%;
+  }
 }

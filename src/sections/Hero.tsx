@@ -1,5 +1,5 @@
-import tempprof from '../assets/temp profile landing.png'
-import '../App.css'
+// import '../App.css'
+import '../css/Hero.css'
 
 function Hero() {
 

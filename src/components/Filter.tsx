@@ -55,7 +55,7 @@ function Filter() {
           // Toggle all options: clear all if already selected, otherwise select all
           return {
             ...prev,
-            [field]: isAlreadySelected ? [] : options,
+            [field]: currentValue.length === options.length ? [] : options,
           };
         }
   
