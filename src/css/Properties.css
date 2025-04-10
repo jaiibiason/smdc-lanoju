@@ -1,0 +1,69 @@
+.container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  background-color: #F5F9FA;
+}
+
+/* Left Section - Image */
+.image-section {
+  flex: 1;
+  width: 50%; /* Take up 50% of the screen width */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.image-section img {
+  width: 100%; /* Make the image fill the section */
+  height: 100%; /* Ensure the image fills the height */
+  object-fit: cover; /* Maintain aspect ratio and cover the section */
+}
+
+/* Right Section - Text */
+.text-section {
+  flex: 1;
+  width: 50%; /* Take up 50% of the screen width */
+  padding: 20px;
+  text-align: left;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.text-section h2 {
+  /* Properties */
+  width: 290px;
+  height: 84px;
+  font-size: 56px;
+  line-height: 150%;
+  letter-spacing: -0.011em;
+  font-weight: 500;
+  color: #1A3D8F;
+}
+
+.text-section p {
+  gap: 10px;
+  align-self: stretch;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+    text-align: center;
+    height: auto; /* Adjust height for smaller screens */
+  }
+
+  .text-section {
+    text-align: center;
+    width: 100%; /* Full width for smaller screens */
+  }
+
+  .image-section {
+    width: 100%; /* Full width for smaller screens */
+  }
+
+  .image-section img {
+    height: auto; /* Adjust image height for smaller screens */
+  }
+}
