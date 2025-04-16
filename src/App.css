@@ -19,7 +19,7 @@ body {
   height: 100%;
   color: #343434;
 }
-.home-pg > section{
+.home-pg > section, .inner-properties-pg > section {
   padding: 40px;
 }
 
@@ -38,6 +38,9 @@ button {
   border: none;
   border-radius: .3125rem;
   color: white;
+}
+button.blue {
+  background: var(--dark-blue);
 }
 
 select {

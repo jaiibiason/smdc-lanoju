@@ -7,6 +7,7 @@ import AboutMe from './pages/About Me'
 import Articles from './pages/Articles'
 import Faqs from './pages/Faqs'
 import Inquire from './pages/Inquire'
+import InnerProperties from './pages/Inner Properties'
 
 function App() {
 
@@ -15,7 +16,7 @@ function App() {
         <Navbar />
         <main>
           <Routes>
-            <Route path="/" element={<Home/>}/>
+            <Route path="/" element={<InnerProperties/>}/>
             <Route path="/properties" element={<Properties/>}/>
             <Route path="/aboutme" element={<AboutMe/>}/>
             <Route path="/articles" element={<Articles/>}/>
