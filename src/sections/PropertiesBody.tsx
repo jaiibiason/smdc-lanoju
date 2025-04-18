@@ -3,6 +3,8 @@ import "../css/MainBody.css"; // Import new styles for main body
 import magnifyingGlassIcon from "../assets/ph_magnifying-glass-light.svg"; // Import the icon
 import arrowUpIcon from "../assets/ep_arrow-up.svg"; // Import the arrow-up icon
 import arrowDownIcon from "../assets/ep_arrow-down.svg"; // Import the arrow-down icon
+import HeaderImg from '../assets/temp_prptHeader.png'
+import locationIcon from "../assets/lsicon_location-outline.svg"; // Import location icon
 import { useState } from 'react'; // Import useState
 import { Range, getTrackBackground } from 'react-range'; // Import Range and getTrackBackground
 
@@ -141,6 +143,14 @@ function PropertiesBody() {
             });
         }
     };
+
+    // Property details
+    const status = "Ready for Occupancy";
+    const propertyName = "Property Name";
+    const price = "Php 1,000,000";
+    const location = "Example City";
+    const amenities = ["Swimming Pool", "Gym", "Parking"];
+    const landmarks = ["Mall", "School", "Hospital"];
 
     return (
         <div>
@@ -323,9 +333,25 @@ function PropertiesBody() {
                                     alt={isLocationCollapsed ? "Expand" : "Collapse"}
                                     className="location-arrow-icon"
                                 />
-                                Location
+                                Location <span className="filter-count">(
+                                    {selectedLocations.includes("All Locations") 
+                                        ? locationOptions.length - 1 
+                                        : selectedLocations.length}
+                                )</span>
                             </span>
                         </div>
+                        {!isLocationCollapsed && (
+                            <div className="selected-filters">
+                                {selectedLocations
+                                    .filter((location) => location !== "All Locations")
+                                    .map((location, index) => (
+                                        <div key={index} className="selected-filter">
+                                            {location}
+                                            <span onClick={() => handleLocationChange(location)}>×</span>
+                                        </div>
+                                    ))}
+                            </div>
+                        )}
                         {!isLocationCollapsed && (
                             <div className="location-options">
                                 {locationOptions.map((location, index) => (
@@ -353,9 +379,25 @@ function PropertiesBody() {
                                     alt={isUnitTypeCollapsed ? "Expand" : "Collapse"}
                                     className="unit-type-arrow-icon"
                                 />
-                                Unit Type
+                                Unit Type <span className="filter-count">(
+                                    {selectedUnitTypes.includes("All Unit") 
+                                        ? unitTypeOptions.length 
+                                        : selectedUnitTypes.length}
+                                )</span>
                             </span>
                         </div>
+                        {!isUnitTypeCollapsed && (
+                            <div className="selected-filters">
+                                {selectedUnitTypes
+                                    .filter((unitType) => unitType !== "All Unit")
+                                    .map((unitType, index) => (
+                                        <div key={index} className="selected-filter">
+                                            {unitType}
+                                            <span onClick={() => handleUnitTypeChange(unitType)}>×</span>
+                                        </div>
+                                    ))}
+                            </div>
+                        )}
                         {!isUnitTypeCollapsed && (
                             <div className="unit-type-options">
                                 <label>
@@ -391,9 +433,25 @@ function PropertiesBody() {
                                     alt={isPropertyTypeCollapsed ? "Expand" : "Collapse"}
                                     className="property-type-arrow-icon"
                                 />
-                                Property Type
+                                Property Type <span className="filter-count">(
+                                    {selectedPropertyTypes.includes("All Property") 
+                                        ? propertyTypeOptions.length 
+                                        : selectedPropertyTypes.length}
+                                )</span>
                             </span>
                         </div>
+                        {!isPropertyTypeCollapsed && (
+                            <div className="selected-filters">
+                                {selectedPropertyTypes
+                                    .filter((propertyType) => propertyType !== "All Property")
+                                    .map((propertyType, index) => (
+                                        <div key={index} className="selected-filter">
+                                            {propertyType}
+                                            <span onClick={() => handlePropertyTypeChange(propertyType)}>×</span>
+                                        </div>
+                                    ))}
+                            </div>
+                        )}
                         {!isPropertyTypeCollapsed && (
                             <div className="property-type-options">
                                 <label>
@@ -419,7 +477,42 @@ function PropertiesBody() {
                     </div>
                 </div>
                 <div className="right-main-section">
-                    {/* Add content for the right section here */}
+                    <div className="property-card">
+                        <div className="property-card-image-container">
+                            <img 
+                                src={HeaderImg} 
+                                alt="Property" 
+                                className="property-card-image" 
+                            />
+                        </div>
+                        <div className="property-card-details">
+                            <p className="property-card-status">{status}</p>
+                            <div className="property-card-name-price">
+                                <span className="property-card-name">{propertyName}</span>
+                                <span className="property-card-price">{price}</span>
+                            </div>
+                            <p className="property-card-location">
+                                <img src={locationIcon} alt="Location Icon" className="location-icon" />
+                                {location}
+                            </p>
+                            <div className="property-card-extra">
+                                <div className="property-card-amenities">
+                                    <ul>
+                                        {amenities.map((amenity, index) => (
+                                            <li key={index}>{amenity}</li>
+                                        ))}
+                                    </ul>
+                                </div>
+                                <div className="property-card-landmarks">
+                                    <ul>
+                                        {landmarks.map((landmark, index) => (
+                                            <li key={index}>{landmark}</li>
+                                        ))}
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

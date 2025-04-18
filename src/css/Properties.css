@@ -115,6 +115,7 @@
   position: relative;
   display: flex;
   align-items: center;
+  margin: 15px 0;
 }
 
 .search-bar {
@@ -124,6 +125,11 @@
   box-sizing: border-box;
   border: 1px solid #ccc;
   border-radius: 4px;
+}
+
+.search-bar:focus {
+  outline: none;
+  border-color: #1A3D8F;
 }
 
 .search-icon {
@@ -190,11 +196,11 @@
 }
 
 .location-header {
-    margin-bottom: 10px;
     cursor: pointer;
     display: flex;
     align-items: center;
     gap: 8px;
+    font-size: 14px;
 }
 
 .location-arrow-icon {
@@ -229,11 +235,11 @@
 }
 
 .unit-type-header, .property-type-header {
-    margin-bottom: 10px;
     cursor: pointer;
     display: flex;
     align-items: center;
     gap: 8px;
+    font-size: 14px;
 }
 
 .unit-type-arrow-icon, .property-type-arrow-icon {
@@ -257,4 +263,161 @@
 
 .unit-type-options input[type="checkbox"], .property-type-options input[type="checkbox"] {
     margin-right: 8px;
+}
+
+.property-card {
+    display: flex;
+    flex-direction: row;
+    border: 1px solid #CDCDCD;
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: #FFF;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin: 20px;
+    width: 100%;
+}
+
+.property-card-image-container {
+    flex: 0 0 30%; /* Image covers 30% of the card */
+    overflow: hidden;
+}
+
+.property-card-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.property-card-details {
+    flex: 1;
+    padding: 10px;
+    margin: 20px 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.property-card-title {
+    font-size: 18px;
+    font-weight: bold;
+    color: #1A3D8F;
+    margin-bottom: 5px;
+}
+
+
+.property-card-price {
+    font-weight: normal; /* Remove bold */
+    margin: 2px 0;
+}
+
+.property-card-location {
+    font-size: 12px;
+    margin: 0 0 20px;
+    display: flex;
+    align-items: center;
+    gap: 5px; /* Add spacing between the icon and text */
+}
+ß
+.location-icon {
+    width: 12px; /* Adjust size as needed */
+    height: 12px;
+}
+
+.property-card-status {
+    font-size: 10px; /* Update font size */
+    font-weight: normal; /* Remove bold */
+    color: white; /* Font color */
+    background-color: #166D3B; /* Background color */
+    padding: 2px 6px; /* Add padding for better appearance */
+    border-radius: 4px; /* Add rounded corners */
+    display: inline-block; /* Ensure it doesn't stretch */
+    width: fit-content; /* Make background fit the content */
+    margin-bottom: 5px;
+}
+
+.property-card-name-price {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px;
+    font-size: 16px;
+    color: #1A3D8F;
+}
+
+.property-card-price {
+    font-size: 16px;
+    font-weight: normal; /* Remove bold */
+    color: #1A3D8F;
+}
+
+.property-card-name {
+    font-size: 16px;
+    font-weight: normal; /* Remove bold */
+}
+
+.property-card-extra {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+.property-card-amenities, .property-card-landmarks {
+    width: 48%;
+}
+
+.property-card-amenities h4, .property-card-landmarks h4 {
+    font-size: 14px;
+    font-weight: normal; /* Remove bold */
+    color: #1A3D8F;
+    margin-bottom: 5px;
+}
+
+.property-card-amenities ul, .property-card-landmarks ul {
+    list-style-type: none; /* Remove default bullets */
+    padding-left: 0; /* Remove padding */
+    font-size: 12px;
+    color: #808080; /* Update font color for landmarks */
+}
+
+.property-card-amenities li {
+    display: flex;
+    align-items: center;
+    margin-bottom: 3px;
+}
+
+.property-card-amenities li::before {
+    content: url('../assets/ameneties_icon.svg'); /* Use the amenities icon */
+    margin-right: 8px; /* Add spacing between the icon and text */
+}
+
+.property-card-landmarks li {
+    margin-bottom: 3px;
+}
+
+.filter-count {
+    color: #1A3D8F;
+}
+
+.selected-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin: 5px;
+    padding-bottom: 5px
+}
+
+.selected-filter {
+    background-color: #1A3D8F;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.selected-filter span {
+    cursor: pointer;
+    font-weight: bold;
 }
