@@ -1,15 +1,12 @@
 import '.././App.css'
+import Crumbs from '../components/Crumbs';
 
 function Faqs() {
-
   return (
-      <>
-        <main>
-          <h1>Welcome to MyApp</h1>
-          <p>This is the main content of the app.</p>
-        </main>
-      </>
-  )
+    <div>
+      <Crumbs pageName="FAQs" />
+    </div>
+  );
 }
 
 export default Faqs
