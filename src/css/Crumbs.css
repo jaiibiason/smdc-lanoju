@@ -12,7 +12,7 @@
     color: #1a3d8f; /* Primary color for links */
     margin-right: 5px;
     transition: color 0.3s ease;
-    width: 42px;
+    width: auto;
     height: 24px;
     font-family: 'Inter';
     font-style: normal;
@@ -30,7 +30,7 @@
     text-decoration: none;
     margin-left: 5px;
     /* Properties */
-    width: 85px;
+    width: auto; /* Adjust width dynamically */
     height: 24px;
     font-family: 'Inter';
     font-style: normal;
@@ -38,6 +38,9 @@
     font-size: 14px;
     line-height: 150%;
     color: #1A3D8F;
+    white-space: nowrap; /* Prevent text wrapping */
+    overflow: hidden; /* Hide overflow if necessary */
+    text-overflow: ellipsis; /* Add ellipsis for long text */
   }
   
   /* Style for the arrow icon */

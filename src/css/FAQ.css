@@ -1,0 +1,177 @@
+.faq-container {
+    align-items: center;
+    justify-content: left;
+    background-color: #F5F9FA;
+    height: 50vh;
+}
+
+.faq-text-section {
+    width: 100%; 
+    padding: 50px;
+    text-align: left;
+    font-family: 'Montserrat', sans-serif;
+    display: flex;
+    align-items: center; /* Vertically center content */
+    justify-content: left; /* Ensure text is left-aligned */
+    height: 100%; /* Ensure it takes the full height of the container */
+}
+  
+.faq-text-section h2 {
+    /* Properties */
+    height: 84px;
+    font-size: 56px;
+    line-height: 150%;
+    letter-spacing: -0.011em;
+    font-weight: 500;
+    color: #1A3D8F;
+}
+
+.faq-search-bar-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin: 15px 50px;
+}
+
+.faq-search-bar {
+    width: 100%;
+    padding: 8px 32px 8px 8px; /* Add padding to make space for the icon */
+    margin: 8px 0;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.faq-search-bar:focus {
+    outline: none;
+    border-color: #1A3D8F;
+}
+
+.faq-search-icon {
+    position: absolute;
+    right: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+
+.faq-search-icon img {
+    width: 16px;
+    height: 16px;
+    /* Add additional styles as needed */
+}
+
+.faq-cards-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: space-between;
+    margin: 20px 50px;
+}
+
+.faq-card {
+    flex: 1 1 calc(33.333% - 20px); /* 3 columns with spacing */
+    background-color: #F5F9FA; /* Update background color */
+    border: none; /* Remove border */
+    border-radius: 8px;
+    padding: 20px;
+}
+
+.faq-card-title {
+    font-size: 14px; /* Update font size */
+    font-weight: 600;
+    color: #545454; /* Update font color */
+    margin-bottom: 10px;
+}
+
+.faq-card-questions {
+    list-style-type: none; /* Remove bullets for the questions */
+    padding: 0;
+    margin: 0;
+}
+
+.question-item {
+    list-style-type: none; /* Remove bullets for the title */
+    padding: 0;
+    margin: 0;
+}
+
+.faq-card-questions {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.faq-card-question {
+    font-size: 13px; /* Update font size */
+    color: #646464; /* Update font color */
+    margin-bottom: 8px;
+}
+
+.faq-question-button {
+    background: none;
+    border: none;
+    color: #646464; /* Match question text color */
+    font-size: 13px; /* Match question font size */
+    text-align: left;
+    cursor: pointer;
+    padding: 0;
+}
+
+.faq-question-button:hover {
+    text-decoration: underline; /* Add underline on hover */
+    color: #1A3D8F; /* Change color on hover */
+}
+
+.faq-question-button:focus {
+    outline: none; /* Remove default focus outline */
+    text-decoration: underline;
+    color: #1A3D8F; /* Match hover color */
+}
+
+/* Container for the body */
+.faq-body-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    border-radius: 8px;
+    margin: 20px;
+}
+
+.faq-title-button {
+    background: none;
+    border: none;
+    font-size: 13px;
+    font-weight: bold;
+    color: #3D3C3C; /* Title color */
+    text-align: left;
+    cursor: pointer;
+    padding: 0;
+    margin-bottom: 8px;
+}
+
+.faq-title-button:hover {
+    text-decoration: underline;
+}
+
+.faq-questions-list {
+    list-style-type: none; /* Remove bullets */
+    padding: 0;
+    margin: 0;
+}
+
+.faq-question-item {
+    font-size: 13px; /* Question font size */
+    color: #646464; /* Question color */
+    margin-bottom: 8px;
+     /* Optional: Add some padding for alignment */
+}
+
+.faq-question-item.highlighted {
+    font-weight: bold;
+    color: #1A3D8F; /* Highlight color for active question */
+}
+
