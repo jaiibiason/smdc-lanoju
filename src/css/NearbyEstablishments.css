@@ -1,0 +1,88 @@
+section.nearby-establishments {
+  display: flex;
+  padding: 0;
+}
+
+.establishment-details {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  flex-basis: 50%;
+
+  flex-wrap: wrap;
+  gap: 20px;
+  padding: 40px 20px 40px 40px;
+}
+
+.establishment-details h2 {
+  font-size: 24px;
+  font-weight: 500;
+  color: var(--dark-blue);
+  margin-bottom: 20px;
+}
+
+.establishment-category {
+  flex: 1 1 calc(50% - 20px); /* Two columns with gap */
+  background-color: #f5f9fa;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+.establishment-category * {
+    font-family: 'Inter', sans-serif;
+}
+
+.establishment-category.education, .establishment-details h2 {
+  flex: 1 1 100%; /* Occupy the full row */
+}
+
+.establishment-category h3 {
+  font-size: 14px;
+  font-weight: 500;
+  /* color: #333; */
+  margin-bottom: 10px;
+}
+
+.establishment-category ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.establishment-category ul li {
+  font-size: 12px;
+  /* color: #555; */
+  margin-bottom: 5px;
+  display: flex;
+  justify-content: space-between; /* Align location and distance at separate ends */
+}
+
+.establishment-map {
+  flex: 1;
+  flex-basis: 50%;
+  /* height: 100%; */
+  border: 1px solid #ddd;
+  overflow: hidden;
+  background-size: cover;
+  background-position: center;
+}
+
+@media (max-width: 768px) {
+  .nearby-establishments {
+    flex-direction: column;
+  }
+
+  .establishment-details {
+    padding: 24px;
+    /* flex-wrap: nowrap;  */
+  }
+
+  .establishment-category {
+    /* flex: 1 1 100%;  */
+  }
+
+  .establishment-map {
+    height: 350px;
+    flex-basis: auto;
+  }
+}

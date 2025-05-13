@@ -38,9 +38,16 @@ button {
   border: none;
   border-radius: .3125rem;
   color: white;
+  font-family: "Inter";
+  font-weight: 500;
+  height: 2.625rem;
+  font-size: 12px;
 }
 button.blue {
   background: var(--dark-blue);
+}
+.button.blue:hover {
+  background: var(--dark-blue) !important;
 }
 
 select {

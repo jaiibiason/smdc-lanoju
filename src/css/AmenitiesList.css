@@ -1,0 +1,71 @@
+.amenities-list {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 20px 0;
+  background-color: #f8f9fa; 
+  border-top: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+  flex-wrap: wrap; 
+}
+
+.amenity-item {
+  text-align: center;
+  flex: 1 1 120px; 
+  max-width: 150px; 
+  margin: 10px; 
+}
+
+.amenity-icon {
+  width: 40px;
+  height: 40px;
+  margin-bottom: 8px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.amenity-label {
+  font-size: 14px;
+  color: #333;
+  font-weight: 500;
+  margin: 0;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .amenities-list {
+    justify-content: start; 
+  }
+
+  .amenity-item {
+    flex: 1 1 100px; 
+    max-width: 120px;
+  }
+
+  .amenity-icon {
+    width: 35px; 
+    height: 35px;
+  }
+
+  .amenity-label {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+
+  .amenity-item {
+    flex: 0 1 80px; 
+    max-width: none;
+  }
+
+  .amenity-icon {
+    width: 30px; /* Further reduce icon size */
+    height: 30px;
+  }
+
+  .amenity-label {
+    font-size: 11px; /* Further reduce font size */
+  }
+}

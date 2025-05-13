@@ -38,7 +38,7 @@ function InnerProp_Hero() {
               </div>
             </div>
 
-            <button className='inquire-btn blue'>View VR Tour</button>
+            <button className='view-vr-btn blue'>View VR Tour</button>
           </div>
           <div className="right-cont"
           style={{backgroundImage: `url(${import.meta.env.BASE_URL + '/assets/featured_properties/shore.png'

@@ -57,7 +57,7 @@
     color: white;
 }
 
-.hero-cont .inquire-btn {
+.hero-cont .inquire-btn, .view-vr-btn {
     margin-top: 28px;
 }
 
@@ -109,7 +109,7 @@
     font-size: 14px;
 }
 
-@media (max-width: 960px) {
+@media (max-width: 780px) {
     .home-pg section.hero::before {
         background-image: url(../assets/tempprof.png);
         background-size: auto;
@@ -122,6 +122,26 @@
     }
     .hero-cont p {
         font-size: 12px;
+    }
+
+    .inner-properties-pg{
+        .hero-cont {
+            height: auto;
+        }
+        .hero-cont .left-cont {
+            flex-basis: 100%;
+            padding: 40px 24px;
+        }
+        .view-vr-btn {
+            width: 100%;
+            margin-top: 35px;
+        }
+        .see-more {
+            display: none;
+        }
+        .right-cont {
+            display: none;
+        }
     }
 }
 @media (max-width: 480px) {
