@@ -127,7 +127,7 @@ function Filter() {
             <div className="multi-select-dropdown">
   <label>Property Type</label>
   <div
-    className="dropdown-placeholder"
+    className={`dropdown-placeholder ${isPropertyTypeOpen ? 'selected' : ''}`} 
     onClick={() => setIsPropertyTypeOpen(!isPropertyTypeOpen)}
   >
     {getPlaceholderText(filters.propertyType)}

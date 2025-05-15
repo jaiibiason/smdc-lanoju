@@ -1,0 +1,8 @@
+.sample-computation-pg .hero-cont{
+  padding: 40px;
+  background: linear-gradient(0deg, #F5F9FA 0%, #FFFFFF 100%);
+}
+
+.hero-cont h1 {
+  margin: auto 0;
+}

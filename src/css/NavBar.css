@@ -12,13 +12,6 @@ body{
   color: #343434;
 }
 
-button{
-  cursor: pointer;
-  border: none;
-  border-radius: .3125rem;
-  color: white;
-}
-
 .no-transitions * {
   transition: none !important;
 }

@@ -67,6 +67,10 @@
   cursor: pointer;
   background-color: #fff;
 }
+.dropdown-placeholder.selected {
+  outline: none;
+  border-bottom: 2px solid var(--dark-blue);
+}
 
 .dropdown-arrow svg {
   transform: rotate(0deg);
