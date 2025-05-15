@@ -40,14 +40,17 @@ button {
   color: white;
   font-family: "Inter";
   font-weight: 500;
-  height: 2.625rem;
   font-size: 12px;
 }
 button.blue {
   background: var(--dark-blue);
+  width: 8rem;
+  height: 2.625rem;
 }
-.button.blue:hover {
-  background: var(--dark-blue) !important;
+button.yellow {
+  background: var(--yellow);
+  width: 8rem;
+  height: 2.625rem;
 }
 
 select {

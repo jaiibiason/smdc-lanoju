@@ -1,6 +1,8 @@
-.faqs {
-  padding: 20px;
+section.faqs {
+  padding: 40px 30px;
   background-color: #f9f9f9;
+  display: flex;
+  flex-direction: column;
 }
 
 .faqs h2 {
@@ -14,6 +16,7 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
+  flex: 1;
 }
 
 .faq-item {
@@ -45,12 +48,14 @@
 .view-more-faqs {
   display: inline-block;
   margin-top: 20px;
+  font-family: 'Inter', sans-serif;
   font-size: 14px;
-  color: #1a3d8f;
+  color: var(--dark-blue);
   text-decoration: none;
   font-weight: 500;
+  align-self: flex-end; /* Align the link to the right */
 }
 
-.view-more-faqs:hover {
-  text-decoration: underline;
+.view-more-faqs span {
+  margin-left: 5px;
 }

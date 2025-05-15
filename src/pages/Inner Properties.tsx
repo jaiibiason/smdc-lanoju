@@ -1,4 +1,5 @@
 import React from "react";
+import Crumbs from '../components/Crumbs' // Adjust the path as necessary
 import Hero from "../sections/InnerProperties_Hero";
 import ImageGallery from "../components/ImageGallery";
 import AmenitiesList from "../components/AmenitiesList";
@@ -34,6 +35,7 @@ function InnerProperties() {
   return (
     <>
       <div className="inner-properties-pg">
+        <Crumbs />
         <Hero />
         <ImageGallery images={images} />
         <AmenitiesList amenities={amenities} />
