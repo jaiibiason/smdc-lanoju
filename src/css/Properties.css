@@ -103,12 +103,11 @@
 .main-body {
   display: flex;
   padding: 20px;
-  margin: 0 20px; /* Align with properties-body-container */
+  margin: 0 20px; 
 }
 
 .left-main-section {
   width: 30%;
-  /* Add additional styles as needed */
 }
 
 .search-bar-container {

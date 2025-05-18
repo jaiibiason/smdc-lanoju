@@ -8,7 +8,7 @@ function Faqs() {
   return (
     <div>
       <Crumbs pageName="FAQs" />
-      <FAQHeader pageName="Frequently Asked Questions" />
+      <FAQHeader title="Frequently Asked Questions"/>
       <FAQBody />
       <Footer />
     </div>

@@ -7,6 +7,7 @@ import AboutMe from './pages/About Me'
 import Articles from './pages/Articles'
 import Faqs from './pages/Faqs'
 import Inquire from './pages/Inquire'
+import InnerFAQS from './pages/InnerFAQS';
 
 function App() {
 
@@ -20,6 +21,7 @@ function App() {
             <Route path="/aboutme" element={<AboutMe/>}/>
             <Route path="/articles" element={<Articles/>}/>
             <Route path="/faqs" element={<Faqs/>}/>
+            <Route path="/faqs/inner" element={<InnerFAQS/>}/>
             <Route path="/inquirenow" element={<Inquire/>}/>
           </Routes>
         </main>
