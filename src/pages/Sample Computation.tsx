@@ -74,15 +74,21 @@ function SampleCompuatation() {
     tableData[0].remainingBalance
   );
 
-  const handleTotalPriceChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const selected = tableData.find((row) => row.totalPrice === event.target.value);
+  const handleTotalPriceChange = (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    const selected = tableData.find(
+      (row) => row.totalPrice === event.target.value
+    );
     if (selected) {
       setSelectedTotalPrice(selected);
       setSelectedRemainingBalance(selected.remainingBalance);
     }
   };
 
-  const handleRemainingBalanceChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleRemainingBalanceChange = (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => {
     setSelectedRemainingBalance(event.target.value);
   };
 
@@ -99,7 +105,10 @@ function SampleCompuatation() {
               <th>Total Contract Price</th>
               <th>Spot Payment (5%)</th>
               <th>Reservation Fee</th>
-              <th>Downpayment (15%) <br /><span>(payable in 48 months)</span></th>
+              <th>
+                Downpayment (15%) <br />
+                <span>(payable in 48 months)</span>
+              </th>
               <th>Monthly Amortization</th>
               <th>Remaining Balance (80%)</th>
             </tr>
@@ -121,8 +130,9 @@ function SampleCompuatation() {
 
       {/* Mobile View */}
       <div className="mobile-computation">
-        <div className="dropdown-section">
-          <label htmlFor="totalPrice">Total Contract Price:</label>
+        <label htmlFor="totalPrice">Total Contract Price:</label>
+        <div className="dropdown-placeholder">
+          {/* <div className="dropdown"> */}
           <select
             id="totalPrice"
             value={selectedTotalPrice.totalPrice}
@@ -134,30 +144,65 @@ function SampleCompuatation() {
               </option>
             ))}
           </select>
+          <span className="dropdown-arrow">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="12"
+              height="7"
+              fill="currentColor"
+              viewBox="0 0 12 7"
+            >
+              <path d="M11.8527 0.645818C12.0484 0.840732 12.0489 1.15731 11.854 1.35292L6.38902 6.83741C6.17408 7.05312 5.82477 7.05312 5.60982 6.83741L0.14484 1.35292C-0.0500734 1.15731 -0.0495088 0.840731 0.1461 0.645817C0.34171 0.450903 0.658292 0.451467 0.853206 0.647077L5.99942 5.81166L11.1456 0.647077C11.3406 0.451468 11.6571 0.450904 11.8527 0.645818Z" />
+            </svg>
+          </span>
+          {/* </div> */}
         </div>
 
         <div className="computation-details">
-          <p>Total Contract Price: {selectedTotalPrice.totalPrice}</p>
-          <p>Spot Payment (5%): {selectedTotalPrice.spotPayment}</p>
-          <p>Reservation Fee: {selectedTotalPrice.reservationFee}</p>
           <p>
-            Downpayment (15%): {selectedTotalPrice.downpayment}{" "}
-            <span>(payable in 48 months)</span>
+            <span>Total Contract Price:</span>
+            <span>{selectedTotalPrice.totalPrice}</span>
           </p>
-          <p>Monthly Amortization: {selectedTotalPrice.monthlyAmortization}</p>
-          <p>Remaining Balance (80%): {selectedTotalPrice.remainingBalance}</p>
+          <p>
+            <span>Spot Payment (5%):</span>
+            <span>{selectedTotalPrice.spotPayment}</span>
+          </p>
+          <p>
+            <span>Reservation Fee:</span>
+            <span>{selectedTotalPrice.reservationFee}</span>
+          </p>
+          <p>
+            <span className="label-subtext">
+              <span>Downpayment (15%):</span>
+              <span className="subtext">(payable in 48 months)</span>
+            </span>
+            <span>{selectedTotalPrice.downpayment}</span>
+          </p>
+          <p>
+            <span>Monthly Amortization:</span>
+            <span>{selectedTotalPrice.monthlyAmortization}</span>
+          </p>
+          <p>
+            <span>Remaining Balance (80%):</span>
+            <span>{selectedTotalPrice.remainingBalance}</span>
+          </p>
         </div>
 
+            <div className="computation-notes">
         <p>
-          After completing the 48-month downpayment period, the remaining balance will be due.
+          After completing the 48-month downpayment period, the remaining
+          balance will be due.
         </p>
         <p>
-          This can be settled through bank financing, allowing for flexible payment terms of 5, 10,
-          15, or 20 years at competitive interest rates.
+          This can be settled through bank financing, allowing for flexible
+          payment terms of 5, 10, 15, or 20 years at competitive interest rates.
         </p>
+            </div>
 
-        <div className="dropdown-section">
-          <label htmlFor="remainingBalance">Remaining Balance:</label>
+        {/* Remaining Balance Section */}
+        <label htmlFor="remainingBalance">Remaining Balance:</label>
+        <div className="dropdown-placeholder">
+          {/* <div className="dropdown"> */}
           <select
             id="remainingBalance"
             value={selectedRemainingBalance}
@@ -169,33 +214,49 @@ function SampleCompuatation() {
               </option>
             ))}
           </select>
+          <span className="dropdown-arrow">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="12"
+              height="7"
+              fill="currentColor"
+              viewBox="0 0 12 7"
+            >
+              <path d="M11.8527 0.645818C12.0484 0.840732 12.0489 1.15731 11.854 1.35292L6.38902 6.83741C6.17408 7.05312 5.82477 7.05312 5.60982 6.83741L0.14484 1.35292C-0.0500734 1.15731 -0.0495088 0.840731 0.1461 0.645817C0.34171 0.450903 0.658292 0.451467 0.853206 0.647077L5.99942 5.81166L11.1456 0.647077C11.3406 0.451468 11.6571 0.450904 11.8527 0.645818Z" />
+            </svg>
+          </span>
+          {/* </div> */}
         </div>
 
-        <div className="remaining-balance-details">
-          <p>Remaining Balance (80%): {selectedRemainingBalance}</p>
+        <div className="computation-details">
+          <p>
+            <span>Remaining Balance (80%):</span>
+            <span>{selectedRemainingBalance}</span>
+          </p>
           {remainingBalanceData[selectedRemainingBalance] ? (
-            <ul>
-              {Object.entries(remainingBalanceData[selectedRemainingBalance]).map(
-                ([term, amount], index) => (
-                  <li key={index}>
-                    {term}: {amount}
-                  </li>
-                )
-              )}
-            </ul>
+            Object.entries(remainingBalanceData[selectedRemainingBalance]).map(
+              ([term, amount], index) => (
+                <p key={index}>
+                  <span>{term}:</span>
+                  <span>{amount}</span>
+                </p>
+              )
+            )
           ) : (
             <p>No data available for the selected remaining balance.</p>
           )}
         </div>
 
-        <p>
+        <p className="computation-notes bsp">
           <i>Based on PSB 1-year fixing 5.25% (estimate only)</i>
         </p>
-        <p>
-          <b>Disclaimer:</b> These are sample computations only. Actual payment terms may vary based
-          on client preferences, including adjustments to the spot payment, downpayment, and monthly
-          amortization structure. Inquire now, and I'll be happy to tailor a payment plan that suits
-          you best.
+
+        <p className="computation-notes disclaimer">
+          <b>Disclaimer:</b> These are sample computations only. Actual payment
+          terms may vary based on client preferences, including adjustments to
+          the spot payment, downpayment, and monthly amortization structure.
+          Inquire now, and I'll be happy to tailor a payment plan that suits you
+          best.
         </p>
 
         <button className="inquire-btn">Inquire Now</button>
