@@ -15,8 +15,8 @@ function Footer() {
             <h2>Justine Lañoza</h2>
             <p>SMDC Real Estate Agent</p>
             <br />
-            <p>+6399999999999</p>
-            <p>workemailsample@.gmail.com</p>
+            <p>+63 929 300 2829</p>
+            <p>smdctimlanoza@gmail.com</p>
             <div className="socmed">
               <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M16.417 0.666504H1.58366C1.34054 0.666504 1.10739 0.763081 0.935478 0.934989C0.763569 1.1069 0.666992 1.34006 0.666992 1.58317V16.4165C0.666992 16.6596 0.763569 16.8928 0.935478 17.0647C1.10739 17.2366 1.34054 17.3332 1.58366 17.3332H9.56699V10.8748H7.40032V8.37484H9.56699V6.49984C9.52211 6.05963 9.57408 5.61494 9.71925 5.19695C9.86443 4.77896 10.0993 4.39779 10.4074 4.08018C10.7155 3.76257 11.0893 3.5162 11.5027 3.35837C11.9161 3.20053 12.359 3.13505 12.8003 3.1665C13.4489 3.16203 14.0973 3.19542 14.742 3.2665V5.5165H13.417C12.367 5.5165 12.167 6.0165 12.167 6.7415V8.34984H14.667L14.342 10.8498H12.167V17.3332H16.417C16.5374 17.3332 16.6566 17.3095 16.7678 17.2634C16.879 17.2173 16.9801 17.1498 17.0652 17.0647C17.1503 16.9796 17.2178 16.8785 17.2639 16.7673C17.3099 16.6561 17.3337 16.5369 17.3337 16.4165V1.58317C17.3337 1.46279 17.3099 1.34359 17.2639 1.23238C17.2178 1.12116 17.1503 1.02011 17.0652 0.934989C16.9801 0.849869 16.879 0.782348 16.7678 0.736281C16.6566 0.690214 16.5374 0.666504 16.417 0.666504Z" fill="#0561FF"/>
@@ -69,10 +69,10 @@ function Footer() {
 
           <div className="learn-links">
             <h3>Learn More About</h3>
-            <NavLink to="/">Makati Properties</NavLink>
-            <NavLink to="/">Mandaluyong Properties</NavLink>
-            <NavLink to="/">Pasay Properties</NavLink>
-            <NavLink to="/">Pasig Properties</NavLink>
+            <NavLink to="/">What to Know Before Buying</NavLink>
+            <NavLink to="/">What to Know When Deciding</NavLink>
+            <NavLink to="/">Actual Buying Process</NavLink>
+            <NavLink to="/">Payment Process & Financing</NavLink>
           </div>
       </div>
 
