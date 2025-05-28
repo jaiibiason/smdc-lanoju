@@ -150,7 +150,7 @@ function PropertiesBody() {
     const price = "Php 1,000,000";
     const location = "Example City";
     const amenities = ["Swimming Pool", "Gym", "Parking"];
-    const landmarks = ["Mall", "School", "Hospital"];
+    const landmarks = ["0.9km away from St. Paul College Pasig", "1.3km away from Rizal Medical Hospital", "0.3km away from SM Hypermarket Pasig"];
 
     return (
         <div>

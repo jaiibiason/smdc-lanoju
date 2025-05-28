@@ -1,5 +1,5 @@
 .latest-news-cont {
-  /* height: 95vh; */
+  /* height: 80vh; */
 }
 
 .news-insights-cont {
@@ -9,8 +9,8 @@
   gap: 10px;
 
   .featured-article {
-    height: 486px;
-    width: 552px;
+    height: 61vh;
+    width: 89vh;
     display: flex;
     border-radius: 8px;
     background-size: cover;
@@ -21,7 +21,7 @@
     .article-details {
       height: 100%;
       width: 100%;
-      padding: 40px 18px 18px 18px;
+      padding: 7vh 2.5vh 2.5vh 2.5vh;
       background: linear-gradient(
         180deg,
         rgba(0, 0, 0, 0) 0%,
@@ -45,6 +45,8 @@
     }
     p {
       margin-top: 25px;
+      font-size: 14px;
+      line-height: 1.5rem;
     }
   }
   .featured-article:hover .article-details {
@@ -63,7 +65,7 @@
     .recent-article {
       display: flex;
       gap: 10px;
-      height: 152px;
+      height: 19vh;
     }
 
     .article-img {
@@ -78,7 +80,7 @@
     }
     .article-details {
       flex: 1;
-      padding: 13px 0;
+      padding: 1.5vh 0;
 
       h2 {
         font-size: 14px;
@@ -92,7 +94,7 @@
         margin-right: 11px;
       }
       p {
-        font-size: 10px;
+        font-size: 12px;
         font-weight: 500;
         margin-top: 17px;
         display: -webkit-box;
@@ -100,6 +102,7 @@
         overflow: hidden;
         text-overflow: ellipsis;
         -webkit-line-clamp: 3;
+        line-height: 1.1rem;
       }
     }
   }
@@ -125,11 +128,100 @@
 }
 
 /* Responsive Styles */
-@media (max-width: 1000px) {
+@media (min-width: 1601px) {
   .news-insights-cont {
     .featured-article {
-      height: 308px;
-      width: 301px;
+      height: 48.2vh;
+      width: 80vh;
+
+      .article-details {
+        height: 100%;
+        width: 100%;
+        display: flex;
+        padding: 40px 18px 18px 18px;
+        transform: translateY(0%);
+        background: linear-gradient(
+          180deg,
+          rgba(0, 0, 0, 0) 50%,
+          rgba(0, 0, 0, .5) 75%,
+          rgba(0, 0, 0, 1) 100%
+        );
+      }
+      .article-title {
+        margin: auto 0 0 0;
+      }
+
+      h2 {
+        font-size: 16px;
+        font-weight: 600;
+        margin-bottom: 0px;
+      }
+      h3 {
+        display: inline-block;
+        font-size: 12px;
+        font-weight: 500;
+        margin: 0 17px 10px 0;
+      }
+      p {
+        display: none;
+      }
+      .category {
+        font-size: 12px;
+      }
+    }
+    .featured-article:hover .article-details {
+      background: linear-gradient(
+        180deg,
+        rgba(0, 0, 0, 0) 50%,
+        rgba(0, 0, 0, .5) 75%,
+        rgba(0, 0, 0, 1) 100%
+      );
+      transform: translateY(0%);
+    }
+
+    .recent-articles {
+      .recent-article {
+        height: 15vh;
+      }
+
+      .article-img {
+        width: 21vh;
+      }
+      .article-details {
+        flex: 1;
+        padding: 1.5vh 0;
+
+        h2 {
+          font-size: 14px;
+          font-weight: 600;
+          /* margin-bottom: 10px; */
+        }
+        h3 {
+          display: inline-block;
+          font-size: 12px;
+          font-weight: 500;
+          margin-right: 11px;
+        }
+        p {
+          font-size: 12px;
+          font-weight: 500;
+          margin-top: 1.7vh;
+          -webkit-line-clamp: 3;
+          line-height: 0.9rem;
+        }
+        .category {
+          font-size: 8px;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 960px) {
+  .news-insights-cont {
+    .featured-article {
+      height: 50vh;
+      width: 75vh;
 
       .article-details {
         height: 100%;
@@ -151,7 +243,7 @@
       h2 {
         font-size: 14px;
         font-weight: 600;
-        margin-bottom: 10px;
+        margin-bottom: 0px;
       }
       h3 {
         display: inline-block;
@@ -178,7 +270,7 @@
 
     .recent-articles {
       .recent-article {
-        height: 93px;
+        height: 15vh;
       }
 
       .article-img {
@@ -195,15 +287,16 @@
         }
         h3 {
           display: inline-block;
-          font-size: 8px;
+          font-size: 10px;
           font-weight: 500;
           margin-right: 11px;
         }
         p {
-          font-size: 8px;
+          font-size: 10px;
           font-weight: 500;
           margin-top: 6px;
-          -webkit-line-clamp: 2;
+          -webkit-line-clamp: 3;
+          line-height: 0.9rem;
         }
         .category {
           font-size: 8px;
@@ -279,7 +372,8 @@
           font-size: 10px;
           font-weight: 500;
           margin-top: 6px;
-          -webkit-line-clamp: 3;
+          -webkit-line-clamp: 4;
+          line-height: 1rem;
         }
         .category {
           font-size: 8px;

@@ -44,6 +44,7 @@
 
 .text-section p {
   gap: 10px;
+  line-height: 1.5rem;
   align-self: stretch;
 }
 
@@ -53,9 +54,9 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  padding: 20px;
-  border-radius: 8px;
-  margin: 20px;
+  padding: 0 20px;
+  border-radius: 4px;
+  margin-top: 30px;
 }
 
 /* Left Section - Text */
@@ -102,7 +103,7 @@
 
 .main-body {
   display: flex;
-  padding: 20px;
+  padding: 0px;
   margin: 0 20px; 
 }
 

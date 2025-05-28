@@ -20,7 +20,7 @@ const stories: Story[] = [
     purchase: "Mall of Asia, Pasay City",
     purpose: "₱6,500,000 - ₱24,800,000",
     feedback:
-      '"I was looking for a property that I could eventually turn into an Airbnb. Justine helped me choose a high-potential unit, and I feel confident about my investment. Their insights and support were invaluable!/"',
+      '"I was looking for a property that I could eventually turn into an Airbnb. Justine helped me choose a high-potential unit, and I feel confident about my investment. Their insights and support were invaluable!"',
   },
   {
     propImage: "/assets/featured_properties/bloom.png",

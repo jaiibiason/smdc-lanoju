@@ -2,7 +2,7 @@
 @import "slick-carousel/slick/slick-theme.css";
 
 .home-pg .fproperties-cont {
-  height: 75vh;
+  height: 80vh;
   background: #f5f9fa;
 }
 
@@ -227,6 +227,8 @@
     position: relative;
 
     .slick-slide {
+      padding: 0 10px;
+      box-sizing: border-box;
       width: 100%;
       height: 350px;
       overflow: hidden;

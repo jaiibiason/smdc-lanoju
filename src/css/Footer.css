@@ -17,9 +17,10 @@ section.footer-cont {
   justify-content: space-between;
   gap: 90px;
   padding: 40px;
+  justify-content: flex-start;
 
   h3 {
-    font-size: 12px;
+    font-size: 14px;
     font-weight: 600;
   }
 
@@ -98,6 +99,7 @@ section.footer-cont {
   .contact-explore-learn-cont {
     flex-wrap: wrap;
     gap: 45px;
+    justify-content: space-between;
 
     .logo-contact {
       flex-basis: 100%;
