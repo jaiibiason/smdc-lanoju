@@ -84,7 +84,7 @@ select:focus-visible {
 
 input[type="checkbox"] {
   display: flex;
-  background-color: #F8F8F8;
+  background-color: #FFFFFF;
   border: solid 1px #C2C2C2;
   border-radius: 2px;
   height: 16px;
