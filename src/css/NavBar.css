@@ -10,6 +10,9 @@ body{
   font-family: "Montserrat", sans-serif;
   height: 100%;
   color: #343434;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 2rem;
 }
 
 .no-transitions * {
@@ -27,9 +30,12 @@ body{
   align-items: center;
   padding: .8125rem 2.5rem;
   height: 4.25rem;
-  width: 100vw;
+  max-width: 1440px; 
+  margin: 0 auto;
+  padding: 0 0.5rem;
   background: white;
 }
+
 .navbar.dark-mode{
   background: #343434;
 }
@@ -121,6 +127,10 @@ font-size: 12px;
 
 /* Responsive styles */
 @media all and (max-width: 960px)  {
+  body{
+    margin: 0 auto;
+    padding: 0 1rem;
+  }
   .navbar{
     justify-content: space-between;
     transition: background 0.3s ease;
@@ -192,5 +202,8 @@ font-size: 12px;
 }
 
 @media (max-width: 480px) {
-  
+  body{
+  margin: 0 auto;
+  padding: 0 0rem;
+} 
 } 

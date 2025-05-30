@@ -6,8 +6,8 @@
 }
 
 .articles-pg-featured-article {
-    height: 486px;
-    width: 552px;
+    height: 61vh;
+    width: 71vh;
     display: flex;
     border-radius: 8px;
     background-size: cover;
@@ -123,16 +123,14 @@
 }
 
 .articles-body-wrapper{
-    margin: 15px 50px;
-    padding: 8px 32px 8px 8px; /* Add padding to make space for the icon */
-
+    padding: 1vh;
 }
 
 .article-search-bar-container {
     position: relative;
     display: flex;
     align-items: center;
-    margin: 15px;
+    margin: 2vh 0vh 1.5vh 0vh;
 }
 
 .article-search-bar {
