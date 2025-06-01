@@ -221,7 +221,7 @@
   .news-insights-cont {
     .featured-article {
       height: 50vh;
-      width: 75vh;
+      width: 55vh;
 
       .article-details {
         height: 100%;
@@ -270,15 +270,16 @@
 
     .recent-articles {
       .recent-article {
-        height: 15vh;
+        height: 15.3vh;
       }
 
       .article-img {
-        width: 113px;
+        width: 19vh;
       }
       .article-details {
         flex: 1;
         padding: 0;
+        margin-top: 1vh;
 
         h2 {
           font-size: 12px;
