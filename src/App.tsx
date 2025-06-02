@@ -27,7 +27,7 @@ function App() {
             <Route path="/articles" element={<Articles/>}/>
             <Route path="/faqs" element={<Faqs/>}/>
             <Route path="/faqs/inner" element={<InnerFAQS/>}/>
-            <Route path="/inquirenow" element={<Inquire/>}/>
+            <Route path="/inquire" element={<Inquire/>}/>
             <Route path="/sample-computation" element={<SampleComputation/>}/>
             <Route path="/articles/:id" element={<InnerArticle />} />
             <Route path="/articles/horizontal/:id" element={<InnerArticle />} />

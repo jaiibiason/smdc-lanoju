@@ -1,0 +1,203 @@
+.inquiry-pg {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
+
+  * {
+    font-family: "Inter", sans-serif;
+  }
+
+  .left-side {
+    flex: 1;
+    padding-right: 20px;
+
+    h1 {
+      color: var(--dark-blue);
+    }
+
+    h2 {
+      font-size: 14px;
+      font-weight: 400;
+      margin-top: 14px;
+    }
+
+    .inquiry-form {
+      margin-top: 25px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .inquiry-form .row {
+      display: flex;
+      gap: 20px;
+      width: 100%;
+    }
+    .inquiry-form .row:nth-child(3) ,
+    .inquiry-form .row:nth-child(4) {
+      flex-direction: column;
+      gap: 0;
+    }
+  
+    .inquiry-form .column {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+  
+    .inquiry-form label {
+      font-size: 13px;
+    }
+  
+    .inquiry-form label::after {
+      content: "*";
+      color: red;
+      margin-left: 2px;
+      display: inline;
+    }
+  
+    .inquiry-form input,
+    .inquiry-form select {
+      width: 100%;
+      height: 36px;
+      padding: 8px 12px;
+      border: 1px solid #ccc;
+      background-color: white;
+      border-radius: 5px;
+      font-size: 1rem;
+    }
+  
+    .inquiry-form input[type="text"],
+    .inquiry-form input[type="email"],
+    .inquiry-form input[type="tel"],
+    .inquiry-form select {
+      grid-column: span 1;
+    }
+
+    .inquiry-form select:invalid {
+      color: #777; /* Lighter color for placeholder */
+    }
+  
+    /* .inquiry-form select option {
+      color: #333;
+    } */
+  
+    .inquiry-form select option[value=""] {
+      display: none; /* Hide the placeholder option in the dropdown */
+    }
+
+    .inquiry-form .captcha-terms {
+      margin: 5px 0;
+    }
+  
+    .inquiry-form .captcha-container {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px
+    }
+  
+    .captcha-container input {
+      flex: 1;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 1rem;
+    }
+  
+    .inquiry-form .submit-info {
+      font-size: 12px;
+    }
+  
+    .mobile-container {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+  
+    .mobile-container .area-code {
+      width: 20%; /* Reduced width for area code */
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 1rem;
+      text-align: center;
+    }
+  
+    .mobile-container input[type="tel"]:not(.area-code) {
+      flex: 1; /* Mobile number field takes the remaining space */
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 1rem;
+    }
+
+  }
+
+  .right-side {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 20px;
+  }
+
+  .image-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: auto auto;
+    gap: 10px;
+    border-radius: 125px;
+    overflow: hidden;
+  }
+
+  .image-grid img {
+    /* width: 50%; */
+    border-radius: 5px;
+  }
+  .image-grid img:first-child {
+    grid-column: span 2; /* Property 1 spans the entire top row */
+    width: 100%;
+    height: 400px;
+    border-radius: 10px;
+  }
+
+  .image-grid img:nth-child(2),
+  .image-grid img:nth-child(3) {
+    width: 100%;
+    border-radius: 10px;
+  }
+  
+}
+
+@media (max-width: 768px) {
+  .inquiry-pg {
+    flex-direction: column;
+    gap: 50px;
+
+    .left-side {
+      h1 {
+        font-size: 24px;
+      }
+      p {
+        font-size: 12px;
+      }
+    }
+
+    .row {
+      flex-direction: column;
+    }
+
+    button.blue {
+      width: 100%;
+    }
+  
+  }
+}
+
+@media (max-width: 480px) {
+  .inquiry-pg {
+    .image-grid {
+      border-radius: 75px;
+    }
+  }
+}
