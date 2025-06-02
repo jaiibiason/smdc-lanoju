@@ -5,8 +5,9 @@ import arrowUpIcon from "../assets/ep_arrow-up.svg"; // Import the arrow-up icon
 import arrowDownIcon from "../assets/ep_arrow-down.svg"; // Import the arrow-down icon
 import HeaderImg from '../assets/temp_prptHeader.png'
 import locationIcon from "../assets/lsicon_location-outline.svg"; // Import location icon
-import { useState } from 'react'; // Import useState
+import { useState, useEffect } from 'react'; // Import useState and useEffect
 import { Range, getTrackBackground } from 'react-range'; // Import Range and getTrackBackground
+import mageFilterIcon from "../assets/mage_filter.svg"; // Import the filter icon
 
 function PropertiesBody() {
     const propertyCount = 0; // Define propertyCount with a default value
@@ -152,27 +153,40 @@ function PropertiesBody() {
     const amenities = ["Swimming Pool", "Gym", "Parking"];
     const landmarks = ["Mall", "School", "Hospital"];
 
+    // Responsive state for mobile
+    const [isMobile, setIsMobile] = useState(false);
+    const [showFilters, setShowFilters] = useState(false);
+
+    useEffect(() => {
+        const checkMobile = () => setIsMobile(window.innerWidth <= 780);
+        checkMobile();
+        window.addEventListener("resize", checkMobile);
+        return () => window.removeEventListener("resize", checkMobile);
+    }, []);
+
     return (
         <div>
             <div className="properties-body-container">
-
                 <div className="left-section">
                     <p>Showing {propertyCount} properties</p>
                 </div>
-
-                <div className="right-section">
-                    <span>Sort by: </span>
-                    <select className="dropdown">
-                        <option value="all">All Properties</option>
-                        <option value="residential">Residential</option>
-                        <option value="commercial">Commercial</option>
-                        <option value="land">Land</option>
-                    </select>
-                </div>
+                {/* Only show sort filter here on desktop */}
+                {!isMobile && (
+                    <div className="right-section">
+                        <span>Sort by: </span>
+                        <select className="dropdown">
+                            <option value="all">All Properties</option>
+                            <option value="residential">Residential</option>
+                            <option value="commercial">Commercial</option>
+                            <option value="land">Land</option>
+                        </select>
+                    </div>
+                )}
             </div>
 
             <div className="main-body">
                 <div className="left-main-section">
+                    {/* 2. Search bar */}
                     <div className="search-bar-container">
                         <input 
                             type="text" 
@@ -183,7 +197,136 @@ function PropertiesBody() {
                             <img src={magnifyingGlassIcon} alt="Search" />
                         </span>
                     </div>
+                    {/* 3. Sort filter for mobile */}
+                    {isMobile && (
+                        <div className="right-section" style={{ margin: "16px 0" }}>
+                            <span>Sort by: </span>
+                            <select className="dropdown">
+                                <option value="all">All Properties</option>
+                                <option value="residential">Residential</option>
+                                <option value="commercial">Commercial</option>
+                                <option value="land">Land</option>
+                            </select>
+                        </div>
+                    )}
+                    {/* Mobile: Filter button */}
+                    {isMobile && (
+                        <button
+                            className="mobile-filter-btn"
+                            onClick={() => setShowFilters((prev) => !prev)}
+                        >
+                            <img src={mageFilterIcon} alt="Filter" />
+                            Filter
+                        </button>
+                    )}
 
+                    {/* Overlay mobile filters */}
+                    {isMobile && showFilters && (
+                        <div className="mobile-filters-overlay">
+                            <div className="mobile-filters-header">
+                                <span>Filters</span>
+                                <button
+                                    className="mobile-filters-close"
+                                    onClick={() => setShowFilters(false)}
+                                >
+                                    ✕
+                                </button>
+                            </div>
+                            <div className="mobile-filters-content">
+                                <div className="location-container">
+                                    <span className="filter-title">Location</span>
+                                    <div className="selected-filters">
+                                        {selectedLocations
+                                            .filter((location) => location !== "All Locations")
+                                            .map((location, index) => (
+                                                <div key={index} className="selected-filter">
+                                                    {location}
+                                                    <span onClick={() => handleLocationChange(location)}>×</span>
+                                                </div>
+                                            ))}
+                                    </div>
+                                    <div className="location-options">
+                                        {locationOptions.map((location, index) => (
+                                            <label key={index}>
+                                                <input
+                                                    type="checkbox"
+                                                    checked={selectedLocations.includes(location)}
+                                                    onChange={() => handleLocationChange(location)}
+                                                />
+                                                {location}
+                                            </label>
+                                        ))}
+                                    </div>
+                                </div>
+                                <div className="unit-type-container">
+                                    <span className="filter-title">Unit Type</span>
+                                    <div className="selected-filters">
+                                        {selectedUnitTypes
+                                            .filter((unitType) => unitType !== "All Unit")
+                                            .map((unitType, index) => (
+                                                <div key={index} className="selected-filter">
+                                                    {unitType}
+                                                    <span onClick={() => handleUnitTypeChange(unitType)}>×</span>
+                                                </div>
+                                            ))}
+                                    </div>
+                                    <div className="unit-type-options">
+                                        <label>
+                                            <input
+                                                type="checkbox"
+                                                checked={selectedUnitTypes.includes("All Unit")}
+                                                onChange={() => handleUnitTypeChange("All Unit")}
+                                            />
+                                            All Unit
+                                        </label>
+                                        {unitTypeOptions.map((unitType, index) => (
+                                            <label key={index}>
+                                                <input
+                                                    type="checkbox"
+                                                    checked={selectedUnitTypes.includes(unitType)}
+                                                    onChange={() => handleUnitTypeChange(unitType)}
+                                                />
+                                                {unitType}
+                                            </label>
+                                        ))}
+                                    </div>
+                                </div>
+                                <div className="property-type-container">
+                                    <span className="filter-title">Property Type</span>
+                                    <div className="selected-filters">
+                                        {selectedPropertyTypes
+                                            .filter((propertyType) => propertyType !== "All Property")
+                                            .map((propertyType, index) => (
+                                                <div key={index} className="selected-filter">
+                                                    {propertyType}
+                                                    <span onClick={() => handlePropertyTypeChange(propertyType)}>×</span>
+                                                </div>
+                                            ))}
+                                    </div>
+                                    <div className="property-type-options">
+                                        <label>
+                                            <input
+                                                type="checkbox"
+                                                checked={selectedPropertyTypes.includes("All Property")}
+                                                onChange={() => handlePropertyTypeChange("All Property")}
+                                            />
+                                            All Property
+                                        </label>
+                                        {propertyTypeOptions.map((propertyType, index) => (
+                                            <label key={index}>
+                                                <input
+                                                    type="checkbox"
+                                                    checked={selectedPropertyTypes.includes(propertyType)}
+                                                    onChange={() => handlePropertyTypeChange(propertyType)}
+                                                />
+                                                {propertyType}
+                                            </label>
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    )}
                     <div className="property-slider-container">
                         <label>Budget</label>
                         <div className="slider-wrapper">
@@ -478,23 +621,33 @@ function PropertiesBody() {
                 </div>
                 <div className="right-main-section">
                     <div className="property-card">
-                        <div className="property-card-image-container">
+                        <div className="property-card-image-container" style={{ position: "relative" }}>
                             <img 
                                 src={HeaderImg} 
                                 alt="Property" 
                                 className="property-card-image" 
                             />
+                            {/* Show status on image for mobile */}
+                            {isMobile && (
+                                <span className="property-card-status property-card-status-mobile">
+                                    {status}
+                                </span>
+                            )}
                         </div>
                         <div className="property-card-details">
-                            <p className="property-card-status">{status}</p>
+                            {/* Hide status here on mobile */}
+                            {!isMobile && (
+                                <p className="property-card-status">{status}</p>
+                            )}
                             <div className="property-card-name-price">
                                 <span className="property-card-name">{propertyName}</span>
-                                <span className="property-card-price">{price}</span>
+                                {/* property-card-price removed from here */}
                             </div>
                             <p className="property-card-location">
                                 <img src={locationIcon} alt="Location Icon" className="location-icon" />
                                 {location}
                             </p>
+                            <span className="property-card-price">{price}</span>
                             <div className="property-card-extra">
                                 <div className="property-card-amenities">
                                     <ul>

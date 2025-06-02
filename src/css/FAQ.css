@@ -85,6 +85,14 @@
     margin-bottom: 10px;
 }
 
+.faq-left-main-section {
+    width: 25%;
+  }
+
+.faq-right-main-section {
+    width: 75%;
+}
+
 .faq-card-questions {
     list-style-type: none; /* Remove bullets for the questions */
     padding: 0;
@@ -101,6 +109,7 @@
     list-style-type: none;
     padding: 0;
     margin: 0;
+    cursor: pointer;
 }
 
 .faq-card-question {
@@ -121,7 +130,6 @@
 
 .faq-question-button:hover {
     text-decoration: underline; /* Add underline on hover */
-    color: #1A3D8F; /* Change color on hover */
 }
 
 .faq-question-button:focus {
@@ -149,8 +157,8 @@
     color: #3D3C3C; /* Title color */
     text-align: left;
     cursor: pointer;
-    padding: 0;
-    margin-bottom: 8px;
+    padding: 10px 0;
+    margin: 8px 0;
 }
 
 .faq-title-button:hover {
@@ -158,20 +166,73 @@
 }
 
 .faq-questions-list {
-    list-style-type: none; /* Remove bullets */
-    padding: 0;
-    margin: 0;
+    list-style: none;
+    padding-left: 0;
+    margin: 10px 0 12px 0;
 }
 
 .faq-question-item {
-    font-size: 13px; /* Question font size */
-    color: #646464; /* Question color */
-    margin-bottom: 8px;
-     /* Optional: Add some padding for alignment */
+    color: #646464;
+    font-size: 13px;
+    margin: 5px 0;
+    padding-left: 5px 0;
+    list-style: none;
+    cursor: pointer;
+}
+
+.faq-section-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #3D3C3C;
+    margin: 18px 0 8px 0;
+    cursor: pointer;
+    transition: color 0.2s;
 }
 
 .faq-question-item.highlighted {
-    font-weight: bold;
-    color: #1A3D8F; /* Highlight color for active question */
+    color: #1A3D8F;
 }
 
+.faq-inner-layout {
+    display: flex;
+    width: 100%;
+    min-height: 400px;
+}
+
+.left-main-section {
+    flex: 0 0 40%;
+    max-width: 40%;
+    min-width: 280px;
+    padding: 0 0 32px 0;
+}
+
+.right-main-section {
+    flex: 1;
+    padding: 32px;
+    background: #fff;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+
+.faq-selected-question {
+    font-size: 2rem;
+    color: #343434;
+    min-height: 2em;
+    margin: 20px 50px;
+    font-weight: 600;
+}
+
+@media (max-width: 780px) {
+.left-main-section {
+      max-width: 100%;
+      margin: 0;
+      width: 100%;
+      padding: 0;
+    }
+    
+    .right-main-section {
+      width: 100%;
+      padding: 0;
+  }
+}
