@@ -129,7 +129,7 @@ const ArticlesBody: React.FC = () => {
                                 })`,
                             }}
                         >
-                            <div className="articles-pg-article-details">
+                            <div className="articles-pg-feat-article-details">
                                 <div className="articles-pg-article-title">
                                     <h2> {article.title} </h2>
                                     <h3> {article.date} </h3>
@@ -172,13 +172,13 @@ const ArticlesBody: React.FC = () => {
                                     <h2> {article.title} </h2>
                                     <h3> {article.date} </h3>
                                     <h3> {article.author} </h3>
-                                    <h3
+                                    <h4
                                         className={`articles-pg-category ${
                                             article.category === "News" ? "news" : "blog"
                                         }`}
                                     >
                                         {article.category}
-                                    </h3>
+                                    </h4>
                                     <p> {article.description} </p>
                                 </div>
                             </div>
@@ -186,6 +186,7 @@ const ArticlesBody: React.FC = () => {
                     ))}
                 </div>
             </div>
+
             <div className="articles-pg-horizontal-articles">
                 {horizontalArticles.map((article, index) => (
                     <NavLink
