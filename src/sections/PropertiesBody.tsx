@@ -153,33 +153,22 @@ function PropertiesBody() {
     const amenities = ["Swimming Pool", "Gym", "Parking", "24-Hour Security"];
     const landmarks = ["0.9km away from St. Paul College Pasig", "1.3km away from Rizal Medical Hospital", "0.3km away from SM Hypermarket Pasig", "1.9km away from SM Megamall"];
 
-    // Responsive state for mobile
+    // Responsive state for mobile and tablet
     const [isMobile, setIsMobile] = useState(false);
     const [isTablet, setIsTablet] = useState(false);
     const [showFilters, setShowFilters] = useState(false);
 
     useEffect(() => {
-    const updateScreenSize = () => {
-        const width = window.innerWidth;
-        setIsMobile(width <= 480);
-        setIsTablet(width > 480 && width <= 960);
-    };
+        const updateScreenSize = () => {
+            const width = window.innerWidth;
+            setIsMobile(width <= 480);
+            setIsTablet(width > 480 && width <= 960);
+        };
 
-    updateScreenSize(); // Initial check
-    window.addEventListener("resize", updateScreenSize);
+        updateScreenSize(); // Initial check
+        window.addEventListener("resize", updateScreenSize);
 
-    return () => window.removeEventListener("resize", updateScreenSize);
-    }, []);
-
-    // Responsive state for mobile
-    const [isMobile, setIsMobile] = useState(false);
-    const [showFilters, setShowFilters] = useState(false);
-
-    useEffect(() => {
-        const checkMobile = () => setIsMobile(window.innerWidth <= 780);
-        checkMobile();
-        window.addEventListener("resize", checkMobile);
-        return () => window.removeEventListener("resize", checkMobile);
+        return () => window.removeEventListener("resize", updateScreenSize);
     }, []);
 
     return (
@@ -664,7 +653,6 @@ function PropertiesBody() {
                             {!isMobile && (
                                 <p className="property-card-status">{status}</p>
                             )}
-=======
                             <div className="property-card-name-loc-price-cont">
                                 <div className="property-card-name-loc-cont">
                                     <div className="property-card-name-price">
