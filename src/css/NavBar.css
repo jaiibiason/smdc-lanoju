@@ -10,9 +10,6 @@ body{
   font-family: "Montserrat", sans-serif;
   height: 100%;
   color: #343434;
-  max-width: 1440px; /* or 1200px */
-  margin: 0 auto;
-  padding: 0 2rem;
 }
 
 .no-transitions * {
@@ -31,8 +28,8 @@ body{
   padding: .8125rem 2.5rem;
   height: 4.25rem;
   max-width: 1440px; 
-  margin: 0 auto;
-  padding: 0 0.5rem;
+  /* margin: 0 auto; */
+  padding: 0 40px;
   background: white;
 }
 
@@ -127,10 +124,7 @@ font-size: 12px;
 
 /* Responsive styles */
 @media all and (max-width: 960px)  {
-  body{
-    margin: 0 auto;
-    padding: 0 1rem;
-  }
+  
   .navbar{
     justify-content: space-between;
     transition: background 0.3s ease;
