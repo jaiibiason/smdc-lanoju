@@ -148,10 +148,28 @@ function PropertiesBody() {
     // Property details
     const status = "Ready for Occupancy";
     const propertyName = "Property Name";
-    const price = "Php 1,000,000";
+    const price = "₱ 1,000,000 - 15,000,000";
     const location = "Example City";
-    const amenities = ["Swimming Pool", "Gym", "Parking"];
-    const landmarks = ["Mall", "School", "Hospital"];
+    const amenities = ["Swimming Pool", "Gym", "Parking", "24-Hour Security"];
+    const landmarks = ["0.9km away from St. Paul College Pasig", "1.3km away from Rizal Medical Hospital", "0.3km away from SM Hypermarket Pasig", "1.9km away from SM Megamall"];
+
+    // Responsive state for mobile
+    const [isMobile, setIsMobile] = useState(false);
+    const [isTablet, setIsTablet] = useState(false);
+    const [showFilters, setShowFilters] = useState(false);
+
+    useEffect(() => {
+    const updateScreenSize = () => {
+        const width = window.innerWidth;
+        setIsMobile(width <= 480);
+        setIsTablet(width > 480 && width <= 960);
+    };
+
+    updateScreenSize(); // Initial check
+    window.addEventListener("resize", updateScreenSize);
+
+    return () => window.removeEventListener("resize", updateScreenSize);
+    }, []);
 
     // Responsive state for mobile
     const [isMobile, setIsMobile] = useState(false);
@@ -167,13 +185,15 @@ function PropertiesBody() {
     return (
         <div>
             <div className="properties-body-container">
+               
                 <div className="left-section">
                     <p>Showing {propertyCount} properties</p>
                 </div>
                 {/* Only show sort filter here on desktop */}
-                {!isMobile && (
+
+                {!(isMobile || isTablet) && (
                     <div className="right-section">
-                        <span>Sort by: </span>
+                        <span className="Sort">Sort by: </span>
                         <select className="dropdown">
                             <option value="all">All Properties</option>
                             <option value="residential">Residential</option>
@@ -191,16 +211,16 @@ function PropertiesBody() {
                         <input 
                             type="text" 
                             className="search-bar" 
-                            placeholder="Search properties..." 
+                            placeholder="Search for an SMDC property" 
                         />
                         <span className="search-icon">
                             <img src={magnifyingGlassIcon} alt="Search" />
                         </span>
                     </div>
                     {/* 3. Sort filter for mobile */}
-                    {isMobile && (
+                    {(isMobile || isTablet) && (
                         <div className="right-section" style={{ margin: "16px 0" }}>
-                            <span>Sort by: </span>
+                            <span className="Sort">Sort by: </span>
                             <select className="dropdown">
                                 <option value="all">All Properties</option>
                                 <option value="residential">Residential</option>
@@ -210,7 +230,7 @@ function PropertiesBody() {
                         </div>
                     )}
                     {/* Mobile: Filter button */}
-                    {isMobile && (
+                    {(isMobile || isTablet) && (
                         <button
                             className="mobile-filter-btn"
                             onClick={() => setShowFilters((prev) => !prev)}
@@ -220,8 +240,7 @@ function PropertiesBody() {
                         </button>
                     )}
 
-                    {/* Overlay mobile filters */}
-                    {isMobile && showFilters && (
+                    {(isMobile || isTablet) && showFilters && (
                         <div className="mobile-filters-overlay">
                             <div className="mobile-filters-header">
                                 <span>Filters</span>
@@ -471,11 +490,13 @@ function PropertiesBody() {
                             onClick={() => setIsLocationCollapsed(!isLocationCollapsed)}
                         >
                             <span>
-                                <img
-                                    src={isLocationCollapsed ? arrowDownIcon : arrowUpIcon}
-                                    alt={isLocationCollapsed ? "Expand" : "Collapse"}
-                                    className="location-arrow-icon"
-                                />
+                                <span className="arrowIcon">
+                                    <img
+                                        src={isLocationCollapsed ? arrowDownIcon : arrowUpIcon}
+                                        alt={isLocationCollapsed ? "Expand" : "Collapse"}
+                                        className="location-arrow-icon"
+                                    />
+                                    </span>
                                 Location <span className="filter-count">(
                                     {selectedLocations.includes("All Locations") 
                                         ? locationOptions.length - 1 
@@ -517,11 +538,13 @@ function PropertiesBody() {
                             onClick={() => setIsUnitTypeCollapsed(!isUnitTypeCollapsed)}
                         >
                             <span>
-                                <img
-                                    src={isUnitTypeCollapsed ? arrowDownIcon : arrowUpIcon}
-                                    alt={isUnitTypeCollapsed ? "Expand" : "Collapse"}
-                                    className="unit-type-arrow-icon"
-                                />
+                                <span className="arrowIcon">
+                                    <img
+                                        src={isUnitTypeCollapsed ? arrowDownIcon : arrowUpIcon}
+                                        alt={isUnitTypeCollapsed ? "Expand" : "Collapse"}
+                                        className="unit-type-arrow-icon"
+                                    />
+                                </span>
                                 Unit Type <span className="filter-count">(
                                     {selectedUnitTypes.includes("All Unit") 
                                         ? unitTypeOptions.length 
@@ -571,11 +594,13 @@ function PropertiesBody() {
                             onClick={() => setIsPropertyTypeCollapsed(!isPropertyTypeCollapsed)}
                         >
                             <span>
-                                <img
-                                    src={isPropertyTypeCollapsed ? arrowDownIcon : arrowUpIcon}
-                                    alt={isPropertyTypeCollapsed ? "Expand" : "Collapse"}
-                                    className="property-type-arrow-icon"
-                                />
+                                <span className="arrowIcon">
+                                    <img
+                                        src={isPropertyTypeCollapsed ? arrowDownIcon : arrowUpIcon}
+                                        alt={isPropertyTypeCollapsed ? "Expand" : "Collapse"}
+                                        className="property-type-arrow-icon"
+                                    />
+                                </span>
                                 Property Type <span className="filter-count">(
                                     {selectedPropertyTypes.includes("All Property") 
                                         ? propertyTypeOptions.length 
@@ -639,15 +664,21 @@ function PropertiesBody() {
                             {!isMobile && (
                                 <p className="property-card-status">{status}</p>
                             )}
-                            <div className="property-card-name-price">
-                                <span className="property-card-name">{propertyName}</span>
-                                {/* property-card-price removed from here */}
+=======
+                            <div className="property-card-name-loc-price-cont">
+                                <div className="property-card-name-loc-cont">
+                                    <div className="property-card-name-price">
+                                        <span className="property-card-name">{propertyName}</span>
+                                        {/* property-card-price removed from here */}
+                                    </div>
+                                    <p className="property-card-location">
+                                        <img src={locationIcon} alt="Location Icon" className="location-icon" />
+                                        {location}
+                                    </p>
+                                </div>
+                                <span className="property-card-price">{price}</span>
                             </div>
-                            <p className="property-card-location">
-                                <img src={locationIcon} alt="Location Icon" className="location-icon" />
-                                {location}
-                            </p>
-                            <span className="property-card-price">{price}</span>
+                         
                             <div className="property-card-extra">
                                 <div className="property-card-amenities">
                                     <ul>
