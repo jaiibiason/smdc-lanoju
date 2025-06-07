@@ -171,14 +171,26 @@ function PropertiesBody() {
     return () => window.removeEventListener("resize", updateScreenSize);
     }, []);
 
+    // Responsive state for mobile
+    const [isMobile, setIsMobile] = useState(false);
+    const [showFilters, setShowFilters] = useState(false);
+
+    useEffect(() => {
+        const checkMobile = () => setIsMobile(window.innerWidth <= 780);
+        checkMobile();
+        window.addEventListener("resize", checkMobile);
+        return () => window.removeEventListener("resize", checkMobile);
+    }, []);
+
     return (
         <div>
             <div className="properties-body-container">
-                
+               
                 <div className="left-section">
                     <p>Showing {propertyCount} properties</p>
                 </div>
                 {/* Only show sort filter here on desktop */}
+
                 {!(isMobile || isTablet) && (
                     <div className="right-section">
                         <span className="Sort">Sort by: </span>
@@ -228,7 +240,6 @@ function PropertiesBody() {
                         </button>
                     )}
 
-                    {/* Overlay mobile filters */}
                     {(isMobile || isTablet) && showFilters && (
                         <div className="mobile-filters-overlay">
                             <div className="mobile-filters-header">
@@ -653,6 +664,7 @@ function PropertiesBody() {
                             {!isMobile && (
                                 <p className="property-card-status">{status}</p>
                             )}
+=======
                             <div className="property-card-name-loc-price-cont">
                                 <div className="property-card-name-loc-cont">
                                     <div className="property-card-name-price">
@@ -666,6 +678,7 @@ function PropertiesBody() {
                                 </div>
                                 <span className="property-card-price">{price}</span>
                             </div>
+                         
                             <div className="property-card-extra">
                                 <div className="property-card-amenities">
                                     <ul>

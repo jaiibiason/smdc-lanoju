@@ -54,6 +54,10 @@ button.yellow {
   height: 2.625rem;
 }
 
+input:focus-visible { 
+  outline: none;
+}
+
 select {
   background: #F8F8F8;
   border: solid 1px #C2C2C2;
