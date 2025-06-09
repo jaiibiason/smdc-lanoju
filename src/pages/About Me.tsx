@@ -1,3 +1,4 @@
+import Crumbs from '../components/Crumbs';
 import AwardsRecognition from '../sections/AwardsRecognition';
 import ClientSucccessStories from '../sections/ClientSuccessStories';
 import Youtube from '../sections/Youtube';
@@ -8,6 +9,8 @@ function AboutMe() {
 
   return (
       <>
+        <Crumbs pageName={'About Me'}/> 
+
         <div className='about-me-pg'>
         <section className="hero-cont pad-40">
           <div className="left-cont">
