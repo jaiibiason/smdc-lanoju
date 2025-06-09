@@ -41,13 +41,13 @@ section.faqs {
 }
 
 .faq-answer {
-  margin-top: 10px;
+  margin: 2vh 1vh 0vh 3.2vh;
   font-size: 14px;
 }
 
 .view-more-faqs {
   display: inline-block;
-  margin-top: 20px;
+  margin-top: 5vh;
   font-family: 'Inter', sans-serif;
   font-size: 14px;
   color: var(--dark-blue);
@@ -58,4 +58,11 @@ section.faqs {
 
 .view-more-faqs span {
   margin-left: 5px;
+}
+
+@media (max-width: 960px){
+  .faq-answer {
+    margin: 2vh 1vh 0vh 3.5vh;
+    font-size: 14px;
+  } 
 }

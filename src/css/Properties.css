@@ -3,10 +3,8 @@
   justify-content: space-between;
   align-items: center;
   gap: 32px;
-  max-width: 1100px;
   margin: 0 auto;
-  padding: 32px 0;
-  background-color: #F5F9FA;
+  background: linear-gradient(180deg, #ffffff 0%, #F5F9FA 100%);
 }
 
 /* Left Section - Image */
@@ -424,10 +422,11 @@
     font-weight: bold;
 }
 
-@media (max-width: 780px) {
+@media (max-width: 960px) {
     .container {
-        display: block;
-        padding: 0;
+      display: block;
+      padding: 0;
+      background: linear-gradient(180deg, #ffffff 60%, #F5F9FA 100%);
     }
     .image-section {
         justify-content: center;
@@ -603,4 +602,12 @@
         background-color: #fff;
         border-radius: 0;
     }
+}
+
+@media (max-width: 960px) {
+  .container {
+    display: block;
+    padding: 0;
+    background: linear-gradient(180deg, #ffffff 70%, #F5F9FA 100%);
+  }
 }

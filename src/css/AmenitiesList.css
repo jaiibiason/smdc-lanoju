@@ -17,8 +17,8 @@
 }
 
 .amenity-icon {
-  width: 40px;
-  height: 40px;
+  width: 24px;
+  height: 24px;
   margin-bottom: 8px;
   display: block;
   margin-left: auto;
@@ -33,7 +33,7 @@
 }
 
 /* Responsive Styles */
-@media (max-width: 768px) {
+@media (max-width: 960px) {
   .amenities-list {
     justify-content: start; 
   }
@@ -56,7 +56,7 @@
 @media (max-width: 480px) {
 
   .amenity-item {
-    flex: 0 1 80px; 
+    flex: 0 1 100px; 
     max-width: none;
   }
 

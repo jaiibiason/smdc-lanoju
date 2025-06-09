@@ -66,9 +66,9 @@ const UnitType: React.FC = () => {
         <table className="unit-type-table">
           <thead>
             <tr>
-              <th>Unit Types</th>
-              <th>Area</th>
-              <th>Price</th>
+              <th className="Unit-Type">Unit Types</th>
+              <th className="Area">Area</th>
+              <th className="Price">Price</th>
             </tr>
           </thead>
           <tbody>
@@ -80,7 +80,7 @@ const UnitType: React.FC = () => {
                 }`}
                 onClick={() => setSelectedUnit(unit)}
               >
-                <td>
+                <td className="Unit Type">
                   {selectedUnit.type === unit.type && (
                     <span className="arrow-icon">
                       <svg width="11" height="14" viewBox="0 0 11 14" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -90,8 +90,8 @@ const UnitType: React.FC = () => {
                   )}
                   {unit.type}
                 </td>
-                <td>{unit.area}</td>
-                <td>{unit.price}</td>
+                <td className="Area">{unit.area}</td>
+                <td className="Price">{unit.price}</td>
               </tr>
             ))}
           </tbody>

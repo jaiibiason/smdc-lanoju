@@ -8,11 +8,12 @@ function InnerProp_Hero() {
       <section className='hero'>
         <div className="hero-cont">
           <div className="left-cont">
-            <h1>Sail Residences</h1>
-            <p><i>Mall of Asia, Pasay City</i></p>
-            <p>Price Range: ₱8,600,000 - ₱24,600,000</p>
-            <p>Welcome to Sail Residences, the gem of the Mall of Asia district. Around the area of this condominium in Pasay, a vast wealth of shops, restaurants, and entertainment sites await you, as does the view of the horizon beyond Manila Bay.</p>
-            
+            <div className='Property-Details'>
+              <h1>Sail Residences</h1>
+              <p><i>Mall of Asia, Pasay City</i></p>
+              <p>Price Range: ₱8,600,000 - ₱24,600,000</p>
+              <p>Welcome to Sail Residences, the gem of the Mall of Asia district. Around the area of this condominium in Pasay, a vast wealth of shops, restaurants, and entertainment sites await you, as does the view of the horizon beyond Manila Bay.</p>
+            </div>
             <div className="highlights-cont">
               <div className="highlight">
                 <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">

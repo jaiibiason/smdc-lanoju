@@ -6,7 +6,7 @@
 .inner-properties-pg .hero { padding: 0;}
 .inner-properties-pg .hero-cont {
     display: flex;
-    height: 83vh;
+    height: 78vh;
 }
 
 .home-pg section.hero, .inner-properties-pg section.hero {
@@ -34,17 +34,20 @@
 .hero-cont .left-cont {
     display: flex;
     flex-direction: column;
-    justify-content: center;
     color: white;
+}
+
+.Property-Details {
+    margin: 4vh 0vh 2vh 0vh;
 }
 .inner-properties-pg .hero-cont .left-cont {
     flex-basis: 50%;
-    padding: 40px;
+    padding: 6vh 4vh 0vh 4vh;
 }
 
 .hero-cont h1 {
     font-weight: 500;
-    font-size: 48px;
+    font-size: 40px;
     color: var(--yellow);
 }
 
@@ -53,8 +56,9 @@
 }
 .inner-properties-pg .hero-cont p {
     font-size: 14px;
-    margin-bottom: 20px;
+    margin-bottom: 2vh;
     color: white;
+    line-height: 1.5rem;
 }
 
 .hero-cont .inquire-btn, .view-vr-btn {
@@ -65,18 +69,17 @@
     height: 100px;
     width: 100%;
     display: flex;
-    padding: 15px 0;
     border-radius: 9px;
     background: #3C3C3C;
+    margin-bottom: 2vh;
 }
 .inner-properties-pg .highlight {
     display: flex;
-    justify-content: center;
     align-items: center;
     width: 100%;
     height: 100%;
-    gap: 10px;
-    padding: 10px;
+    gap: 1.3vh;
+    padding: 1vh 1vh 1vh 1.8vh;
 }
 .inner-properties-pg .highlight:nth-child(2) {
     border-right: 1px solid #4C4C4C;
@@ -87,7 +90,7 @@
     font-size: 12px;
     display: flex;
     flex-direction: column;
-    gap: 5px;
+    line-height: 1.2rem;
 }
 
 .inner-properties-pg .right-cont {
@@ -109,7 +112,7 @@
     font-size: 14px;
 }
 
-@media (max-width: 780px) {
+@media (max-width: 960px) {
     .home-pg section.hero::before {
         background-image: url(../assets/tempprof.png);
         background-size: auto;
@@ -151,6 +154,7 @@
         background-size: auto;
         background-position: 60% 50%;
     }
+    
 
     .home-pg .hero-cont .left-cont {
         padding-top: 150px;
@@ -160,4 +164,29 @@
         font-size: 10px;
     }
     
+    .inner-properties-pg .hero-cont .left-cont {
+        flex-basis: 100%;
+        padding: 20px 24px 40px 24px; 
+    }
+
+    .inner-properties-pg .hero-cont p {
+        font-size: 12px;
+        margin-bottom: 2vh;
+        color: white;
+        line-height: 1.3rem;
+    }
+
+    .inner-properties-pg .highlight p {
+        flex-direction: column;
+        line-height: 1rem;
+        margin-bottom: 0;
+    }
+
+    .inner-properties-pg .highlight {
+        display: flex;
+        align-items: start;
+        gap: 1.5vh;
+        padding: 2vh 1vh 1vh 1.8vh;
+        flex-direction: column;
+    }
 }
