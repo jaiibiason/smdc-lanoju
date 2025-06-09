@@ -173,6 +173,18 @@ section.unit-type * {
     font-size: 10px;
 }
 
+  .unit-type-table .Unit-Type{
+    width: 50vh
+  }
+
+  .unit-type-table .Area{
+    width: 30vh
+  }
+
+  .unit-type-table .Price{
+    width: 25vh
+  }
+
 .inquire-sample-computation {
   display: flex;
   gap: 20px;
