@@ -32,8 +32,10 @@ const InnerArticlesBody: React.FC = () => {
                 </div>
             </div>
             <div className="inart-article-meta">
-                <span>{article.date}</span>
-                <span>Written by: {article.author}</span>
+                <div className="author-date">
+                    <span>{article.date}</span>
+                    <span>Written by: {article.author}</span>
+                </div>
                 <span>5 mins to read</span>
             </div>
 
