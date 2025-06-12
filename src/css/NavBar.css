@@ -22,15 +22,16 @@ body{
 
 /* NavBar */
 .navbar {
-  /* position: fixed; */
-  display: flex;
-  align-items: center;
-  padding: .8125rem 2.5rem;
-  height: 4.25rem;
-  max-width: 1440px; 
-  /* margin: 0 auto; */
-  padding: 0 40px;
-  background: white;
+    position: sticky;
+    top: 0;
+    display: flex;
+    align-items: center;
+    height: 4.25rem;
+    width: 100%;
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 0rem 2rem;
+    background: white;
 }
 
 .navbar.dark-mode{
@@ -67,6 +68,7 @@ body{
   /* transition: all 0.5s; */
 }
 .nav-links li:last-child {
+  width: fit-content;
   padding: 0;
   margin-left: auto; 
 }
@@ -177,6 +179,7 @@ font-size: 12px;
   }
   .nav-links li:has(a.active) {
     background: white;
+    width: 100%;
   }
 
   .nav-links li:last-child {
