@@ -4,6 +4,7 @@
 .home-pg .fproperties-cont {
   height: 100%;
   background: #f5f9fa;
+  overflow: hidden;
 }
 
 .fproperties-cont .title-controls {
@@ -22,6 +23,7 @@
 }
 .title-cont p {
   font-size: 16px;
+  font-family: 'Inter', sans-serif;
 }
 
 

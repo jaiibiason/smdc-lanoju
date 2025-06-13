@@ -343,7 +343,7 @@ function Filter() {
                               color: '#8B8B8B',
                             }}
                           >
-                            {value / 1000000}M
+                            ₱{value / 1000000}M
                           </span>
                         </div>
                       </div>

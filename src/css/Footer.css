@@ -9,6 +9,11 @@ section.footer-cont {
     font-size: 12px;
     font-weight: 400;
   }
+
+  .explore-links a:hover,
+  .learn-links a:hover{
+    text-decoration: underline;
+  }
 }
 
 .contact-explore-learn-cont {
