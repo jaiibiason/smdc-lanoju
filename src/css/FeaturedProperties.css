@@ -2,7 +2,7 @@
 @import "slick-carousel/slick/slick-theme.css";
 
 .home-pg .fproperties-cont {
-  height: 80vh;
+  height: 100%;
   background: #f5f9fa;
 }
 

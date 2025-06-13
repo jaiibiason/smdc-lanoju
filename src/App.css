@@ -1,4 +1,3 @@
-
 :root {
   --yellow: #E1A000;
   --dark-blue: #1A3D8F;
@@ -18,7 +17,10 @@ body {
   overflow-x: hidden;
   height: 100%;
   color: #343434;
+  max-width: 1440px;
+  margin: 0 auto;
 }
+
 .home-pg > section, .inner-properties-pg > section {
   padding: 40px;
 }
@@ -54,6 +56,10 @@ button.yellow {
   height: 2.625rem;
 }
 
+input:focus-visible { 
+  outline: none;
+}
+
 select {
   background: #F8F8F8;
   border: solid 1px #C2C2C2;
@@ -84,7 +90,7 @@ select:focus-visible {
 
 input[type="checkbox"] {
   display: flex;
-  background-color: #F8F8F8;
+  background-color: #FFFFFF;
   border: solid 1px #C2C2C2;
   border-radius: 2px;
   height: 16px;

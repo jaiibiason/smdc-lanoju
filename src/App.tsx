@@ -11,6 +11,7 @@ import Inquire from './pages/Inquire'
 import InnerProperties from './pages/Inner Properties'
 import InnerFAQS from './pages/InnerFAQS'
 import SampleComputation from './pages/Sample Computation'
+import InnerArticle from './pages/InnerArticle'
 
 function App() {
 
@@ -26,8 +27,10 @@ function App() {
             <Route path="/articles" element={<Articles/>}/>
             <Route path="/faqs" element={<Faqs/>}/>
             <Route path="/faqs/inner" element={<InnerFAQS/>}/>
-            <Route path="/inquirenow" element={<Inquire/>}/>
+            <Route path="/inquire" element={<Inquire/>}/>
             <Route path="/sample-computation" element={<SampleComputation/>}/>
+            <Route path="/articles/:id" element={<InnerArticle />} />
+            <Route path="/articles/horizontal/:id" element={<InnerArticle />} />
           </Routes>
         </main>
         <footer>

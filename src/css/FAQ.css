@@ -201,18 +201,19 @@
 
 .left-main-section {
     flex: 0 0 40%;
-    max-width: 40%;
+    max-width: 30%;
     min-width: 280px;
     padding: 0 0 32px 0;
 }
 
 .right-main-section {
     flex: 1;
-    padding: 32px;
+    padding: 0;
     background: #fff;
     display: flex;
     align-items: flex-start;
     justify-content: flex-start;
+    margin: 2.6vh;
 }
 
 .faq-selected-question {
@@ -223,5 +224,31 @@
     font-weight: 600;
 }
 
+@media (max-width: 960px) {
+.left-main-section {
+      max-width: 100%;
+      margin: 0;
+      width: 100%;
+      padding: 0;
+    }
+    
+    .right-main-section {
+      width: 100%;
+      padding: 0;
+      margin: 4vh 0 4vh 0;
+  }
+}
 
-
+@media (max-width: 480px) {
+.left-main-section {
+      max-width: 100%;
+      margin: 0;
+      width: 100%;
+      padding: 0;
+    }
+    
+    .right-main-section {
+      width: 100%;
+      padding: 0;
+  }
+}

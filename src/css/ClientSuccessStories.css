@@ -1,6 +1,7 @@
-.client-success-stories-cont {
-  height: 85vh;
+section.client-success-stories-cont {
+  height: 100%;
   background-color: #212121;
+  padding: 40px 40px 85px 40px;
 }
 
 .client-success-stories-cont .title-cont h1 {
