@@ -45,6 +45,7 @@
 
 .text-section p {
   gap: 10px;
+  line-height: 1.5rem;
   align-self: stretch;
 }
 

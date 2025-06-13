@@ -88,7 +88,7 @@ const LatestNews: React.FC = () => {
                     {article.category}
                   </h4>
                 </div>
-                <p>{article.description}</p>
+                <p className="description">{article.description}</p>
               </div>
             </div>
           </NavLink>

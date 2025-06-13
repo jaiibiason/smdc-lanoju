@@ -4,14 +4,6 @@
   box-sizing: border-box;
 }
 
-body{
-  position: relative;
-  overflow-x: hidden;
-  font-family: "Montserrat", sans-serif;
-  height: 100%;
-  color: #343434;
-}
-
 .no-transitions * {
   transition: none !important;
 }
@@ -22,13 +14,15 @@ body{
 
 /* NavBar */
 .navbar {
-  /* position: fixed; */
+  position: sticky; 
+  top: 0; 
+  z-index: 1000; 
   display: flex;
   align-items: center;
   padding: .8125rem 2.5rem;
   height: 4.25rem;
   max-width: 1440px; 
-  /* margin: 0 auto; */
+  margin: 0 auto;
   padding: 0 40px;
   background: white;
 }
@@ -195,9 +189,4 @@ font-size: 12px;
 
 }
 
-@media (max-width: 480px) {
-  body{
-  margin: 0 auto;
-  padding: 0 0rem;
-} 
-} 
+@media (max-width: 480px) {}

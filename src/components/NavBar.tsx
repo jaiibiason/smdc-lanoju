@@ -47,6 +47,10 @@ const Navbar: React.FC = () => {
       bodyElement.classList.remove('no-scroll'); // Enable scrolling when menu closes
     }
   };
+  const handleLinkClick = () => {
+    setIsOpen(false); // Close the menu
+    document.body.classList.remove('no-scroll'); // Enable scrolling
+  };
 
     return (
       <Fragment>
@@ -59,13 +63,13 @@ const Navbar: React.FC = () => {
           {isOpen ? '✖' : '☰'}
         </button>
         <ul className={`nav-links ${isOpen ? 'open' : ''}`}>
-          <li><NavLink to="/properties">Properties</NavLink></li>
-          <li><NavLink to="/aboutme">About Me</NavLink></li>
-          <li><NavLink to="/articles">Articles</NavLink></li>
-          <li><NavLink to="/FAQs">FAQs</NavLink></li>
+          <li><NavLink to="/properties" onClick={handleLinkClick}>Properties</NavLink></li>
+          <li><NavLink to="/aboutme" onClick={handleLinkClick}>About Me</NavLink></li>
+          <li><NavLink to="/articles" onClick={handleLinkClick}>Articles</NavLink></li>
+          <li><NavLink to="/FAQs" onClick={handleLinkClick}>FAQs</NavLink></li>
           <li>
-            <NavLink to="/inquire">
-              <button className="inquire-btn">Inquire Now</button>
+            <NavLink to="/inquire" onClick={handleLinkClick}>
+              <button className="inquire-btn yellow">Inquire Now</button>
             </NavLink>
           </li>
         </ul>
