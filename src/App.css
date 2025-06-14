@@ -55,6 +55,9 @@ button.yellow {
   width: 8rem;
   height: 2.625rem;
 }
+button.yellow:hover {
+  background: #876000;
+}
 
 input:focus-visible { 
   outline: none;

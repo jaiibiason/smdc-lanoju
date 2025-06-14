@@ -16,7 +16,6 @@ function Articles() {
             description="Insights, trends, and tips to help you navigate real estate with ease."
           />  
       <ArticlesBody />
-      <Footer />
     </div>
   );
 }
