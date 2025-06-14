@@ -16,7 +16,6 @@ function Properties() {
             description="Browse a selection of properties designed for solid returns and long-term value. Find what fits your goals."
           />
           <PropertiesBody /> 
-          <Footer />
         </div>
       );
 }

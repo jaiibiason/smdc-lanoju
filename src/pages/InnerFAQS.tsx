@@ -15,7 +15,6 @@ function InnerFAQS() {
       <Crumbs pageName="FAQs" title={title} />
       <FAQHeader title={title}  />
       <FAQInnerBody />
-      <Footer />
     </div>
   );
 }

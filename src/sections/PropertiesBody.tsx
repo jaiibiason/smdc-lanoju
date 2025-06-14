@@ -653,7 +653,6 @@ function PropertiesBody() {
                             {!isMobile && (
                                 <p className="property-card-status">{status}</p>
                             )}
-=======
                             <div className="property-card-name-loc-price-cont">
                                 <div className="property-card-name-loc-cont">
                                     <div className="property-card-name-price">
