@@ -100,53 +100,114 @@ const FAQInnerBody: React.FC = () => {
       };
     
 
+    // Detect mobile
+    const [isMobile, setIsMobile] = useState(false);
+    useEffect(() => {
+        const checkMobile = () => setIsMobile(window.innerWidth <= 780);
+        checkMobile();
+        window.addEventListener("resize", checkMobile);
+        return () => window.removeEventListener("resize", checkMobile);
+    }, []);
+
     return (
-        <div className="main-body faq-inner-layout">
-            <div className="faq-left-main-section">
-                <div className="search-bar-container">
-                    <input 
-                        type="text" 
-                        className="search-bar" 
-                        placeholder="Search properties..." 
-                    />
-                    <span className="search-icon">
-                        <img src={magnifyingGlassIcon} alt="Search" />
-                    </span>
-                </div>
-                <div>
-                    {faqCards.map((card, index) => (
-                        <div key={index}>
-                            <h3
-                                className="faq-section-title"
-                                onClick={() => handleTitleClick(index)}
-                            >
-                                {card.title}
-                            </h3>
-                            {openIndex === index && (
-                                <ul className="faq-questions-list">
-                                    {card.questions.map((question, qIndex) => (
-                                        <li
-                                            key={qIndex}
-                                            className={
-                                                "faq-question-item" +
-                                                (activeQuestion === question ? " highlighted" : "")
-                                            }
-                                            onClick={() => handleQuestionClick(question, card.title)}
-                                        >
-                                            {question}
-                                        </li>
-                                    ))}
-                                </ul>
-                            )}
+        <div className="main-body faq-inner-layout" style={isMobile ? { display: "block" } : {}}>
+            {isMobile ? (
+                <>
+                    <div className="faq-right-main-section">
+                        <h1 className="faq-selected-question">
+                            {activeQuestion || "Select a question"}
+                        </h1>
+                    </div>
+                    <div className="faq-left-main-section">
+                        <div className="search-bar-container">
+                            <input 
+                                type="text" 
+                                className="search-bar" 
+                                placeholder="Search properties..." 
+                            />
+                            <span className="search-icon">
+                                <img src={magnifyingGlassIcon} alt="Search" />
+                            </span>
                         </div>
-                    ))}
-                </div>
-            </div>
-            <div className="faq-right-main-section">
-                <h1 className="faq-selected-question">
-                    {activeQuestion || "Select a question"}
-                </h1>
-            </div>
+                        <div>
+                            {faqCards.map((card, index) => (
+                                <div key={index}>
+                                    <h3
+                                        className="faq-section-title"
+                                        onClick={() => handleTitleClick(index)}
+                                    >
+                                        {card.title}
+                                    </h3>
+                                    {openIndex === index && (
+                                        <ul className="faq-questions-list">
+                                            {card.questions.map((question, qIndex) => (
+                                                <li
+                                                    key={qIndex}
+                                                    className={
+                                                        "faq-question-item" +
+                                                        (activeQuestion === question ? " highlighted" : "")
+                                                    }
+                                                    onClick={() => handleQuestionClick(question, card.title)}
+                                                >
+                                                    {question}
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    )}
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </>
+            ) : (
+                <>
+                    <div className="faq-left-main-section">
+                        <div className="search-bar-container">
+                            <input 
+                                type="text" 
+                                className="search-bar" 
+                                placeholder="Search properties..." 
+                            />
+                            <span className="search-icon">
+                                <img src={magnifyingGlassIcon} alt="Search" />
+                            </span>
+                        </div>
+                        <div>
+                            {faqCards.map((card, index) => (
+                                <div key={index}>
+                                    <h3
+                                        className="faq-section-title"
+                                        onClick={() => handleTitleClick(index)}
+                                    >
+                                        {card.title}
+                                    </h3>
+                                    {openIndex === index && (
+                                        <ul className="faq-questions-list">
+                                            {card.questions.map((question, qIndex) => (
+                                                <li
+                                                    key={qIndex}
+                                                    className={
+                                                        "faq-question-item" +
+                                                        (activeQuestion === question ? " highlighted" : "")
+                                                    }
+                                                    onClick={() => handleQuestionClick(question, card.title)}
+                                                >
+                                                    {question}
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    )}
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                    <div className="faq-right-main-section">
+                        <h1 className="faq-selected-question">
+                            {activeQuestion || "Select a question"}
+                        </h1>
+                    </div>
+                </>
+            )}
         </div>
     );
 };
