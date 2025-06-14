@@ -8,54 +8,54 @@ const faqCards = [
     {
         title: "What to Know Before Buying",
         questions: [
-            "Why invest in real estate in the Philippines?",
-            "What is the difference between pre-selling and ready-for-occupancy?" ,
-            "How much should I budget for a condo investment?",
-            "What is the difference between downpayment and amortization?",
-            "What taxes and fees should I expect?"
+            { question: "Why invest in real estate in the Philippines?", answer: "Answer here" },
+            { question: "What is the difference between pre-selling and ready-for-occupancy?", answer: "Answer here" },
+            { question: "How much should I budget for a condo investment?", answer: "Answer here" },
+            { question: "What is the difference between downpayment and amortization?", answer: "Answer here" },
+            { question: "What taxes and fees should I expect?", answer: "Answer here" }
         ],
     },
     {
         title: "What to Know When Deciding",
         questions: [
-            "How do I choose the right property for my needs?",
-            "How do I verify property legitimacy and avoid scams?",
-            "Can I buy a property remotely while abroad?"
+            { question: "How do I choose the right property for my needs?", answer: "Answer here" },
+            { question: "How do I verify property legitimacy and avoid scams?", answer: "Answer here" },
+            { question: "Can I buy a property remotely while abroad?", answer: "Answer here" }
         ],
     },
     {
         title: "Actual Buying Process",
         questions: [
-            "How do I reserve a unit?",
-            "What documents do I need to prepare?",
-            "How long does the buying process take?",
-            "Can I negotiate the price or terms?"
+            { question: "How do I reserve a unit?", answer: "Answer here" },
+            { question: "What documents do I need to prepare?", answer: "Answer here" },
+            { question: "How long does the buying process take?", answer: "Answer here" },
+            { question: "Can I negotiate the price or terms?", answer: "Answer here" }
         ],
     },
     {
         title: "Payment Process & Financing",
         questions: [
-            "What are the available financing options?",
-            "How does bank financing work for condo purchases?",
-            "What are the penalties for late payment?"
+            { question: "What are the available financing options?", answer: "Answer here" },
+            { question: "How does bank financing work for condo purchases?", answer: "Answer here" },
+            { question: "What are the penalties for late payment?", answer: "Answer here" }
         ],
     },
     {
         title: "Property Turnover",
         questions: [
-            "What happens during the turnover process?",
-            "How do I check for property defects before acceptance?",
-            "What fees should I expect at turnover?",
-            "Can I make renovations or modifications after turnover?"
+            { question: "What happens during the turnover process?", answer: "Answer here" },
+            { question: "How do I check for property defects before acceptance?", answer: "Answer here" },
+            { question: "What fees should I expect at turnover?", answer: "Answer here" },
+            { question: "Can I make renovations or modifications after turnover?", answer: "Answer here" }
         ],
     },
     {
         title: "Managing the Property After Turnover",
         questions: [
-            "How do I set up utilities (electricity, water, internet)?",
-            "What are the rules of the building for Airbnb rentals?",
-            "What happens if I fail to pay condo dues?",
-            "How do I sell my condo unit?"
+            { question: "How do I set up utilities (electricity, water, internet)?", answer: "Answer here" },
+            { question: "What are the rules of the building for Airbnb rentals?", answer: "Answer here" },
+            { question: "What happens if I fail to pay condo dues?", answer: "Answer here" },
+            { question: "How do I sell my condo unit?", answer: "Answer here" }
         ],
     },
 ];
@@ -97,8 +97,7 @@ const FAQInnerBody: React.FC = () => {
 
     const handleQuestionClick = (question: string, title: string) => {
         navigate("/faqs/inner", { state: { question, title } });
-      };
-    
+    };
 
     // Detect mobile
     const [isMobile, setIsMobile] = useState(false);
@@ -109,6 +108,15 @@ const FAQInnerBody: React.FC = () => {
         return () => window.removeEventListener("resize", checkMobile);
     }, []);
 
+    // Find the answer for the active question
+    const getActiveAnswer = () => {
+        for (const card of faqCards) {
+            const found = card.questions.find(q => q.question === activeQuestion);
+            if (found) return found.answer;
+        }
+        return "";
+    };
+
     return (
         <div className="main-body faq-inner-layout" style={isMobile ? { display: "block" } : {}}>
             {isMobile ? (
@@ -117,6 +125,11 @@ const FAQInnerBody: React.FC = () => {
                         <h1 className="faq-selected-question">
                             {activeQuestion || "Select a question"}
                         </h1>
+                        {activeQuestion && (
+                            <div className="faq-selected-answer">
+                                {getActiveAnswer()}
+                            </div>
+                        )}
                     </div>
                     <div className="faq-left-main-section">
                         <div className="search-bar-container">
@@ -140,16 +153,16 @@ const FAQInnerBody: React.FC = () => {
                                     </h3>
                                     {openIndex === index && (
                                         <ul className="faq-questions-list">
-                                            {card.questions.map((question, qIndex) => (
+                                            {card.questions.map((item, qIndex) => (
                                                 <li
                                                     key={qIndex}
                                                     className={
                                                         "faq-question-item" +
-                                                        (activeQuestion === question ? " highlighted" : "")
+                                                        (activeQuestion === item.question ? " highlighted" : "")
                                                     }
-                                                    onClick={() => handleQuestionClick(question, card.title)}
+                                                    onClick={() => handleQuestionClick(item.question, card.title)}
                                                 >
-                                                    {question}
+                                                    {item.question}
                                                 </li>
                                             ))}
                                         </ul>
@@ -183,16 +196,16 @@ const FAQInnerBody: React.FC = () => {
                                     </h3>
                                     {openIndex === index && (
                                         <ul className="faq-questions-list">
-                                            {card.questions.map((question, qIndex) => (
+                                            {card.questions.map((item, qIndex) => (
                                                 <li
                                                     key={qIndex}
                                                     className={
                                                         "faq-question-item" +
-                                                        (activeQuestion === question ? " highlighted" : "")
+                                                        (activeQuestion === item.question ? " highlighted" : "")
                                                     }
-                                                    onClick={() => handleQuestionClick(question, card.title)}
+                                                    onClick={() => handleQuestionClick(item.question, card.title)}
                                                 >
-                                                    {question}
+                                                    {item.question}
                                                 </li>
                                             ))}
                                         </ul>
@@ -205,6 +218,11 @@ const FAQInnerBody: React.FC = () => {
                         <h1 className="faq-selected-question">
                             {activeQuestion || "Select a question"}
                         </h1>
+                        {activeQuestion && (
+                            <div className="faq-selected-answer">
+                                {getActiveAnswer()}
+                            </div>
+                        )}
                     </div>
                 </>
             )}
