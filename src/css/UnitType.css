@@ -56,8 +56,8 @@ section.unit-type * {
   flex-basis: 50%;
   display: flex;
   flex-direction: column;
-  gap: 20px;
-  padding: 4vh 4vh 4vh 4vh;
+  /* gap: 20px; */
+  padding: 40px 40px 40px 20px;
   font-size: 14px;
 }
 
@@ -72,23 +72,10 @@ section.unit-type * {
   margin-top: 10px;
 }
 
-.unit-type-table .Unit-Type{
-  width: 45vh
-}
-
-.unit-type-table .Area{
-  width: 20vh
-}
-
-.unit-type-table .Price{
-  width: 35vh
-}
-
 .unit-type-table th,
 .unit-type-table td {
   text-align: left;
-  padding: 10px 10px 10px 5px;
-  margin: 10px 20px 10px 5px;
+  padding: 10px 20px 10px 5px;
 }
 
 .unit-type-table th {
@@ -107,6 +94,10 @@ section.unit-type * {
 .unit-type-row {
   cursor: pointer;
 }
+.unit-type-row:hover {
+  color: var(--yellow); 
+  transition: color 0.2s ease;
+}
 
 /* .unit-type-row:hover {
   background-color: #f0f8ff; 
@@ -118,18 +109,6 @@ section.unit-type * {
 }
 .unit-type-table .arrow-icon {
   margin-right: 10px;
-}
-
-.unit-link {
-  font-size: 14px;
-  color: var(--dark-blue);
-  text-decoration: none;
-  font-weight: 500;
-  margin-top: 10px;
-}
-
-.unit-link:hover {
-  text-decoration: underline;
 }
 
 .inquire-sample-computation {
@@ -144,8 +123,14 @@ section.unit-type * {
   align-items: center;
   justify-content: center;
   font-size: 14px;
+  font-weight: 500;
   color: var(--dark-blue);
   text-decoration: none;
+}
+.sample-computation-link:hover {
+  text-decoration: underline;
+  color: #10265B;
+  transition: all 0.3s ease, text-decoration 0.3s ease;
 }
 
 /* section.unit-type .inquire-btn {
@@ -173,18 +158,6 @@ section.unit-type * {
     font-size: 10px;
 }
 
-  .unit-type-table .Unit-Type{
-    width: 50vh
-  }
-
-  .unit-type-table .Area{
-    width: 30vh
-  }
-
-  .unit-type-table .Price{
-    width: 25vh
-  }
-
 .inquire-sample-computation {
   display: flex;
   gap: 20px;
@@ -192,6 +165,9 @@ section.unit-type * {
   align-items: end;
   margin-top: 42px;
   flex-direction: column;
+}
+.inquire-sample-computation a:first-child {
+  width: 100%;
 }
 .inquire-sample-computation .inquire-btn {
   width: 100%;
@@ -210,22 +186,6 @@ section.unit-type * {
     background-repeat: no-repeat;
   }
   .unit-type-details {
-    padding: 2vh;
-  }
-
-  .unit-type-table .Unit-Type{
-    width: 50vh
-  }
-
-  .unit-type-table .Area{
-    width: 20vh
-  }
-
-  .unit-type-table .Price{
-    width: 30vh
-  }
-
-  .inquire-sample-computation {
-    margin-top: 2vh;
+    padding: 16px;
   }
 }

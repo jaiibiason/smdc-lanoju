@@ -76,10 +76,6 @@ section.nearby-establishments {
     /* flex-wrap: nowrap;  */
   }
 
-  .establishment-category.education, .establishment-details h2 {
-    flex: 1 1 100%; /* Occupy the full row */
-    margin-bottom: 0vh;
-  }
   .establishment-category {
     /* flex: 1 1 100%;  */
   }

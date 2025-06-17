@@ -4,14 +4,6 @@
   box-sizing: border-box;
 }
 
-body{
-  position: relative;
-  overflow-x: hidden;
-  font-family: "Montserrat", sans-serif;
-  height: 100%;
-  color: #343434;
-}
-
 .no-transitions * {
   transition: none !important;
 }

@@ -74,6 +74,11 @@
       display: flex;
       gap: 10px;
       height: 19vh;
+      border-radius: 5px;
+    }
+    .recent-article:hover {
+      background-color: #F5F9FA;
+      transition: background-color 0.3s ease;
     }
 
     .article-img {
@@ -122,17 +127,20 @@
 
 .view-more {
   margin-top: 12px;
+  display: flex;
+  justify-content: end;
 }
 .view-more a {
   display: flex;
-  justify-content: end;
   align-items: center;
   gap: 8px;
   font-size: 13px;
   color: var(--dark-blue);
 }
-.view-more p {
-  font-family: "Inter";
+.view-more a:hover {
+  text-decoration: underline;
+  color: #10265B;
+  transition: all 0.3s ease;
 }
 
 /* Responsive Styles */

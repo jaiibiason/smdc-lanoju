@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
-import "../css/UnitType.css"; // Import the new CSS file
+import "../css/UnitType.css"; 
 
 interface Unit {
   image: string;
@@ -66,9 +66,9 @@ const UnitType: React.FC = () => {
         <table className="unit-type-table">
           <thead>
             <tr>
-              <th className="Unit-Type">Unit Types</th>
-              <th className="Area">Area</th>
-              <th className="Price">Price</th>
+              <th>Unit Types</th>
+              <th>Area</th>
+              <th>Price</th>
             </tr>
           </thead>
           <tbody>
@@ -80,7 +80,7 @@ const UnitType: React.FC = () => {
                 }`}
                 onClick={() => setSelectedUnit(unit)}
               >
-                <td className="Unit Type">
+                <td>
                   {selectedUnit.type === unit.type && (
                     <span className="arrow-icon">
                       <svg width="11" height="14" viewBox="0 0 11 14" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -90,15 +90,15 @@ const UnitType: React.FC = () => {
                   )}
                   {unit.type}
                 </td>
-                <td className="Area">{unit.area}</td>
-                <td className="Price">{unit.price}</td>
+                <td>{unit.area}</td>
+                <td>{unit.price}</td>
               </tr>
             ))}
           </tbody>
         </table>
         <div className="inquire-sample-computation">
           <NavLink to="/inquire">
-            <button className="inquire-btn">Inquire Now</button>
+            <button className="inquire-btn yellow">Inquire Now</button>
           </NavLink>
           <NavLink className={"sample-computation-link"} to="/sample-computation">
 
