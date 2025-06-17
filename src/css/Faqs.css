@@ -41,19 +41,24 @@ section.faqs {
 }
 
 .faq-answer {
-  margin-top: 10px;
+  margin: 20px 10px 0 32px;
   font-size: 14px;
 }
 
 .view-more-faqs {
   display: inline-block;
-  margin-top: 20px;
+  margin-top: 5vh;
   font-family: 'Inter', sans-serif;
   font-size: 14px;
   color: var(--dark-blue);
   text-decoration: none;
   font-weight: 500;
   align-self: flex-end; /* Align the link to the right */
+}
+.view-more-faqs:hover {
+  text-decoration: underline;
+  color: #10265B;
+  transition: all 0.3s ease;
 }
 
 .view-more-faqs span {

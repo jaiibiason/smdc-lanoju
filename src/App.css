@@ -44,6 +44,7 @@ button {
   font-family: "Inter";
   font-weight: 500;
   font-size: 12px;
+  transition: color 0.3s ease, background-color 0.3s ease;
 }
 button.blue {
   background: var(--dark-blue);
@@ -54,6 +55,9 @@ button.yellow {
   background: var(--yellow);
   width: 8rem;
   height: 2.625rem;
+}
+button.blue:hover {
+  background: #10265B;
 }
 button.yellow:hover {
   background: #876000;
