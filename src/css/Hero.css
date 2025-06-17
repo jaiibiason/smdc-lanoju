@@ -53,6 +53,7 @@
 
 .hero-cont p {
     margin-top: 6px;
+    font-family: 'Inter', sans-serif;
 }
 .inner-properties-pg .hero-cont p {
     font-size: 14px;
@@ -63,6 +64,9 @@
 
 .hero-cont .inquire-btn, .view-vr-btn {
     margin-top: 28px;
+}
+.hero-cont .inquire-btn:hover {
+    background-color: #876000;
 }
 
 .inner-properties-pg .highlights-cont {

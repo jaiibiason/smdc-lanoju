@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Slider from "react-slick";
 // import '../App.css'
 import "../css/FeaturedProperties.css";
@@ -89,21 +89,20 @@ const FeaturedProperties: React.FC = () => {
         breakpoint: 500, // Mobile View
         settings: {
           slidesToShow: 1,
+          centerPadding: "30px",
+        },
+      },
+      {
+        breakpoint: 960, // Tablet View
+        settings: {
+          slidesToShow: 3,
           centerPadding: "20px",
         },
       },
       {
-        breakpoint: 840, // Mobile View
+        breakpoint: 1200, // Web View
         settings: {
-          slidesToShow: 1,
-          centerPadding: "100px",
-        },
-      },
-      {
-        breakpoint: 1000, // Mobile View
-        settings: {
-          slidesToShow: 1,
-          centerPadding: "200px",
+        slidesToShow: 3,
         },
       },
     ],

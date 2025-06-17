@@ -5,7 +5,7 @@ function Inquire() {
 
   return (
       <>
-        <Crumbs pageName={'Sail Residences'}/> {/*// Adjust to dynamic page name based on property */}
+        <Crumbs pageName={'Inquire Now'}/> {/*// Adjust to dynamic page name based on property */}
 
         <section className='inquiry-pg'>
           <div className='left-side'>
