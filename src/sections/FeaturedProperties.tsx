@@ -115,7 +115,7 @@ const FeaturedProperties: React.FC = () => {
       <section className="fproperties-cont">
         {/* <div className="title-controls"> */}
         <div className="title-cont">
-          <h1>Featured Investment Oppurtunities</h1>
+          <h1>Featured Investment Opportunities</h1>
           <p>
             Explore top-tier properties handpicked for high returns and
             long-term value. Find the perfect investment today!

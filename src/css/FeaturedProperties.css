@@ -3,12 +3,13 @@
 
 .fproperties-cont {
   height: 100%;
-  background: #f5f9fa;
+  background-color: #f5f9fa;
   overflow: hidden;
 }
 
 .inner-properties-pg .fproperties-cont {
   padding: 30px;
+  background-color: white;
 }
 .inner-properties-pg .fproperties-cont .title-cont h1{
   font-size: 24px;

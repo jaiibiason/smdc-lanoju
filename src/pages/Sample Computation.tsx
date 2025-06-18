@@ -65,7 +65,30 @@ const remainingBalanceData: Record<string, Record<string, string>> = {
     "15 years": "₱38,586.14",
     "20 years": "₱32,344.52",
   },
-  // ...add more data for other remaining balances...
+  "₱5,600,000.00": {
+    "5 years": "₱106,321.82",
+    "10 years": "₱60,083.34",
+    "15 years": "₱45,515.16",
+    "20 years": "₱38,198.77",
+  },
+  "₱7,200,000.00": {
+    "5 years": "₱136,698.39",
+    "10 years": "₱77,750.01",
+    "15 years": "₱58,377.23",
+    "20 years": "₱49,033.52",
+  },
+  "₱8,800,000.00": {
+    "5 years": "₱167,074.97",
+    "10 years": "₱95,416.68",
+    "15 years": "₱71,239.30",
+    "20 years": "₱59,868.27",
+  },
+  "₱10,400,000.00": {
+    "5 years": "₱197,451.54",
+    "10 years": "₱113,083.35",
+    "15 years": "₱84,101.37",
+    "20 years": "₱70,703.02",
+  },
 };
 
 function SampleCompuatation() {
@@ -98,34 +121,90 @@ function SampleCompuatation() {
         <h1>Sample Computation</h1>
       </div>
 
-      <div className="sample-computation-table">
-        <table>
-          <thead>
-            <tr>
-              <th>Total Contract Price</th>
-              <th>Spot Payment (5%)</th>
-              <th>Reservation Fee</th>
-              <th>
-                Downpayment (15%) <br />
-                <span>(payable in 48 months)</span>
-              </th>
-              <th>Monthly Amortization</th>
-              <th>Remaining Balance (80%)</th>
-            </tr>
-          </thead>
-          <tbody>
-            {tableData.map((row, index) => (
-              <tr key={index}>
-                <td>{row.totalPrice}</td>
-                <td>{row.spotPayment}</td>
-                <td>{row.reservationFee}</td>
-                <td>{row.downpayment}</td>
-                <td>{row.monthlyAmortization}</td>
-                <td>{row.remainingBalance}</td>
+      <div className="desktop-computation">
+        
+        <div className="sample-computation-table">
+          <table>
+            <thead>
+              <tr>
+                <th>Total Contract Price</th>
+                <th>Spot Payment (5%)</th>
+                <th>Reservation Fee</th>
+                <th>
+                  Downpayment (15%) <br />
+                  <span>(payable in 48 months)</span>
+                </th>
+                <th>Monthly Amortization</th>
+                <th>Remaining Balance (80%)</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {tableData.map((row, index) => (
+                <tr key={index}>
+                  <td>{row.totalPrice}</td>
+                  <td>{row.spotPayment}</td>
+                  <td>{row.reservationFee}</td>
+                  <td>{row.downpayment}</td>
+                  <td>{row.monthlyAmortization}</td>
+                  <td>{row.remainingBalance}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        {/* Remaining Balance Section for Desktop */}
+        <div className="desktop-remaining-balance">
+          <div className="computation-notes">
+            <p>
+              After completing the 48-month downpayment period, the remaining
+              balance will be due.
+            </p>
+            <p>
+              This can be settled through bank financing, allowing for flexible
+              payment terms of 5, 10, 15, or 20 years at competitive interest
+              rates.
+            </p>
+          </div>
+
+          <table>
+            <thead>
+              <tr>
+                <th>Remaining Balance (80%)</th>
+                <th>5 Years</th>
+                <th>10 Years</th>
+                <th>15 Years</th>
+                <th>20 Years</th>
+                <th>
+                  <p className="computation-notes bsp">
+                    <i>Based on PSB 1-year fixing 5.25% (estimate only)</i>
+                  </p>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {Object.entries(remainingBalanceData).map(
+                ([balance, terms], index) => (
+                  <tr key={index}>
+                    <td>{balance}</td>
+                    {Object.values(terms).map((amount, termIndex) => (
+                      <td key={termIndex}>{amount}</td>
+                    ))}
+                    <td></td>
+                  </tr>
+                )
+              )}
+            </tbody>
+          </table>
+
+          <p className="computation-notes disclaimer">
+            <b>Disclaimer:</b> These are sample computations only. Actual payment
+            terms may vary based on client preferences, including adjustments to
+            the spot payment, downpayment, and monthly amortization structure.
+            Inquire now, and I'll be happy to tailor a payment plan that suits you
+            best.
+          </p>
+          <button className="inquire-btn yellow">Inquire Now</button>
+        </div>
       </div>
 
       {/* Mobile View */}
@@ -188,16 +267,17 @@ function SampleCompuatation() {
           </p>
         </div>
 
-            <div className="computation-notes">
-        <p>
-          After completing the 48-month downpayment period, the remaining
-          balance will be due.
-        </p>
-        <p>
-          This can be settled through bank financing, allowing for flexible
-          payment terms of 5, 10, 15, or 20 years at competitive interest rates.
-        </p>
-            </div>
+        <div className="computation-notes">
+          <p>
+            After completing the 48-month downpayment period, the remaining
+            balance will be due.
+          </p>
+          <p>
+            This can be settled through bank financing, allowing for flexible
+            payment terms of 5, 10, 15, or 20 years at competitive interest
+            rates.
+          </p>
+        </div>
 
         {/* Remaining Balance Section */}
         <label htmlFor="remainingBalance">Remaining Balance:</label>
@@ -259,7 +339,7 @@ function SampleCompuatation() {
           best.
         </p>
 
-        <button className="inquire-btn">Inquire Now</button>
+        <button className="inquire-btn yellow">Inquire Now</button>
       </div>
     </section>
   );
