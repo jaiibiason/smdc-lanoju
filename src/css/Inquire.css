@@ -74,8 +74,10 @@
       grid-column: span 1;
     }
 
+    .inquiry-form input::placeholder,
     .inquiry-form select:invalid {
-      color: #777; /* Lighter color for placeholder */
+      font-family: "Inter", sans-serif; 
+      color: #777; 
     }
   
     /* .inquiry-form select option {
