@@ -1,6 +1,12 @@
+.footer-bg {
+  background-color: #212121;
+}
 section.footer-cont {
   padding: 0;
   background-color: #212121;
+  max-width: 1440px;
+  margin: 0 auto;
+  
   * {
     font-family: 'Inter', sans-serif;
     color: white;

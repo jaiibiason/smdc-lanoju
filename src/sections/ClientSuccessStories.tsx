@@ -77,43 +77,46 @@ const ClientSucccessStories: React.FC = () => {
   };
 
   return (
-    <section className="client-success-stories-cont">
-      <div className="title-cont">
-        <h1>Client Success Stories</h1>
-        <p>
-          See what my clients have to say about their experience working with
-          me, from seamless transactions to smart investments.
-        </p>
-      </div>
-      <div className="client-slider-cont">
-        <Slider {...settings}>
-          {stories.map((story, index) => (
-            <div key={index} className="property-client">
-              <div className="property-img">
-                <img src={import.meta.env.BASE_URL + story.propImage} alt="" />
-              </div>
-
-              <div className="client-card">
-                <div className="icon-details">
-                  <div className="icon">
-                    <img
-                      src={import.meta.env.BASE_URL + story.clientImage}
-                      alt=""
-                    />
-                  </div>
-                  <div className="details">
-                    <h2>{story.name}</h2>
-                    <h3>Purchased: {story.purchase}</h3>
-                    <h3>Purpose: {story.purpose}</h3>
-                  </div>
+    <div className="client-success-stories-bg">
+      <section className="client-success-stories-cont">
+        <div className="title-cont">
+          <h1>Client Success Stories</h1>
+          <p>
+            See what my clients have to say about their experience working with
+            me, from seamless transactions to smart investments.
+          </p>
+        </div>
+        <div className="client-slider-cont">
+          <Slider {...settings}>
+            {stories.map((story, index) => (
+              <div key={index} className="property-client">
+                <div className="property-img">
+                  <img src={import.meta.env.BASE_URL + story.propImage} alt="" />
                 </div>
-                <p>{story.feedback}</p>
+
+                <div className="client-card">
+                  <div className="icon-details">
+                    <div className="icon">
+                      <img
+                        src={import.meta.env.BASE_URL + story.clientImage}
+                        alt=""
+                      />
+                    </div>
+                    <div className="details">
+                      <h2>{story.name}</h2>
+                      <h3>Purchased: {story.purchase}</h3>
+                      <h3>Purpose: {story.purpose}</h3>
+                    </div>
+                  </div>
+                  <p>{story.feedback}</p>
+                </div>
               </div>
-            </div>
-          ))}
-        </Slider>
-      </div>
-    </section>
+            ))}
+          </Slider>
+        </div>
+      </section>
+
+    </div>
   );
 };
 

@@ -1,7 +1,10 @@
+.client-success-stories-bg {
+  background-color: #212121;
+}
 section.client-success-stories-cont {
   height: 100%;
   background-color: #212121;
-  padding: 40px 40px 85px 40px;
+  padding: 40px 40px 10vh 40px !important;
 }
 
 .client-success-stories-cont .title-cont h1 {
@@ -97,7 +100,7 @@ section.client-success-stories-cont {
 
 /* Pagination Dots */
 .slick-dots {
-  bottom: -8vh;
+  bottom: -7vh;
 }
 .slick-dots li {
   margin: 0 1px;
