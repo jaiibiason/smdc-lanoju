@@ -4,6 +4,7 @@
 function Youtube() {
   return (
     <>
+    <div className="more-youtube-bg">
       <section className="more-youtube">
         <div className="left-cont">
           <h1>More On My Youtube</h1>
@@ -31,8 +32,12 @@ function Youtube() {
         </div>
       </section>
 
+    </div>
+
       <style>
         {`
+          .more-youtube-bg {
+            background-color: #f9f9f9;}
           .more-youtube {
             display: flex;
             justify-content: space-between;
@@ -61,6 +66,11 @@ function Youtube() {
             color: var(--dark-blue);
             background-color: white;
             border: var(--dark-blue) 1px solid;
+            }
+            .inquire-btn:hover {
+            color: white;
+            background-color: var(--dark-blue);
+            border: 1px solid white;
           }
 
           .right-cont {

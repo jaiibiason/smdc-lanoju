@@ -17,12 +17,17 @@ body {
   overflow-x: hidden;
   height: 100%;
   color: #343434;
-  max-width: 1440px;
+  /* max-width: 1440px; */
   margin: 0 auto;
 }
 
-.home-pg > section, .inner-properties-pg > section {
+.home-pg section, 
+.inner-properties-pg section,
+.about-me-pg section,
+.inquiry-pg {
   padding: 40px;
+  max-width: 1440px;
+  margin: 0 auto;
 }
 
 h1 {
@@ -184,7 +189,7 @@ input[type="checkbox"]:checked::after {
 /* Responsive styles */
 @media (max-width: 960px) {
 
-  .home-pg > section{
+  .home-pg > div > section{
     padding: 24px;
   }
 

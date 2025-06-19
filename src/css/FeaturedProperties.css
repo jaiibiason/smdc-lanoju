@@ -1,12 +1,23 @@
 @import "slick-carousel/slick/slick.css";
 @import "slick-carousel/slick/slick-theme.css";
 
+
+.fproperties-bg {
+  background-color: #f5f9fa;
+}
 .fproperties-cont {
   height: 100%;
   background-color: #f5f9fa;
   overflow: hidden;
 }
 
+.inner-properties-pg .fproperties-bg {
+  background-color: white;
+}
+.inner-properties-pg .fproperties-cont {
+  padding: 30px;
+  background-color: white;
+}
 .inner-properties-pg .fproperties-cont {
   padding: 30px;
   background-color: white;

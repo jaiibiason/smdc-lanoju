@@ -5,6 +5,7 @@ function InnerProp_Hero() {
 
   return (
     <>
+    <div className="hero-bg">
       <section className='hero'>
         <div className="hero-cont">
           <div className="left-cont">
@@ -56,6 +57,8 @@ function InnerProp_Hero() {
         </div>
 
       </section>
+
+    </div>
     
     </>
   )

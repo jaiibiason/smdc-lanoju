@@ -2,8 +2,9 @@
 .crumbs-container {
     display: flex;
     align-items: center;
-    padding: 1vh 3vh;
-
+    padding: 1vh 6vh;
+    max-width: 1440px;
+    margin: 0 auto; /* Center the container */
   }
   
   /* Style for breadcrumb links */
@@ -51,3 +52,9 @@
     vertical-align: middle;
     opacity: 0.6; /* Slightly faded for subtlety */
   }
+
+@media (max-width: 480px) {
+  .crumbs-container {
+    padding: 1vh 3vh; /* Adjust padding for smaller screens */
+  }
+}

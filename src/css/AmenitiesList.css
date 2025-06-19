@@ -1,3 +1,6 @@
+.amenities-list-bg {
+  background-color: #f8f9fa; 
+}
 .amenities-list {
   display: flex;
   justify-content: space-around;
@@ -7,6 +10,8 @@
   border-top: 1px solid #ddd;
   border-bottom: 1px solid #ddd;
   flex-wrap: wrap; 
+  max-width: 1440px;
+  margin: 0 auto;
 }
 
 .amenity-item {

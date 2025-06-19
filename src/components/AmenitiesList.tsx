@@ -33,13 +33,16 @@ const AmenitiesList: React.FC<AmenitiesListProps> = ({ amenities }) => {
   };
 
   return (
-    <div className="amenities-list">
-      {amenities.map((amenity, index) => (
-        <div key={index} className="amenity-item">
-          <img src={import.meta.env.BASE_URL + getIcon(amenity.label)} alt={amenity.label} className="amenity-icon" />
-          <p className="amenity-label">{amenity.label}</p>
-        </div>
-      ))}
+    <div className="amenities-list-bg">
+      <div className="amenities-list">
+        {amenities.map((amenity, index) => (
+          <div key={index} className="amenity-item">
+            <img src={import.meta.env.BASE_URL + getIcon(amenity.label)} alt={amenity.label} className="amenity-icon" />
+            <p className="amenity-label">{amenity.label}</p>
+          </div>
+        ))}
+      </div>
+
     </div>
   );
 };
