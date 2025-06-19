@@ -1,3 +1,4 @@
+import Crumbs from "../components/Crumbs";
 import React, { useState } from "react";
 import "../css/SampleComputation.css"; // Import the new CSS file
 
@@ -116,9 +117,15 @@ function SampleCompuatation() {
   };
 
   return (
+    <>
+    <Crumbs pageName={'Sample Computation'}/> 
+
     <section className="sample-computation-pg">
-      <div className="hero-cont">
-        <h1>Sample Computation</h1>
+      <div className="hero-bg">
+        <div className="hero-cont">
+          <h1>Sample Computation</h1>
+        </div>
+
       </div>
 
       <div className="desktop-computation">
@@ -342,6 +349,7 @@ function SampleCompuatation() {
         <button className="inquire-btn yellow">Inquire Now</button>
       </div>
     </section>
+    </>
   );
 }
 

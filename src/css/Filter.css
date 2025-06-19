@@ -2,7 +2,9 @@
   position: relative;
   height: 75px;
   width: 100%;
+  max-width: 1440px;
   padding: 0 43px;
+  margin: 0 auto;
 }
 
 .filter-card {
