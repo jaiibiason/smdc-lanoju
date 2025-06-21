@@ -581,9 +581,41 @@
     }
 
     .mobile-filters-content {
-        padding: 24px;
+        padding: 0 24px;
         flex: 1;
         overflow-y: auto;
+    }
+
+    .mobile-filters-actions {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        box-sizing: border-box;
+        background: #fff;
+    }
+
+    .mobile-apply-filter-btn {
+        width: 100%;
+        background: #1A3D8F;
+        color: #fff;
+        border: none;
+        font-size: 14px;
+        padding: 12px 0;
+        cursor: pointer;
+        border-radius: 0;
+        font-weight: 200;
+    }
+
+    .mobile-clear-filter-btn {
+        width: 100%;
+        background: #54585A;
+        color: #fff;
+        border: none;
+        font-size: 14px;
+        padding: 12px 0;
+        cursor: pointer;
+        border-radius: 0;
+        font-weight: 200;
     }
 
     /* Show the filter containers inside the overlay */
@@ -591,7 +623,6 @@
     .mobile-filters-overlay .unit-type-container,
     .mobile-filters-overlay .property-type-container {
         display: block !important;
-        margin-bottom: 24px;
         margin-top: 0;
         border: none;
         border-bottom: 1px solid #CDCDCD;
@@ -773,9 +804,41 @@
     }
 
     .mobile-filters-content {
-        padding: 24px;
+        padding: 0 24px;
         flex: 1;
         overflow-y: auto;
+    }
+
+    .mobile-filters-actions {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        box-sizing: border-box;
+        background: #fff;
+    }
+
+    .mobile-apply-filter-btn {
+        width: 100%;
+        background: #1A3D8F;
+        color: #fff;
+        border: none;
+        font-size: 14px;
+        padding: 12px 0;
+        cursor: pointer;
+        border-radius: 0;
+        font-weight: 200;
+    }
+
+    .mobile-clear-filter-btn {
+        width: 100%;
+        background: #54585A;
+        color: #fff;
+        border: none;
+        font-size: 14px;
+        padding: 12px 0;
+        cursor: pointer;
+        border-radius: 0;
+        font-weight: 200;
     }
 
     /* Show the filter containers inside the overlay */
@@ -783,7 +846,6 @@
     .mobile-filters-overlay .unit-type-container,
     .mobile-filters-overlay .property-type-container {
         display: block !important;
-        margin-bottom: 24px;
         margin-top: 0;
         border: none;
         border-bottom: 1px solid #CDCDCD;
