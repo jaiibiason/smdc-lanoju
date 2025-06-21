@@ -11,7 +11,6 @@ function Faqs() {
 <Crumbs pageName="FAQs" />
 <FAQHeader title="Frequently Asked Questions" />
       <FAQBody />
-      <Footer />
     </div>
   );
 }
