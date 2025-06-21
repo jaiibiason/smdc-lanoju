@@ -7,7 +7,7 @@ import HeaderImg from '../assets/temp_prptHeader.png'
 import locationIcon from "../assets/lsicon_location-outline.svg"; // Import location icon
 import { useState, useEffect } from 'react'; // Import useState and useEffect
 import { Range, getTrackBackground } from 'react-range'; // Import Range and getTrackBackground
-import mageFilterIcon from "../assets/mage_filter.svg"; // Import the filter icon
+import mageFilterIcon from "../assets/mage_filter-2.svg"; // Import the filter icon
 
 function PropertiesBody() {
     const propertyCount = 0; // Define propertyCount with a default value
@@ -229,10 +229,14 @@ function PropertiesBody() {
                         </button>
                     )}
 
+                    {/* Overlay mobile filters */}
                     {(isMobile || isTablet) && showFilters && (
                         <div className="mobile-filters-overlay">
-                            <div className="mobile-filters-header">
-                                <span>Filters</span>
+                            <div className="mobile-filters-header" style={{ display: 'flex', alignItems: 'center', gap: 8, justifyContent: 'space-between' }}>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                                    <img src={mageFilterIcon} alt="Filter Icon" style={{ width: 24, height: 24 }} />
+                                    <span>Filters</span>
+                                </div>
                                 <button
                                     className="mobile-filters-close"
                                     onClick={() => setShowFilters(false)}
@@ -241,97 +245,185 @@ function PropertiesBody() {
                                 </button>
                             </div>
                             <div className="mobile-filters-content">
+                                {/* Location Filter */}
                                 <div className="location-container">
-                                    <span className="filter-title">Location</span>
-                                    <div className="selected-filters">
-                                        {selectedLocations
-                                            .filter((location) => location !== "All Locations")
-                                            .map((location, index) => (
-                                                <div key={index} className="selected-filter">
+                                    <div
+                                        className="location-header"
+                                        onClick={() => setIsLocationCollapsed(!isLocationCollapsed)}
+                                    >
+                                        <span>
+                                            <span className="arrowIcon">
+                                                <img
+                                                    src={isLocationCollapsed ? arrowDownIcon : arrowUpIcon}
+                                                    alt={isLocationCollapsed ? "Expand" : "Collapse"}
+                                                    className="location-arrow-icon"
+                                                />
+                                            </span>
+                                            Location <span className="filter-count">(
+                                                {selectedLocations.includes("All Locations")
+                                                    ? locationOptions.length - 1
+                                                    : selectedLocations.length}
+                                            )</span>
+                                        </span>
+                                    </div>
+                                    {!isLocationCollapsed && (
+                                        <div className="selected-filters">
+                                            {selectedLocations
+                                                .filter((location) => location !== "All Locations")
+                                                .map((location, index) => (
+                                                    <div key={index} className="selected-filter">
+                                                        {location}
+                                                        <span onClick={() => handleLocationChange(location)}>×</span>
+                                                    </div>
+                                                ))}
+                                        </div>
+                                    )}
+                                    {!isLocationCollapsed && (
+                                        <div className="location-options">
+                                            {locationOptions.map((location, index) => (
+                                                <label key={index}>
+                                                    <input
+                                                        type="checkbox"
+                                                        checked={selectedLocations.includes(location)}
+                                                        onChange={() => handleLocationChange(location)}
+                                                    />
                                                     {location}
-                                                    <span onClick={() => handleLocationChange(location)}>×</span>
-                                                </div>
+                                                </label>
                                             ))}
-                                    </div>
-                                    <div className="location-options">
-                                        {locationOptions.map((location, index) => (
-                                            <label key={index}>
-                                                <input
-                                                    type="checkbox"
-                                                    checked={selectedLocations.includes(location)}
-                                                    onChange={() => handleLocationChange(location)}
-                                                />
-                                                {location}
-                                            </label>
-                                        ))}
-                                    </div>
+                                        </div>
+                                    )}
                                 </div>
+                                {/* Unit Type Filter */}
                                 <div className="unit-type-container">
-                                    <span className="filter-title">Unit Type</span>
-                                    <div className="selected-filters">
-                                        {selectedUnitTypes
-                                            .filter((unitType) => unitType !== "All Unit")
-                                            .map((unitType, index) => (
-                                                <div key={index} className="selected-filter">
+                                    <div
+                                        className="unit-type-header"
+                                        onClick={() => setIsUnitTypeCollapsed(!isUnitTypeCollapsed)}
+                                    >
+                                        <span>
+                                            <span className="arrowIcon">
+                                                <img
+                                                    src={isUnitTypeCollapsed ? arrowDownIcon : arrowUpIcon}
+                                                    alt={isUnitTypeCollapsed ? "Expand" : "Collapse"}
+                                                    className="unit-type-arrow-icon"
+                                                />
+                                            </span>
+                                            Unit Type <span className="filter-count">(
+                                                {selectedUnitTypes.includes("All Unit")
+                                                    ? unitTypeOptions.length
+                                                    : selectedUnitTypes.length}
+                                            )</span>
+                                        </span>
+                                    </div>
+                                    {!isUnitTypeCollapsed && (
+                                        <div className="selected-filters">
+                                            {selectedUnitTypes
+                                                .filter((unitType) => unitType !== "All Unit")
+                                                .map((unitType, index) => (
+                                                    <div key={index} className="selected-filter">
+                                                        {unitType}
+                                                        <span onClick={() => handleUnitTypeChange(unitType)}>×</span>
+                                                    </div>
+                                                ))}
+                                        </div>
+                                    )}
+                                    {!isUnitTypeCollapsed && (
+                                        <div className="unit-type-options">
+                                            <label>
+                                                <input
+                                                    type="checkbox"
+                                                    checked={selectedUnitTypes.includes("All Unit")}
+                                                    onChange={() => handleUnitTypeChange("All Unit")}
+                                                />
+                                                All Unit
+                                            </label>
+                                            {unitTypeOptions.map((unitType, index) => (
+                                                <label key={index}>
+                                                    <input
+                                                        type="checkbox"
+                                                        checked={selectedUnitTypes.includes(unitType)}
+                                                        onChange={() => handleUnitTypeChange(unitType)}
+                                                    />
                                                     {unitType}
-                                                    <span onClick={() => handleUnitTypeChange(unitType)}>×</span>
-                                                </div>
+                                                </label>
                                             ))}
-                                    </div>
-                                    <div className="unit-type-options">
-                                        <label>
-                                            <input
-                                                type="checkbox"
-                                                checked={selectedUnitTypes.includes("All Unit")}
-                                                onChange={() => handleUnitTypeChange("All Unit")}
-                                            />
-                                            All Unit
-                                        </label>
-                                        {unitTypeOptions.map((unitType, index) => (
-                                            <label key={index}>
-                                                <input
-                                                    type="checkbox"
-                                                    checked={selectedUnitTypes.includes(unitType)}
-                                                    onChange={() => handleUnitTypeChange(unitType)}
-                                                />
-                                                {unitType}
-                                            </label>
-                                        ))}
-                                    </div>
+                                        </div>
+                                    )}
                                 </div>
+                                {/* Property Type Filter */}
                                 <div className="property-type-container">
-                                    <span className="filter-title">Property Type</span>
-                                    <div className="selected-filters">
-                                        {selectedPropertyTypes
-                                            .filter((propertyType) => propertyType !== "All Property")
-                                            .map((propertyType, index) => (
-                                                <div key={index} className="selected-filter">
-                                                    {propertyType}
-                                                    <span onClick={() => handlePropertyTypeChange(propertyType)}>×</span>
-                                                </div>
-                                            ))}
+                                    <div
+                                        className="property-type-header"
+                                        onClick={() => setIsPropertyTypeCollapsed(!isPropertyTypeCollapsed)}
+                                    >
+                                        <span>
+                                            <span className="arrowIcon">
+                                                <img
+                                                    src={isPropertyTypeCollapsed ? arrowDownIcon : arrowUpIcon}
+                                                    alt={isPropertyTypeCollapsed ? "Expand" : "Collapse"}
+                                                    className="property-type-arrow-icon"
+                                                />
+                                            </span>
+                                            Property Type <span className="filter-count">(
+                                                {selectedPropertyTypes.includes("All Property")
+                                                    ? propertyTypeOptions.length
+                                                    : selectedPropertyTypes.length}
+                                            )</span>
+                                        </span>
                                     </div>
-                                    <div className="property-type-options">
-                                        <label>
-                                            <input
-                                                type="checkbox"
-                                                checked={selectedPropertyTypes.includes("All Property")}
-                                                onChange={() => handlePropertyTypeChange("All Property")}
-                                            />
-                                            All Property
-                                        </label>
-                                        {propertyTypeOptions.map((propertyType, index) => (
-                                            <label key={index}>
+                                    {!isPropertyTypeCollapsed && (
+                                        <div className="selected-filters">
+                                            {selectedPropertyTypes
+                                                .filter((propertyType) => propertyType !== "All Property")
+                                                .map((propertyType, index) => (
+                                                    <div key={index} className="selected-filter">
+                                                        {propertyType}
+                                                        <span onClick={() => handlePropertyTypeChange(propertyType)}>×</span>
+                                                    </div>
+                                                ))}
+                                        </div>
+                                    )}
+                                    {!isPropertyTypeCollapsed && (
+                                        <div className="property-type-options">
+                                            <label>
                                                 <input
                                                     type="checkbox"
-                                                    checked={selectedPropertyTypes.includes(propertyType)}
-                                                    onChange={() => handlePropertyTypeChange(propertyType)}
+                                                    checked={selectedPropertyTypes.includes("All Property")}
+                                                    onChange={() => handlePropertyTypeChange("All Property")}
                                                 />
-                                                {propertyType}
+                                                All Property
                                             </label>
-                                        ))}
-                                    </div>
+                                            {propertyTypeOptions.map((propertyType, index) => (
+                                                <label key={index}>
+                                                    <input
+                                                        type="checkbox"
+                                                        checked={selectedPropertyTypes.includes(propertyType)}
+                                                        onChange={() => handlePropertyTypeChange(propertyType)}
+                                                    />
+                                                    {propertyType}
+                                                </label>
+                                            ))}
+                                        </div>
+                                    )}
                                 </div>
+                            </div>
+                            <div className="mobile-filters-actions">
+                                <button
+                                    className="mobile-apply-filter-btn"
+                                    onClick={() => setShowFilters(false)}
+                                >
+                                    Apply Filter
+                                </button>
+                                <button
+                                    className="mobile-clear-filter-btn"
+                                    onClick={() => {
+                                        setSelectedLocations([]);
+                                        setSelectedUnitTypes([]);
+                                        setSelectedPropertyTypes([]);
+                                        setPriceRange([0, fixedPrices.length - 1]);
+                                    }}
+                                >
+                                    Clear Filter
+                                </button>
                             </div>
                         </div>
                     )}
