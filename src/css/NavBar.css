@@ -13,10 +13,16 @@
 }
 
 /* NavBar */
+.navbar-bg {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background-color: white;
+}
 .navbar {
-  position: sticky; 
-  top: 0; 
-  z-index: 1000; 
+  position: sticky;
+  top: 0;
+  z-index: 1000;
   display: flex;
   align-items: center;
   padding: .8125rem 2.5rem;
@@ -24,7 +30,7 @@
   max-width: 1440px; 
   margin: 0 auto;
   padding: 0 40px;
-  background: white;
+  background-color: white;
 }
 
 .navbar.dark-mode{
