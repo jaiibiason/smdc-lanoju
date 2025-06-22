@@ -53,29 +53,31 @@ const Navbar: React.FC = () => {
   };
 
     return (
-      <Fragment>
+      <>
     
       <nav className={`navbar ${isOpen ? 'dark-mode' : ''}`}>
-        <NavLink to="/">
-          <img src={temp_logo} alt="Brand Logo" />
-        </NavLink>
-        <button className={`menu-toggle ${isOpen ? 'close' : ''}`} onClick={toggleMenu}>
-          {isOpen ? '✖' : '☰'}
-        </button>
-        <ul className={`nav-links ${isOpen ? 'open' : ''}`}>
-          <li><NavLink to="/properties" onClick={handleLinkClick}>Properties</NavLink></li>
-          <li><NavLink to="/aboutme" onClick={handleLinkClick}>About Me</NavLink></li>
-          <li><NavLink to="/articles" onClick={handleLinkClick}>Articles</NavLink></li>
-          <li><NavLink to="/FAQs" onClick={handleLinkClick}>FAQs</NavLink></li>
-          <li>
-            <NavLink to="/inquire" onClick={handleLinkClick}>
-              <button className="inquire-btn yellow">Inquire Now</button>
-            </NavLink>
-          </li>
-        </ul>
+        <div className="navbar-cont">
+          <NavLink to="/">
+            <img src={temp_logo} alt="Brand Logo" />
+          </NavLink>
+          <button className={`menu-toggle ${isOpen ? 'close' : ''}`} onClick={toggleMenu}>
+            {isOpen ? '✖' : '☰'}
+          </button>
+          <ul className={`nav-links ${isOpen ? 'open' : ''}`}>
+            <li><NavLink to="/properties" onClick={handleLinkClick}>Properties</NavLink></li>
+            <li><NavLink to="/aboutme" onClick={handleLinkClick}>About Me</NavLink></li>
+            <li><NavLink to="/articles" onClick={handleLinkClick}>Articles</NavLink></li>
+            <li><NavLink to="/FAQs" onClick={handleLinkClick}>FAQs</NavLink></li>
+            <li>
+              <NavLink to="/inquire" onClick={handleLinkClick}>
+                <button className="inquire-btn yellow">Inquire Now</button>
+              </NavLink>
+            </li>
+          </ul>
+        </div>
       </nav>
 
-  </Fragment>
+  </>
 
     );
 

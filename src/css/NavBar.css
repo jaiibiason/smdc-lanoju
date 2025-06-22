@@ -14,9 +14,13 @@
 
 /* NavBar */
 .navbar {
-  position: sticky; 
-  top: 0; 
-  z-index: 1000; 
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background-color: white; /* Ensure background color is visible */
+}
+.navbar-cont {
+  /* position: sticky;  */
   display: flex;
   align-items: center;
   padding: .8125rem 2.5rem;
