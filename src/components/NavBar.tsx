@@ -55,8 +55,8 @@ const Navbar: React.FC = () => {
     return (
       <>
     
-      <nav className={`navbar ${isOpen ? 'dark-mode' : ''}`}>
-        <div className="navbar-cont">
+      <div className="navbar-bg">
+        <nav className={`navbar ${isOpen ? 'dark-mode' : ''}`}>
           <NavLink to="/">
             <img src={temp_logo} alt="Brand Logo" />
           </NavLink>
@@ -74,8 +74,8 @@ const Navbar: React.FC = () => {
               </NavLink>
             </li>
           </ul>
-        </div>
-      </nav>
+        </nav>
+      </div>
 
   </>
 
