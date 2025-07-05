@@ -24,16 +24,24 @@ body{
 }
 
 /* NavBar */
+.navbar-bg {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background-color: white;
+}
 .navbar {
-  /* position: fixed; */
+  position: sticky;
+  top: 0;
+  z-index: 1000;
   display: flex;
   align-items: center;
   padding: .8125rem 2.5rem;
   height: 4.25rem;
   max-width: 1440px; 
   margin: 0 auto;
-  padding: 0 0.5rem;
-  background: white;
+  padding: 0 40px;
+  background-color: white;
 }
 
 .navbar.dark-mode{
@@ -127,10 +135,7 @@ font-size: 12px;
 
 /* Responsive styles */
 @media all and (max-width: 960px)  {
-  body{
-    margin: 0 auto;
-    padding: 0 1rem;
-  }
+  
   .navbar{
     justify-content: space-between;
     transition: background 0.3s ease;
@@ -201,9 +206,4 @@ font-size: 12px;
 
 }
 
-@media (max-width: 480px) {
-  body{
-  margin: 0 auto;
-  padding: 0 0rem;
-} 
-} 
+@media (max-width: 480px) {}

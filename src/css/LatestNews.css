@@ -1,16 +1,20 @@
 .latest-news-cont {
-  /* height: 95vh; */
+  /* height: 80vh; */
 }
 
 .news-insights-cont {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: stretch; 
   gap: 10px;
 
+  a {
+    flex-basis: 50%;
+  }
+
   .featured-article {
-    height: 486px;
-    width: 552px;
+    height: 100%;
+    width: 100%;
     display: flex;
     border-radius: 8px;
     background-size: cover;
@@ -21,7 +25,7 @@
     .article-details {
       height: 100%;
       width: 100%;
-      padding: 40px 18px 18px 18px;
+      padding: 7vh 2.5vh 2.5vh 2.5vh;
       background: linear-gradient(
         180deg,
         rgba(0, 0, 0, 0) 0%,
@@ -45,17 +49,23 @@
     }
     p {
       margin-top: 25px;
+      font-size: 14px;
+      line-height: 1.5rem;
     }
   }
   .featured-article:hover .article-details {
     background: rgba(0, 0, 0, 0.8);
     transform: translateY(0%);
   }
+  .article-details .description {
+    display: none; 
+  }
 
   .recent-articles {
     display: flex;
     flex-direction: column;
-    flex: 1;
+    /* flex: 1; */
+    flex-basis: 50%;
     gap: 15px;
     * {
       font-family: "Inter", sans-serif;
@@ -63,7 +73,12 @@
     .recent-article {
       display: flex;
       gap: 10px;
-      height: 152px;
+      height: 19vh;
+      border-radius: 5px;
+    }
+    .recent-article:hover {
+      background-color: #F5F9FA;
+      transition: background-color 0.3s ease;
     }
 
     .article-img {
@@ -78,7 +93,7 @@
     }
     .article-details {
       flex: 1;
-      padding: 13px 0;
+      padding: 1.5vh 0;
 
       h2 {
         font-size: 14px;
@@ -92,7 +107,7 @@
         margin-right: 11px;
       }
       p {
-        font-size: 10px;
+        font-size: 12px;
         font-weight: 500;
         margin-top: 17px;
         display: -webkit-box;
@@ -100,6 +115,7 @@
         overflow: hidden;
         text-overflow: ellipsis;
         -webkit-line-clamp: 3;
+        line-height: 1.1rem;
       }
     }
   }
@@ -111,25 +127,32 @@
 
 .view-more {
   margin-top: 12px;
+  display: flex;
+  justify-content: end;
 }
 .view-more a {
   display: flex;
-  justify-content: end;
   align-items: center;
   gap: 8px;
   font-size: 13px;
   color: var(--dark-blue);
 }
-.view-more p {
-  font-family: "Inter";
+.view-more a:hover {
+  text-decoration: underline;
+  color: #10265B;
+  transition: all 0.3s ease;
 }
 
 /* Responsive Styles */
-@media (max-width: 1000px) {
+@media (min-width: 960px) {
+  .featured-article:hover .article-details .description {
+    display: block; 
+  }
+}
+
+@media (max-width: 960px) {
   .news-insights-cont {
     .featured-article {
-      height: 308px;
-      width: 301px;
 
       .article-details {
         height: 100%;
@@ -151,7 +174,7 @@
       h2 {
         font-size: 14px;
         font-weight: 600;
-        margin-bottom: 10px;
+        margin-bottom: 0px;
       }
       h3 {
         display: inline-block;
@@ -178,11 +201,11 @@
 
     .recent-articles {
       .recent-article {
-        height: 93px;
+        height: 15.3vh;
       }
 
       .article-img {
-        width: 113px;
+        width: 19vh;
       }
       .article-details {
         flex: 1;
@@ -195,15 +218,16 @@
         }
         h3 {
           display: inline-block;
-          font-size: 8px;
+          font-size: 10px;
           font-weight: 500;
           margin-right: 11px;
         }
         p {
-          font-size: 8px;
+          font-size: 10px;
           font-weight: 500;
           margin-top: 6px;
-          -webkit-line-clamp: 2;
+          -webkit-line-clamp: 3;
+          line-height: 0.9rem;
         }
         .category {
           font-size: 8px;
@@ -219,7 +243,7 @@
     gap: 20px;
 
     .featured-article {
-      /* height: 308px; */
+      height: 308px;
       width: 100%;
 
       .article-details {
@@ -279,7 +303,8 @@
           font-size: 10px;
           font-weight: 500;
           margin-top: 6px;
-          -webkit-line-clamp: 3;
+          -webkit-line-clamp: 4;
+          line-height: 1rem;
         }
         .category {
           font-size: 8px;
@@ -288,4 +313,7 @@
     }
   }
 }
+
+
+
 

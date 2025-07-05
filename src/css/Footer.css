@@ -1,6 +1,12 @@
+.footer-bg {
+  background-color: #212121;
+}
 section.footer-cont {
   padding: 0;
   background-color: #212121;
+  max-width: 1440px;
+  margin: 0 auto;
+  
   * {
     font-family: 'Inter', sans-serif;
     color: white;
@@ -8,6 +14,11 @@ section.footer-cont {
   a {
     font-size: 12px;
     font-weight: 400;
+  }
+
+  .explore-links a:hover,
+  .learn-links a:hover{
+    text-decoration: underline;
   }
 }
 
@@ -17,9 +28,10 @@ section.footer-cont {
   justify-content: space-between;
   gap: 90px;
   padding: 40px;
+  justify-content: flex-start;
 
   h3 {
-    font-size: 12px;
+    font-size: 14px;
     font-weight: 600;
   }
 
@@ -98,6 +110,7 @@ section.footer-cont {
   .contact-explore-learn-cont {
     flex-wrap: wrap;
     gap: 45px;
+    justify-content: space-between;
 
     .logo-contact {
       flex-basis: 100%;

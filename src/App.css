@@ -1,4 +1,3 @@
-
 :root {
   --yellow: #E1A000;
   --dark-blue: #1A3D8F;
@@ -18,9 +17,17 @@ body {
   overflow-x: hidden;
   height: 100%;
   color: #343434;
+  /* max-width: 1440px; */
+  margin: 0 auto;
 }
-.home-pg > section, .inner-properties-pg > section {
+
+.home-pg section, 
+.inner-properties-pg section,
+.about-me-pg section,
+.inquiry-pg {
   padding: 40px;
+  max-width: 1440px;
+  margin: 0 auto;
 }
 
 h1 {
@@ -42,6 +49,7 @@ button {
   font-family: "Inter";
   font-weight: 500;
   font-size: 12px;
+  transition: color 0.3s ease, background-color 0.3s ease;
 }
 button.blue {
   background: var(--dark-blue);
@@ -52,6 +60,12 @@ button.yellow {
   background: var(--yellow);
   width: 8rem;
   height: 2.625rem;
+}
+button.blue:hover {
+  background: #10265B;
+}
+button.yellow:hover {
+  background: #876000;
 }
 
 input:focus-visible { 
@@ -175,7 +189,7 @@ input[type="checkbox"]:checked::after {
 /* Responsive styles */
 @media (max-width: 960px) {
 
-  .home-pg > section{
+  .home-pg > div > section{
     padding: 24px;
   }
 

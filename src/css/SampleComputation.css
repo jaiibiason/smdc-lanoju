@@ -1,9 +1,13 @@
 .sample-computation-pg {
 
+  .hero-bg {
+    background: linear-gradient(0deg, #F5F9FA 0%, #FFFFFF 100%);
+  }
   .hero-cont{
     height: 232px;
     padding: 40px;
-    background: linear-gradient(0deg, #F5F9FA 0%, #FFFFFF 100%);
+    max-width: 1440px;
+    margin: 0 auto;
     
     h1 {
       margin: auto 0;
@@ -19,56 +23,54 @@
     font-style: italic;
     font-size: 10px;
   }
-}
 
-.sample-computation-table {
-  margin-top: 20px;
-  overflow-x: auto;
-  padding: 40px;
-
-  * {
-    font-family: "Inter", sans-serif;
+  .desktop-computation {
+    padding: 40px;
+    max-width: 1440px;
+    margin: 0 auto;
   }
 }
 
-.sample-computation-table table {
+.sample-computation-pg table {
   width: 100%;
   border-collapse: collapse;
   text-align: left;
   font-family: "Inter", sans-serif;
   font-size: 14px;
   border: none;
-}
 
-.sample-computation-table th,
-.sample-computation-table td {
-  padding: 12px 15px;
-  border: none; 
-}
+  * {
+    font-family: "Inter", sans-serif;
+  }
 
-.sample-computation-table th {
-  background-color: #f5f9fa;
-  font-weight: 500;
-}
+  th, td {
+    padding: 12px 15px;
+    border: none; 
+  }
 
-.sample-computation-table th span {
-  font-size: 10px;
-  font-weight: 300;
-  font-style: italic;
-}
+  th {
+    background-color: #f5f9fa;
+    font-weight: 500;
+    width: 16.66%; /* Ensure equal column widths */
+  }
 
-.sample-computation-table tbody tr:nth-child(even) {
-  background-color: #f5f9fa;
-}
+  td {
+    color: #555;
+    font-size: 14px;
+    width: 16.66%; /* Ensure equal column widths */
+  }
+  th span {
+    font-size: 10px;
+    font-weight: 400;
+    font-style: italic;
+  }
 
-.sample-computation-table tbody tr:nth-child(odd) {
-  background-color: #ffffff;
-}
-
-
-.sample-computation-table td {
-  color: #555;
-  font-size: 14px;
+  tbody tr:nth-child(even) {
+    background-color: #f5f9fa;
+  }
+  tbody tr:nth-child(odd) {
+    background-color: #ffffff;
+  }
 }
 
 /* Mobile View */
@@ -76,8 +78,15 @@
   display: none;
 }
 
+@media (max-width: 960px) {
+  .sample-computation-pg .hero-cont h1 {
+    font-size: 24px;
+    font-weight: 500;
+  }
+}
+
 @media (max-width: 768px) {
-  .sample-computation-table {
+  .desktop-computation {
     display: none; /* Hide table on smaller screens */
   }
 
@@ -121,6 +130,15 @@
 
   .remaining-balance-details ul li {
     margin-bottom: 5px;
+  }
+
+  .computation-notes {
+    font-size: 14px;
+    gap: 15px;
+  }
+
+  .sample-computation-pg .inquire-btn {
+    width: 100%;
   }
 }
 
@@ -168,10 +186,6 @@
   height: 7px;
 }
 
-.inquire-btn {
-  width: 100%;
-}
-
 }
 
 .computation-details {
@@ -194,10 +208,15 @@
 .computation-notes {
   display: flex;
   flex-direction: column;
-  margin: 40px 0;
-  gap: 15px;
+  gap: 5px;
+  margin: 25px 0;
   font-size: 12px;
-  
+  font-family: 'Inter', sans-serif;
+  line-height: 1.5;
+
+  * {
+  font-family: 'Inter', sans-serif;
+  }
 }
 .computation-notes.disclaimer {
   display: inline-block;
@@ -208,5 +227,6 @@ color: #545454;
   display: inline-block;
 gap: 0;
 margin: 0;
+font-weight: 300;
 }
 

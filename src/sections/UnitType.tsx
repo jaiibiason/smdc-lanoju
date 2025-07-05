@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
-import "../css/UnitType.css"; // Import the new CSS file
+import "../css/UnitType.css"; 
 
 interface Unit {
   image: string;
@@ -97,7 +97,9 @@ const UnitType: React.FC = () => {
           </tbody>
         </table>
         <div className="inquire-sample-computation">
-          <button className="inquire-btn">Inquire Now</button>
+          <NavLink to="/inquire">
+            <button className="inquire-btn yellow">Inquire Now</button>
+          </NavLink>
           <NavLink className={"sample-computation-link"} to="/sample-computation">
 
             view sample computation

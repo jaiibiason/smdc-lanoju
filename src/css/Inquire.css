@@ -36,17 +36,18 @@
     .inquiry-form .row:nth-child(3) ,
     .inquiry-form .row:nth-child(4) {
       flex-direction: column;
-      gap: 0;
+      gap: 0.5vh;
     }
   
     .inquiry-form .column {
       flex: 1;
       display: flex;
       flex-direction: column;
+      gap: .5vh;
     }
   
     .inquiry-form label {
-      font-size: 13px;
+      font-size: 14px;
     }
   
     .inquiry-form label::after {
@@ -74,8 +75,10 @@
       grid-column: span 1;
     }
 
+    .inquiry-form input::placeholder,
     .inquiry-form select:invalid {
-      color: #777; /* Lighter color for placeholder */
+      font-family: "Inter", sans-serif; 
+      color: #777; 
     }
   
     /* .inquiry-form select option {

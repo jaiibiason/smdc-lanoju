@@ -102,8 +102,9 @@ const ImageGallery: React.FC<GalleryModalProps> = ({ images }) => {
             <div className="gallery-content">
               <div className="main-image">
               <button className="arrow left-arrow" onClick={handlePrev}>
-                <svg width="42" height="32" viewBox="0 0 42 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M1 16L16 1M1 16L16 31M1 16H27.25M41 16H34.75" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <svg width="44" height="33" viewBox="0 0 44 33" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path opacity="0.5" d="M42 18.375C42.4973 18.375 42.9742 18.1775 43.3258 17.8258C43.6775 17.4742 43.875 16.9973 43.875 16.5C43.875 16.0027 43.6775 15.5258 43.3258 15.1742C42.9742 14.8225 42.4973 14.625 42 14.625V18.375ZM42 14.625H2V18.375H42V14.625Z" fill="white"/>
+                  <path d="M17 1.5L2 16.5L17 31.5" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
               </button>
                 <img
@@ -111,8 +112,9 @@ const ImageGallery: React.FC<GalleryModalProps> = ({ images }) => {
                   alt={`Slide ${currentIndex + 1}`}
                 />
               <button className="arrow right-arrow" onClick={handleNext}>
-                <svg width="42" height="32" viewBox="0 0 42 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M41 16L26 31M41 16L26 1M41 16L14.75 16M1 16L7.25 16" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <svg width="44" height="34" viewBox="0 0 44 34" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path opacity="0.5" d="M2 15.125C1.50272 15.125 1.0258 15.3225 0.674171 15.6742C0.322544 16.0258 0.125 16.5027 0.125 17C0.125 17.4973 0.322544 17.9742 0.674171 18.3258C1.0258 18.6775 1.50272 18.875 2 18.875V15.125ZM2 18.875L42 18.875V15.125L2 15.125V18.875Z" fill="white"/>
+                  <path d="M27 32L42 17L27 2" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
               </button>
               </div>

@@ -2,7 +2,9 @@
   position: relative;
   height: 75px;
   width: 100%;
+  max-width: 1440px;
   padding: 0 43px;
+  margin: 0 auto;
 }
 
 .filter-card {
@@ -36,6 +38,7 @@
 
 .filter-card .dropdowns {
   gap: 10px;
+  width: 40%;
   /* margin-right: 21px; */
 }
 
@@ -49,10 +52,12 @@
 .filter-card .dropdowns div {
   display: flex;
   flex-direction: column;
-  width: 240px;
+  width: 100%;
+  gap: 1vh
 }
 
 .multi-select-dropdown {
+  gap: 0.5rem;
   position: relative;
 }
 
@@ -109,7 +114,7 @@
 .filter-card .checkboxes {
   flex-direction: column;
   gap: 12px;
-  /* margin: 0 15px 0 0; */
+  width: 14%;
 }
 
 .slider-container {
@@ -175,7 +180,11 @@
     justify-content: flex-start;
     gap: 20px;
   }
-
+  .filter-card .checkboxes {
+    flex-direction: column;
+    gap: 12px;
+    width: 35%;
+  }
   .filter-card .dropdowns {
     flex-basis: 60%;
   }
@@ -184,7 +193,7 @@
   }
 
   .slider-container {
-    flex-basis: 55%;
+    flex-basis: 59%;
   }
 
   div:has(.search-btn) {
@@ -216,7 +225,11 @@
     flex-direction: column;
     flex-basis: 100%;
   }
-
+  .filter-card .checkboxes {
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+  }
   .slider-container {
     flex-basis: 100%;
   }

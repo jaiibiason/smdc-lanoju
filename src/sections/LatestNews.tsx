@@ -88,7 +88,7 @@ const LatestNews: React.FC = () => {
                     {article.category}
                   </h4>
                 </div>
-                <p>{article.description}</p>
+                <p className="description">{article.description}</p>
               </div>
             </div>
           </NavLink>
@@ -121,7 +121,7 @@ const LatestNews: React.FC = () => {
       </div>
       <div className="view-more">
         <NavLink to="/articles">
-          <p>view more articles</p>
+          view more articles
           <svg
             width="8"
             height="14"
