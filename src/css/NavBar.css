@@ -4,6 +4,17 @@
   box-sizing: border-box;
 }
 
+body{
+  position: relative;
+  overflow-x: hidden;
+  font-family: "Inter", sans-serif;
+  height: 100%;
+  color: #343434;
+  max-width: 1440px; /* or 1200px */
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
 .no-transitions * {
   transition: none !important;
 }
