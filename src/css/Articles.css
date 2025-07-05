@@ -284,7 +284,7 @@
   width: 50%; /* Take up 50% of the screen width */
   padding: 20px;
   text-align: left;
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Inter', sans-serif;
 }
 
 .inart-article-meta {
@@ -305,7 +305,7 @@
 
 .articles-reco-reads-title {
     color: #E1A000;
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'Inter', sans-serif;
     font-size: 24px;
     font-weight: 400;
     padding: 40px 32px 0;

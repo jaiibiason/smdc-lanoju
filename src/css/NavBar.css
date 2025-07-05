@@ -7,7 +7,7 @@
 body{
   position: relative;
   overflow-x: hidden;
-  font-family: "Montserrat", sans-serif;
+  font-family: "Inter", sans-serif;
   height: 100%;
   color: #343434;
   max-width: 1440px; /* or 1200px */
