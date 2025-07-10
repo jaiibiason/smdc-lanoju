@@ -8,6 +8,7 @@ import locationIcon from "../assets/lsicon_location-outline.svg"; // Import loca
 import { useState, useEffect } from 'react'; // Import useState and useEffect
 import { Range, getTrackBackground } from 'react-range'; // Import Range and getTrackBackground
 import mageFilterIcon from "../assets/mage_filter-2.svg"; // Import the filter icon
+import closeFilterIcon from "../assets/close_filter.svg"; // Import close icon
 
 function PropertiesBody() {
     const propertyCount = 0; // Define propertyCount with a default value
@@ -171,24 +172,83 @@ function PropertiesBody() {
         return () => window.removeEventListener("resize", updateScreenSize);
     }, []);
 
+    // Sort dropdown state
+    const sortOptions = [
+        { value: "all", label: "All Properties" },
+        { value: "residential", label: "Relevance" },
+        { value: "commercial", label: "Pricing Low to High" },
+        { value: "land", label: "Pricing High to Low" }
+    ];
+    const [selectedSort, setSelectedSort] = useState(sortOptions[0].value);
+    const [isSortDropdownOpen, setIsSortDropdownOpen] = useState(false);
+
     return (
         <div>
             <div className="properties-body-container">
-               
                 <div className="left-section">
                     <p>Showing {propertyCount} properties</p>
                 </div>
                 {/* Only show sort filter here on desktop */}
-
                 {!(isMobile || isTablet) && (
-                    <div className="right-section">
+                    <div className="right-section" style={{ position: "relative" }}>
                         <span className="Sort">Sort by: </span>
-                        <select className="dropdown">
-                            <option value="all">All Properties</option>
-                            <option value="residential">Residential</option>
-                            <option value="commercial">Commercial</option>
-                            <option value="land">Land</option>
-                        </select>
+                        {/* Custom dropdown UI */}
+                        <div
+                            className={`properties-dropdown-placeholder${isSortDropdownOpen ? " selected" : ""}`}
+                            style={{ width: 218, minWidth: 150, marginTop: 5, cursor: "pointer" }}
+                            onClick={() => setIsSortDropdownOpen((prev) => !prev)}
+                            tabIndex={0}
+                            onBlur={() => setIsSortDropdownOpen(false)}
+                        >
+                            {sortOptions.find(opt => opt.value === selectedSort)?.label}
+                            <span className="properties-dropdown-arrow" style={{ marginLeft: 8 }}>
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="12"
+                                    height="7"
+                                    fill="currentColor"
+                                    viewBox="0 0 12 7"
+                                >
+                                    <path
+                                        d={
+                                            isSortDropdownOpen
+                                                ? "M0.147077 6.35435C-0.0485327 6.15944 -0.0490966 5.84285 0.145817 5.64724L5.6108 0.162761C5.82574 -0.0529522 6.17505 -0.0529512 6.39 0.162761L11.855 5.64724C12.0499 5.84285 12.0493 6.15944 11.8537 6.35435C11.6581 6.54926 11.3415 6.5487 11.1466 6.35309L6.0004 1.18851L0.854183 6.35309C0.659269 6.5487 0.342687 6.54926 0.147077 6.35435Z"
+                                                : "M11.8527 0.645818C12.0484 0.840732 12.0489 1.15731 11.854 1.35292L6.38902 6.83741C6.17408 7.05312 5.82477 7.05312 5.60982 6.83741L0.14484 1.35292C-0.0500734 1.15731 -0.0495088 0.840731 0.1461 0.645817C0.34171 0.450903 0.658292 0.451467 0.853206 0.647077L5.99942 5.81166L11.1456 0.647077C11.3406 0.451468 11.6571 0.450904 11.8527 0.645818Z"
+                                        }
+                                        fill="#616161"
+                                    />
+                                </svg>
+                            </span>
+                        </div>
+                        {isSortDropdownOpen && (
+                            <div
+                                className="properties-dropdown-menu"
+                                style={{
+                                    position: "absolute",
+                                    right: 0,
+                                    top: "100%",
+                                    width: 218,
+                                    zIndex: 1001
+                                }}
+                            >
+                                {sortOptions.map((opt) => (
+                                    <div
+                                        key={opt.value}
+                                        className="properties-dropdown-option"
+                                        style={{
+                                            background: selectedSort === opt.value ? "#f0f0f0" : undefined,
+                                            fontWeight: selectedSort === opt.value ? 600 : 400,
+                                        }}
+                                        onMouseDown={() => {
+                                            setSelectedSort(opt.value);
+                                            setIsSortDropdownOpen(false);
+                                        }}
+                                    >
+                                        {opt.label}
+                                    </div>
+                                ))}
+                            </div>
+                        )}
                     </div>
                 )}
             </div>
@@ -210,11 +270,15 @@ function PropertiesBody() {
                     {(isMobile || isTablet) && (
                         <div className="right-section" style={{ margin: "16px 0" }}>
                             <span className="Sort">Sort by: </span>
-                            <select className="dropdown">
-                                <option value="all">All Properties</option>
-                                <option value="residential">Residential</option>
-                                <option value="commercial">Commercial</option>
-                                <option value="land">Land</option>
+                            {/* Use native select for mobile/tablet */}
+                            <select
+                                className="dropdown"
+                                value={selectedSort}
+                                onChange={e => setSelectedSort(e.target.value)}
+                            >
+                                {sortOptions.map(opt => (
+                                    <option key={opt.value} value={opt.value}>{opt.label}</option>
+                                ))}
                             </select>
                         </div>
                     )}
@@ -273,7 +337,9 @@ function PropertiesBody() {
                                                 .map((location, index) => (
                                                     <div key={index} className="selected-filter">
                                                         {location}
-                                                        <span onClick={() => handleLocationChange(location)}>×</span>
+                                                        <span onClick={() => handleLocationChange(location)}>
+                                                            <img src={closeFilterIcon} alt="Remove" style={{ width: 12, height: 12 }} />
+                                                        </span>
                                                     </div>
                                                 ))}
                                         </div>
@@ -321,7 +387,9 @@ function PropertiesBody() {
                                                 .map((unitType, index) => (
                                                     <div key={index} className="selected-filter">
                                                         {unitType}
-                                                        <span onClick={() => handleUnitTypeChange(unitType)}>×</span>
+                                                        <span onClick={() => handleUnitTypeChange(unitType)}>
+                                                            <img src={closeFilterIcon} alt="Remove" style={{ width: 12, height: 12 }} />
+                                                        </span>
                                                     </div>
                                                 ))}
                                         </div>
@@ -377,7 +445,9 @@ function PropertiesBody() {
                                                 .map((propertyType, index) => (
                                                     <div key={index} className="selected-filter">
                                                         {propertyType}
-                                                        <span onClick={() => handlePropertyTypeChange(propertyType)}>×</span>
+                                                        <span onClick={() => handlePropertyTypeChange(propertyType)}>
+                                                            <img src={closeFilterIcon} alt="Remove" style={{ width: 12, height: 12 }} />
+                                                        </span>
                                                     </div>
                                                 ))}
                                         </div>
@@ -592,7 +662,9 @@ function PropertiesBody() {
                                     .map((location, index) => (
                                         <div key={index} className="selected-filter">
                                             {location}
-                                            <span onClick={() => handleLocationChange(location)}>×</span>
+                                            <span onClick={() => handleLocationChange(location)}>
+                                                <img src={closeFilterIcon} alt="Remove" style={{ width: 12, height: 12 }} />
+                                            </span>
                                         </div>
                                     ))}
                             </div>
@@ -640,7 +712,9 @@ function PropertiesBody() {
                                     .map((unitType, index) => (
                                         <div key={index} className="selected-filter">
                                             {unitType}
-                                            <span onClick={() => handleUnitTypeChange(unitType)}>×</span>
+                                            <span onClick={() => handleUnitTypeChange(unitType)}>
+                                                <img src={closeFilterIcon} alt="Remove" style={{ width: 12, height: 12 }} />
+                                            </span>
                                         </div>
                                     ))}
                             </div>
@@ -696,7 +770,9 @@ function PropertiesBody() {
                                     .map((propertyType, index) => (
                                         <div key={index} className="selected-filter">
                                             {propertyType}
-                                            <span onClick={() => handlePropertyTypeChange(propertyType)}>×</span>
+                                            <span onClick={() => handlePropertyTypeChange(propertyType)}>
+                                                <img src={closeFilterIcon} alt="Remove" style={{ width: 12, height: 12 }} />
+                                            </span>
                                         </div>
                                     ))}
                             </div>
