@@ -191,7 +191,7 @@ function PropertiesBody() {
                 {/* Only show sort filter here on desktop */}
                 {!(isMobile || isTablet) && (
                     <div className="right-section" style={{ position: "relative" }}>
-                        <span className="Sort">Sort by: </span>
+                        <span className="properties-sort">Sort by:</span>
                         {/* Custom dropdown UI */}
                         <div
                             className={`properties-dropdown-placeholder${isSortDropdownOpen ? " selected" : ""}`}

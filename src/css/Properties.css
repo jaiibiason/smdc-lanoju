@@ -451,7 +451,7 @@
   align-items: center;
   cursor: pointer;
   background-color: #fff;
-  margin: 10px;
+
 }
 .properties-dropdown-placeholder.selected {
   outline: none;
@@ -482,6 +482,10 @@
   align-items: center;
   padding: 8px 12px;
   cursor: pointer;
+}
+
+.properties-sort{
+  margin-right: 10px;
 }
 
 .properties-dropdown-option:hover {
