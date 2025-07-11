@@ -338,7 +338,7 @@ function PropertiesBody() {
                                                     <div key={index} className="selected-filter">
                                                         {location}
                                                         <span onClick={() => handleLocationChange(location)}>
-                                                            <img src={closeFilterIcon} alt="Remove" style={{ width: 12, height: 12 }} />
+                                                            <img src={closeFilterIcon} alt="Remove" style={{ width: "100%", height: "100%" }} />
                                                         </span>
                                                     </div>
                                                 ))}
@@ -388,7 +388,7 @@ function PropertiesBody() {
                                                     <div key={index} className="selected-filter">
                                                         {unitType}
                                                         <span onClick={() => handleUnitTypeChange(unitType)}>
-                                                            <img src={closeFilterIcon} alt="Remove" style={{ width: 12, height: 12 }} />
+                                                            <img src={closeFilterIcon} alt="Remove" style={{ width: "100%", height: "100%" }} />
                                                         </span>
                                                     </div>
                                                 ))}
@@ -446,7 +446,7 @@ function PropertiesBody() {
                                                     <div key={index} className="selected-filter">
                                                         {propertyType}
                                                         <span onClick={() => handlePropertyTypeChange(propertyType)}>
-                                                            <img src={closeFilterIcon} alt="Remove" style={{ width: 12, height: 12 }} />
+                                                            <img src={closeFilterIcon} alt="Remove" style={{ width: "100%", height: "100%" }} />
                                                         </span>
                                                     </div>
                                                 ))}
@@ -663,7 +663,7 @@ function PropertiesBody() {
                                         <div key={index} className="selected-filter">
                                             {location}
                                             <span onClick={() => handleLocationChange(location)}>
-                                                <img src={closeFilterIcon} alt="Remove" style={{ width: 12, height: 12 }} />
+                                                <img src={closeFilterIcon} alt="Remove" style={{ width: "100%", height: "100%" }} />
                                             </span>
                                         </div>
                                     ))}
@@ -713,7 +713,7 @@ function PropertiesBody() {
                                         <div key={index} className="selected-filter">
                                             {unitType}
                                             <span onClick={() => handleUnitTypeChange(unitType)}>
-                                                <img src={closeFilterIcon} alt="Remove" style={{ width: 12, height: 12 }} />
+                                                <img src={closeFilterIcon} alt="Remove" style={{ width: "100%", height: "100%" }} />
                                             </span>
                                         </div>
                                     ))}
@@ -771,7 +771,7 @@ function PropertiesBody() {
                                         <div key={index} className="selected-filter">
                                             {propertyType}
                                             <span onClick={() => handlePropertyTypeChange(propertyType)}>
-                                                <img src={closeFilterIcon} alt="Remove" style={{ width: 12, height: 12 }} />
+                                                <img src={closeFilterIcon} alt="Remove" style={{ width: "100%", height: "100%" }} />
                                             </span>
                                         </div>
                                     ))}
