@@ -9,10 +9,10 @@ import { useState, useEffect } from 'react'; // Import useState and useEffect
 import { Range, getTrackBackground } from 'react-range'; // Import Range and getTrackBackground
 import mageFilterIcon from "../assets/mage_filter-2.svg"; // Import the filter icon
 import closeFilterIcon from "../assets/close_filter.svg"; // Import close icon
+import { rtdb } from "../firebase";
+import { ref, onValue } from "firebase/database";
 
 function PropertiesBody() {
-    const propertyCount = 0; // Define propertyCount with a default value
-
     // Fixed price range values
     const fixedPrices = [1000000, 3000000, 5000000, 10000000, 15000000, 30000000];
 
@@ -154,6 +154,14 @@ function PropertiesBody() {
     const amenities = ["Swimming Pool", "Gym", "Parking", "24-Hour Security"];
     const landmarks = ["0.9km away from St. Paul College Pasig", "1.3km away from Rizal Medical Hospital", "0.3km away from SM Hypermarket Pasig", "1.9km away from SM Megamall"];
 
+    // Example master amenities list (should be fetched or imported from your amenities section)
+    const masterAmenities = [
+        { key: "amenity1", name: "Gate and Guardhouse" },
+        { key: "amenity2", name: "Clubhouse" },
+        { key: "amenity3", name: "Adult Pool" },
+        { key: "amenity4", name: "Kiddie Pool" },
+    ];
+
     // Responsive state for mobile and tablet
     const [isMobile, setIsMobile] = useState(false);
     const [isTablet, setIsTablet] = useState(false);
@@ -181,6 +189,30 @@ function PropertiesBody() {
     ];
     const [selectedSort, setSelectedSort] = useState(sortOptions[0].value);
     const [isSortDropdownOpen, setIsSortDropdownOpen] = useState(false);
+
+    // Properties from Realtime Database
+    const [properties, setProperties] = useState<any[]>([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const propertiesRef = ref(rtdb, "properties");
+        const unsubscribe = onValue(propertiesRef, (snapshot) => {
+            const data = snapshot.val();
+            // Convert the structure to an array for rendering
+            const props = data
+                ? Object.entries(data).map(([id, value]) =>
+                    typeof value === 'object' && value !== null
+                        ? { id, ...value }
+                        : { id, value }
+                  )
+                : [];
+            setProperties(props);
+            setLoading(false);
+        });
+        return () => unsubscribe();
+    }, []);
+
+    const propertyCount = properties.length;
 
     return (
         <div>
@@ -802,57 +834,87 @@ function PropertiesBody() {
                     </div>
                 </div>
                 <div className="right-main-section">
-                    <div className="property-card">
-                        <div className="property-card-image-container" style={{ position: "relative" }}>
-                            <img 
-                                src={HeaderImg} 
-                                alt="Property" 
-                                className="property-card-image" 
-                            />
-                            {/* Show status on image for mobile */}
-                            {isMobile && (
-                                <span className="property-card-status property-card-status-mobile">
-                                    {status}
-                                </span>
-                            )}
-                        </div>
-                        <div className="property-card-details">
-                            {/* Hide status here on mobile */}
-                            {!isMobile && (
-                                <p className="property-card-status">{status}</p>
-                            )}
-                            <div className="property-card-name-loc-price-cont">
-                                <div className="property-card-name-loc-cont">
-                                    <div className="property-card-name-price">
-                                        <span className="property-card-name">{propertyName}</span>
-                                        {/* property-card-price removed from here */}
+                    {loading ? (
+                        <div>Loading properties...</div>
+                    ) : (
+                        properties.map((property) => (
+                            <div className="property-card" key={property.id}>
+                                <div className="property-card-image-container" style={{ position: "relative" }}>
+                                    <img 
+                                        src={property.imageUrl || HeaderImg} 
+                                        alt="Property" 
+                                        className="property-card-image" 
+                                    />
+                                    {isMobile && (
+                                        <span className="property-card-status property-card-status-mobile">
+                                            {property.type || status}
+                                        </span>
+                                    )}
+                                </div>
+                                <div className="property-card-details">
+                                    {!isMobile && (
+                                        <p className="property-card-status">{property.type || status}</p>
+                                    )}
+                                    <div className="property-card-name-loc-price-cont">
+                                        <div className="property-card-name-loc-cont">
+                                            <div className="property-card-name-price">
+                                                <span className="property-card-name">{property.name || propertyName}</span>
+                                            </div>
+                                            <p className="property-card-location">
+                                                <img src={locationIcon} alt="Location Icon" className="location-icon" />
+                                                {property.location || location}
+                                            </p>
+                                        </div>
+                                        <span className="property-card-price">
+                                            {property.price 
+                                                ? property.price 
+                                                : price}
+                                        </span>
                                     </div>
-                                    <p className="property-card-location">
-                                        <img src={locationIcon} alt="Location Icon" className="location-icon" />
-                                        {location}
-                                    </p>
+                                    <div className="property-card-extra">
+                                        <div className="property-card-amenities">
+                                            <ul>
+                                                {property.amenities
+                                                    ? masterAmenities
+                                                        .filter(a => property.amenities[a.key])
+                                                        .map((a, idx) => (
+                                                            <li key={idx}>{a.name}</li>
+                                                        ))
+                                                    : amenities.map((amenity, idx) => (
+                                                        <li key={idx}>{amenity}</li>
+                                                    ))
+                                                }
+                                            </ul>
+                                        </div>
+                                        <div className="property-card-landmarks">
+                                            <ul>
+                                                {property.landmarks
+                                                    ? property.landmarks.map((landmark: string, idx: number) => (
+                                                        <li key={idx}>{landmark}</li>
+                                                    ))
+                                                    : landmarks.map((landmark, idx) => (
+                                                        <li key={idx}>{landmark}</li>
+                                                    ))
+                                                }
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    {property.units && (
+                                        <div style={{ marginTop: 10 }}>
+                                            <strong>Units:</strong>
+                                            <ul>
+                                                {Object.entries(property.units).map(([unitKey, unitObj]: any) => (
+                                                    <li key={unitKey}>
+                                                        {unitObj.name} - {unitObj.area} sqm, {unitObj.bedrooms} BR
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        </div>
+                                    )}
                                 </div>
-                                <span className="property-card-price">{price}</span>
                             </div>
-                         
-                            <div className="property-card-extra">
-                                <div className="property-card-amenities">
-                                    <ul>
-                                        {amenities.map((amenity, index) => (
-                                            <li key={index}>{amenity}</li>
-                                        ))}
-                                    </ul>
-                                </div>
-                                <div className="property-card-landmarks">
-                                    <ul>
-                                        {landmarks.map((landmark, index) => (
-                                            <li key={index}>{landmark}</li>
-                                        ))}
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                        ))
+                    )}
                 </div>
             </div>
         </div>
