@@ -6,6 +6,7 @@ import '.././css/Properties.css' // Adjust the path as necessary
 import Footer from '../components/Footer'
 import HeaderImg from '../assets/temp_prptHeader.png'
 
+
 function Properties() {
     return (
         <div>
