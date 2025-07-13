@@ -154,13 +154,65 @@ function PropertiesBody() {
     const amenities = ["Swimming Pool", "Gym", "Parking", "24-Hour Security"];
     const landmarks = ["0.9km away from St. Paul College Pasig", "1.3km away from Rizal Medical Hospital", "0.3km away from SM Hypermarket Pasig", "1.9km away from SM Megamall"];
 
-    // Example master amenities list (should be fetched or imported from your amenities section)
-    const masterAmenities = [
-        { key: "amenity1", name: "Gate and Guardhouse" },
-        { key: "amenity2", name: "Clubhouse" },
-        { key: "amenity3", name: "Adult Pool" },
-        { key: "amenity4", name: "Kiddie Pool" },
-    ];
+    // Fetch amenities, nearbyest, and units from the root of the database
+    const [masterAmenities, setMasterAmenities] = useState<{ key: string, name: string }[]>([]);
+    const [masterNearbyest, setMasterNearbyest] = useState<{ [key: string]: { distance: number, name: string } }>({});
+    const [unitsTable, setUnitsTable] = useState<{ [key: string]: { price: number } }>({});
+
+    useEffect(() => {
+        // Fetch properties
+        const propertiesRef = ref(rtdb, "properties");
+        const unsubscribeProps = onValue(propertiesRef, (snapshot) => {
+            const data = snapshot.val();
+            const props = data
+                ? Object.entries(data).map(([id, value]) =>
+                    typeof value === 'object' && value !== null
+                        ? { id, ...value }
+                        : { id, value }
+                  )
+                : [];
+            setProperties(props);
+            setLoading(false);
+        });
+
+        // Fetch amenities
+        const amenitiesRef = ref(rtdb, "amenities");
+        const unsubscribeAmenities = onValue(amenitiesRef, (snapshot) => {
+            const data = snapshot.val();
+            if (data) {
+                const arr = Object.entries(data).map(([key, value]: any) => ({
+                    key,
+                    name: value.name
+                }));
+                setMasterAmenities(arr);
+            }
+        });
+
+        // Fetch nearbyest
+        const nearbyestRef = ref(rtdb, "nearbyest");
+        const unsubscribeNearbyest = onValue(nearbyestRef, (snapshot) => {
+            const data = snapshot.val();
+            if (data) {
+                setMasterNearbyest(data);
+            }
+        });
+
+        // Fetch units
+        const unitsRef = ref(rtdb, "units");
+        const unsubscribeUnits = onValue(unitsRef, (snapshot) => {
+            const data = snapshot.val();
+            if (data) {
+                setUnitsTable(data);
+            }
+        });
+
+        return () => {
+            unsubscribeProps();
+            unsubscribeAmenities();
+            unsubscribeNearbyest();
+            unsubscribeUnits();
+        };
+    }, []);
 
     // Responsive state for mobile and tablet
     const [isMobile, setIsMobile] = useState(false);
@@ -194,25 +246,22 @@ function PropertiesBody() {
     const [properties, setProperties] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        const propertiesRef = ref(rtdb, "properties");
-        const unsubscribe = onValue(propertiesRef, (snapshot) => {
-            const data = snapshot.val();
-            // Convert the structure to an array for rendering
-            const props = data
-                ? Object.entries(data).map(([id, value]) =>
-                    typeof value === 'object' && value !== null
-                        ? { id, ...value }
-                        : { id, value }
-                  )
-                : [];
-            setProperties(props);
-            setLoading(false);
-        });
-        return () => unsubscribe();
-    }, []);
-
     const propertyCount = properties.length;
+
+    function formatPesoRange(unitObj: any, unitsTable: any) {
+        if (!unitObj || !unitsTable) return null;
+        const prices: number[] = Object.keys(unitObj)
+            .filter((key) => unitObj[key] && unitsTable[key] && typeof unitsTable[key].price === "number")
+            .map((key) => unitsTable[key].price);
+
+        if (prices.length === 0) return null;
+        const min = Math.min(...prices);
+        const max = Math.max(...prices);
+
+        // Format with comma
+        const format = (num: number) => "₱ " + num.toLocaleString();
+        return prices.length === 1 ? format(min) : `${format(min)} - ${format(max)}`;
+    }
 
     return (
         <div>
@@ -841,9 +890,13 @@ function PropertiesBody() {
                             <div className="property-card" key={property.id}>
                                 <div className="property-card-image-container" style={{ position: "relative" }}>
                                     <img 
-                                        src={property.imageUrl || HeaderImg} 
-                                        alt="Property" 
-                                        className="property-card-image" 
+                                        src={
+                                            property.images && property.images.mainImage
+                                                ? property.images.mainImage
+                                                : HeaderImg
+                                        }
+                                        alt="Property"
+                                        className="property-card-image"
                                     />
                                     {isMobile && (
                                         <span className="property-card-status property-card-status-mobile">
@@ -853,7 +906,17 @@ function PropertiesBody() {
                                 </div>
                                 <div className="property-card-details">
                                     {!isMobile && (
-                                        <p className="property-card-status">{property.type || status}</p>
+                                        property.type && property.type.includes(',')
+                                            ? (
+                                                <div style={{ display: 'flex', gap: '8px' }}>
+                                                    {property.type.split(',').map((statusStr: string, idx: number) => (
+                                                        <p className="property-card-status" key={idx}>
+                                                            {statusStr.trim()}
+                                                        </p>
+                                                    ))}
+                                                </div>
+                                            )
+                                            : <p className="property-card-status">{property.type || status}</p>
                                     )}
                                     <div className="property-card-name-loc-price-cont">
                                         <div className="property-card-name-loc-cont">
@@ -866,9 +929,11 @@ function PropertiesBody() {
                                             </p>
                                         </div>
                                         <span className="property-card-price">
-                                            {property.price 
-                                                ? property.price 
-                                                : price}
+                                            {property.unit
+                                                ? formatPesoRange(property.unit, unitsTable)
+                                                : property.price
+                                                    ? "₱ " + Number(property.price).toLocaleString()
+                                                    : price}
                                         </span>
                                     </div>
                                     <div className="property-card-extra">
@@ -888,10 +953,14 @@ function PropertiesBody() {
                                         </div>
                                         <div className="property-card-landmarks">
                                             <ul>
-                                                {property.landmarks
-                                                    ? property.landmarks.map((landmark: string, idx: number) => (
-                                                        <li key={idx}>{landmark}</li>
-                                                    ))
+                                                {property.nearby
+                                                    ? Object.keys(property.nearby)
+                                                        .filter(key => property.nearby[key] && masterNearbyest[key])
+                                                        .map((key, idx) => (
+                                                            <li key={idx}>
+                                                                {masterNearbyest[key].distance}km from {masterNearbyest[key].name}
+                                                            </li>
+                                                        ))
                                                     : landmarks.map((landmark, idx) => (
                                                         <li key={idx}>{landmark}</li>
                                                     ))
