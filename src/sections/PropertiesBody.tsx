@@ -13,62 +13,109 @@ import { rtdb } from "../firebase";
 import { ref, onValue } from "firebase/database";
 
 function PropertiesBody() {
-    // Fixed price range values
-    const fixedPrices = [1000000, 3000000, 5000000, 10000000, 15000000, 30000000];
+    // Dynamic price range values
+    const [dynamicPrices, setDynamicPrices] = useState<number[]>([1000000, 3000000, 5000000, 10000000, 15000000, 30000000]);
+    const [priceRange, setPriceRange] = useState<[number, number]>([0, 5]);
 
-    // State for slider values
-    const [priceRange, setPriceRange] = useState<[number, number]>([0, fixedPrices.length - 1]);
-
+    // Helper to find closest value in dynamicPrices
     const findClosestValue = (value: number) => {
-        return fixedPrices.reduce((prev, curr) =>
+        return dynamicPrices.reduce((prev, curr) =>
             Math.abs(curr - value) < Math.abs(prev - value) ? curr : prev
         );
     };
 
-    const handleSliderChange = (values: number[]) => {
-        // Snap both thumbs to the nearest fixed price
-        const snappedValues: [number, number] = [
-            findClosestValue(values[0]),
-            findClosestValue(values[1]),
-        ];
-        setPriceRange([fixedPrices.indexOf(snappedValues[0]), fixedPrices.indexOf(snappedValues[1])]);
-        console.log('Selected Price Range:', snappedValues);
-    };
+
 
     // State for location section collapse
     const [isLocationCollapsed, setIsLocationCollapsed] = useState(false);
 
-    // Dynamic location options
-    const rawLocations = ["Manila", "Makati", "Cebu", "Albay"];
-    const locationOptions =
-        rawLocations.length > 1
-            ? ["All Locations", ...rawLocations.sort()]
-            : rawLocations.sort(); // Hide "All Locations" if only one location exists
-    const [selectedLocations, setSelectedLocations] = useState<string[]>([]);
+    // Dynamic location options from DB
+    const [locationOptions, setLocationOptions] = useState<string[]>([]);
+    useEffect(() => {
+        const propertiesRef = ref(rtdb, "properties");
+        const unsubscribeProps = onValue(propertiesRef, (snapshot) => {
+            const data = snapshot.val();
+            const props = data
+                ? Object.entries(data).map(([id, value]) =>
+                    typeof value === 'object' && value !== null
+                        ? { id, ...value }
+                        : { id, value }
+                  )
+                : [];
+            setProperties(props);
+            setLoading(false);
 
+            // Extract unique locations (after last comma, keep original case)
+            const locSet = new Set<string>();
+            props.forEach((prop: any) => {
+                if (prop.location) {
+                    const loc = prop.location.split(',').pop()?.trim();
+                    if (loc) locSet.add(loc);
+                }
+            });
+            setLocationOptions(Array.from(locSet));
+        });
+
+        // Fetch amenities
+        const amenitiesRef = ref(rtdb, "amenities");
+        const unsubscribeAmenities = onValue(amenitiesRef, (snapshot) => {
+            const data = snapshot.val();
+            if (data) {
+                const arr = Object.entries(data).map(([key, value]: any) => ({
+                    key,
+                    name: value.name
+                }));
+                setMasterAmenities(arr);
+            }
+        });
+
+        // Fetch nearbyest
+        const nearbyestRef = ref(rtdb, "nearbyest");
+        const unsubscribeNearbyest = onValue(nearbyestRef, (snapshot) => {
+            const data = snapshot.val();
+            if (data) {
+                setMasterNearbyest(data);
+            }
+        });
+
+        // Fetch units
+        const unitsRef = ref(rtdb, "units");
+        const unsubscribeUnits = onValue(unitsRef, (snapshot) => {
+            const data = snapshot.val();
+            if (data) {
+                setUnitsTable(data);
+            }
+        });
+
+        return () => {
+            unsubscribeProps();
+            unsubscribeAmenities();
+            unsubscribeNearbyest();
+            unsubscribeUnits();
+        };
+    }, []);
+
+    // State for location filter
+    const [selectedLocations, setSelectedLocations] = useState<string[]>([]);
     const handleLocationChange = (location: string) => {
         if (location === "All Locations") {
             if (selectedLocations.includes("All Locations")) {
-                // Deselect "All Locations" and all other locations
                 setSelectedLocations([]);
             } else {
-                // Select all locations
-                setSelectedLocations(locationOptions);
+                setSelectedLocations(["All Locations", ...locationOptions]);
             }
         } else {
             setSelectedLocations((prev) => {
                 const updatedLocations = prev.includes(location)
-                    ? prev.filter((loc) => loc !== location) // Deselect the location
-                    : [...prev, location]; // Select the location
+                    ? prev.filter((loc) => loc !== location)
+                    : [...prev, location];
 
-                // Automatically deselect "All Locations" if a single location is deselected
                 if (prev.includes("All Locations") && !updatedLocations.includes(location)) {
                     return updatedLocations.filter((loc) => loc !== "All Locations");
                 }
 
-                // Automatically select "All Locations" if all other locations are selected
-                if (updatedLocations.length === locationOptions.length - 1) {
-                    return [...updatedLocations, "All Locations"];
+                if (updatedLocations.length === locationOptions.length) {
+                    return ["All Locations", ...locationOptions];
                 }
 
                 return updatedLocations;
@@ -78,30 +125,29 @@ function PropertiesBody() {
 
     // State for unit type section collapse
     const [isUnitTypeCollapsed, setIsUnitTypeCollapsed] = useState(false);
-    const unitTypeOptions = ["Studio", "1 Bedroom", "2 Bedrooms", "3+ Bedrooms"];
+    const [unitTypeOptions, setUnitTypeOptions] = useState<string[]>([]);
     const [selectedUnitTypes, setSelectedUnitTypes] = useState<string[]>([]);
+    // Extract unique unit type names from unitsTable (must be after unitsTable is declared)
+    // This must be after unitsTable is declared (line 222+)
+
 
     const handleUnitTypeChange = (unitType: string) => {
         if (unitType === "All Unit") {
             if (selectedUnitTypes.includes("All Unit")) {
-                // Deselect "All Unit" and all other unit types
                 setSelectedUnitTypes([]);
             } else {
-                // Select all unit types
                 setSelectedUnitTypes(["All Unit", ...unitTypeOptions]);
             }
         } else {
             setSelectedUnitTypes((prev) => {
                 const updatedUnitTypes = prev.includes(unitType)
-                    ? prev.filter((type) => type !== unitType) // Deselect the unit type
-                    : [...prev, unitType]; // Select the unit type
+                    ? prev.filter((type) => type !== unitType)
+                    : [...prev, unitType];
 
-                // Automatically deselect "All Unit" if a single unit type is deselected
                 if (prev.includes("All Unit") && !updatedUnitTypes.includes(unitType)) {
                     return updatedUnitTypes.filter((type) => type !== "All Unit");
                 }
 
-                // Automatically select "All Unit" if all other unit types are selected
                 if (updatedUnitTypes.length === unitTypeOptions.length) {
                     return ["All Unit", ...unitTypeOptions];
                 }
@@ -113,7 +159,7 @@ function PropertiesBody() {
 
     // State for property type section collapse
     const [isPropertyTypeCollapsed, setIsPropertyTypeCollapsed] = useState(false);
-    const propertyTypeOptions = ["Residential", "Commercial", "Land"];
+    const [propertyTypeOptions, setPropertyTypeOptions] = useState<string[]>([]);
     const [selectedPropertyTypes, setSelectedPropertyTypes] = useState<string[]>([]);
 
     const handlePropertyTypeChange = (propertyType: string) => {
@@ -157,7 +203,44 @@ function PropertiesBody() {
     // Fetch amenities, nearbyest, and units from the root of the database
     const [masterAmenities, setMasterAmenities] = useState<{ key: string, name: string }[]>([]);
     const [masterNearbyest, setMasterNearbyest] = useState<{ [key: string]: { distance: number, name: string } }>({});
-    const [unitsTable, setUnitsTable] = useState<{ [key: string]: { price: number } }>({});
+    const [unitsTable, setUnitsTable] = useState<{ [key: string]: any }>({});
+
+    // Dynamically extract unique unit names for filter and dynamic price range
+    useEffect(() => {
+        if (unitsTable && typeof unitsTable === 'object') {
+            // Unit names
+            const names = Object.values(unitsTable)
+                .map((unit: any) => unit.name)
+                .filter((name): name is string => typeof name === 'string');
+            const uniqueNames = Array.from(new Set(names));
+            setUnitTypeOptions(uniqueNames);
+
+            // Dynamic price range
+            const prices = Object.values(unitsTable)
+                .map((unit: any) => typeof unit.price === 'number' ? unit.price : null)
+                .filter((price): price is number => price !== null && !isNaN(price));
+            if (prices.length > 0) {
+                // Find min/max, round down/up to nearest 100k or 1M for better UX
+                const minPrice = Math.min(...prices);
+                const maxPrice = Math.max(...prices);
+                // Round down min to nearest 100k, up max to nearest 100k
+                const roundBase = minPrice < 2000000 ? 100000 : 1000000;
+                const roundedMin = Math.floor(minPrice / roundBase) * roundBase;
+                const roundedMax = Math.ceil(maxPrice / roundBase) * roundBase;
+                // Generate price steps (6 steps, inclusive)
+                let steps = 5;
+                let stepSize = Math.max(Math.round((roundedMax - roundedMin) / steps / roundBase) * roundBase, roundBase);
+                if (stepSize === 0) stepSize = roundBase;
+                const priceArr = [];
+                for (let p = roundedMin; p < roundedMax; p += stepSize) {
+                    priceArr.push(p);
+                }
+                priceArr.push(roundedMax);
+                setDynamicPrices(priceArr);
+                setPriceRange([0, priceArr.length - 1]);
+            }
+        }
+    }, [unitsTable]);
 
     useEffect(() => {
         // Fetch properties
@@ -173,6 +256,28 @@ function PropertiesBody() {
                 : [];
             setProperties(props);
             setLoading(false);
+
+            // Extract unique locations (after last comma, keep original case)
+            const locSet = new Set<string>();
+            props.forEach((prop: any) => {
+                if (prop.location) {
+                    const loc = prop.location.split(',').pop()?.trim();
+                    if (loc) locSet.add(loc);
+                }
+            });
+            setLocationOptions(Array.from(locSet));
+
+            // Extract unique property types (split by comma, trim, flatten, dedupe)
+            const typeSet = new Set<string>();
+            props.forEach((prop: any) => {
+                if (prop.type) {
+                    prop.type.split(',').forEach((typeStr: string) => {
+                        const t = typeStr.trim();
+                        if (t) typeSet.add(t);
+                    });
+                }
+            });
+            setPropertyTypeOptions(Array.from(typeSet));
         });
 
         // Fetch amenities
@@ -417,7 +522,7 @@ function PropertiesBody() {
                                                 .filter((location) => location !== "All Locations")
                                                 .map((location, index) => (
                                                     <div key={index} className="selected-filter">
-                                                        {location}
+                                                        {location.charAt(0).toUpperCase() + location.slice(1)}
                                                         <span onClick={() => handleLocationChange(location)}>
                                                             <img src={closeFilterIcon} alt="Remove" style={{ width: "100%", height: "100%" }} />
                                                         </span>
@@ -427,6 +532,14 @@ function PropertiesBody() {
                                     )}
                                     {!isLocationCollapsed && (
                                         <div className="location-options">
+                                            <label>
+                                                <input
+                                                    type="checkbox"
+                                                    checked={selectedLocations.includes("All Locations")}
+                                                    onChange={() => handleLocationChange("All Locations")}
+                                                />
+                                                All Locations
+                                            </label>
                                             {locationOptions.map((location, index) => (
                                                 <label key={index}>
                                                     <input
@@ -570,7 +683,7 @@ function PropertiesBody() {
                                         setSelectedLocations([]);
                                         setSelectedUnitTypes([]);
                                         setSelectedPropertyTypes([]);
-                                        setPriceRange([0, fixedPrices.length - 1]);
+                                        setPriceRange([0, dynamicPrices.length - 1]);
                                     }}
                                 >
                                     Clear Filter
@@ -582,15 +695,11 @@ function PropertiesBody() {
                         <label>Budget</label>
                         <div className="slider-wrapper">
                             <Range
-                                min={0} // Slider track starts from 0 (even spacing index)
-                                max={fixedPrices.length - 1} // Slider track ends at the last index of fixedPrices
-                                values={priceRange} // Use state for slider values
+                                min={0}
+                                max={dynamicPrices.length - 1}
+                                values={priceRange}
                                 onChange={(indices) => {
-                                    const snappedValues: [number, number] = [
-                                        fixedPrices[indices[0]],
-                                        fixedPrices[indices[1]],
-                                    ];
-                                    handleSliderChange(snappedValues);
+                                    setPriceRange([indices[0], indices[1]]);
                                 }}
                                 renderTrack={({ props, children }) => (
                                     <div
@@ -603,18 +712,18 @@ function PropertiesBody() {
                                                 values: priceRange,
                                                 colors: ['#ddd', '#1A3D8F', '#ddd'],
                                                 min: 0,
-                                                max: fixedPrices.length - 1,
+                                                max: dynamicPrices.length - 1,
                                             }),
                                             borderRadius: '4px',
                                             position: 'relative',
                                         }}
                                     >
-                                        {fixedPrices.map((value, index) => (
+                                        {dynamicPrices.map((value, index) => (
                                             <div
                                                 key={index}
                                                 style={{
                                                     position: 'absolute',
-                                                    left: `${(index / (fixedPrices.length - 1)) * 100}%`,
+                                                    left: `${(index / (dynamicPrices.length - 1)) * 100}%`,
                                                     top: '0',
                                                     height: '18px',
                                                     width: '0.5px',
@@ -636,7 +745,7 @@ function PropertiesBody() {
                                                             color: '#8B8B8B',
                                                         }}
                                                     >
-                                                        {value / 1000000}M
+                                                        {value >= 1000000 ? `${Math.round(value / 1000000)}M` : `${Math.round(value / 1000)}K`}
                                                     </span>
                                                 </div>
                                             </div>
@@ -644,7 +753,7 @@ function PropertiesBody() {
                                         {children}
                                     </div>
                                 )}
-                                renderThumb={({ props, index, isDragged }) => (
+                                renderThumb={({ props, isDragged }) => (
                                     <div
                                         {...props}
                                         style={{
@@ -669,22 +778,22 @@ function PropertiesBody() {
                                 <label>Min</label>
                                 <select
                                     className="dropdown"
-                                    value={fixedPrices[priceRange[0]]}
+                                    value={dynamicPrices[priceRange[0]]}
                                     onChange={(e) => {
                                         const newMin = parseInt(e.target.value, 10);
                                         setPriceRange([
-                                            fixedPrices.indexOf(newMin),
+                                            dynamicPrices.indexOf(newMin),
                                             priceRange[1],
                                         ]);
                                     }}
                                 >
-                                    {fixedPrices.map((price, index) => (
+                                    {dynamicPrices.map((price, index) => (
                                         <option
                                             key={index}
                                             value={price}
-                                            disabled={index > priceRange[1]} // Disable options greater than the selected max
+                                            disabled={index > priceRange[1]}
                                         >
-                                            {price / 1000000}M
+                                            {price >= 1000000 ? `${Math.round(price / 1000000)}M` : `${Math.round(price / 1000)}K`}
                                         </option>
                                     ))}
                                 </select>
@@ -693,22 +802,22 @@ function PropertiesBody() {
                                 <label>Max</label>
                                 <select
                                     className="dropdown"
-                                    value={fixedPrices[priceRange[1]]}
+                                    value={dynamicPrices[priceRange[1]]}
                                     onChange={(e) => {
                                         const newMax = parseInt(e.target.value, 10);
                                         setPriceRange([
                                             priceRange[0],
-                                            fixedPrices.indexOf(newMax),
+                                            dynamicPrices.indexOf(newMax),
                                         ]);
                                     }}
                                 >
-                                    {fixedPrices.map((price, index) => (
+                                    {dynamicPrices.map((price, index) => (
                                         <option
                                             key={index}
                                             value={price}
-                                            disabled={index < priceRange[0]} // Disable options less than the selected min
+                                            disabled={index < priceRange[0]}
                                         >
-                                            {price / 1000000}M
+                                            {price >= 1000000 ? `${Math.round(price / 1000000)}M` : `${Math.round(price / 1000)}K`}
                                         </option>
                                     ))}
                                 </select>
@@ -742,7 +851,7 @@ function PropertiesBody() {
                                     .filter((location) => location !== "All Locations")
                                     .map((location, index) => (
                                         <div key={index} className="selected-filter">
-                                            {location}
+                                            {location.charAt(0).toUpperCase() + location.slice(1)}
                                             <span onClick={() => handleLocationChange(location)}>
                                                 <img src={closeFilterIcon} alt="Remove" style={{ width: "100%", height: "100%" }} />
                                             </span>
@@ -752,6 +861,14 @@ function PropertiesBody() {
                         )}
                         {!isLocationCollapsed && (
                             <div className="location-options">
+                                <label>
+                                    <input
+                                        type="checkbox"
+                                        checked={selectedLocations.includes("All Locations")}
+                                        onChange={() => handleLocationChange("All Locations")}
+                                    />
+                                    All Locations
+                                </label>
                                 {locationOptions.map((location, index) => (
                                     <label key={index}>
                                         <input
