@@ -1,18 +1,28 @@
 // import '../App.css'
 import '../css/Hero.css'
 
-function InnerProp_Hero() {
 
+interface InnerPropHeroProps {
+  name: string;
+  location: string;
+  priceRange: string;
+  description: string;
+  virtualtour_link?: string;
+  image?: string;
+}
+
+function InnerProp_Hero({ name, location, priceRange, description, virtualtour_link, image }: InnerPropHeroProps) {
+  const bgImage = image ? image : import.meta.env.BASE_URL + '/assets/featured_properties/shore.png';
   return (
     <>
     <div className="hero-bg">
       <section className='hero'>
         <div className="hero-cont">
           <div className="left-cont">
-              <h1>Sail Residences</h1>
-              <p><i>Mall of Asia, Pasay City</i></p>
-              <p>Price Range: ₱8,600,000 - ₱24,600,000</p>
-              <p>Welcome to Sail Residences, the gem of the Mall of Asia district. Around the area of this condominium in Pasay, a vast wealth of shops, restaurants, and entertainment sites await you, as does the view of the horizon beyond Manila Bay.</p>
+              <h1>{name}</h1>
+              <p><i>{location}</i></p>
+              <p>Price Range: {priceRange}</p>
+              <p>{description}</p>
             
             <div className="highlights-cont">
               <div className="highlight">
@@ -39,11 +49,19 @@ function InnerProp_Hero() {
               </div>
             </div>
 
-            <button className='view-vr-btn blue'>View VR Tour</button>
+            {virtualtour_link ? (
+              <a
+                href={virtualtour_link}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ textDecoration: 'none' }}
+              >
+                <button className="view-vr-btn blue">View VR Tour</button>
+              </a>
+            ) : null}
           </div>
           <div className="right-cont"
-          style={{backgroundImage: `url(${import.meta.env.BASE_URL + '/assets/featured_properties/shore.png'
-          })`}}>
+            style={{backgroundImage: `url(${bgImage})`}}>
             {/* <img src={tempprof} alt="Agent Headshot Picture" /> */}
           </div>
         </div>
@@ -59,7 +77,6 @@ function InnerProp_Hero() {
       </section>
 
     </div>
-    
     </>
   )
 }

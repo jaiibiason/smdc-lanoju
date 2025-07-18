@@ -11,6 +11,7 @@ import mageFilterIcon from "../assets/mage_filter-2.svg"; // Import the filter i
 import closeFilterIcon from "../assets/close_filter.svg"; // Import close icon
 import { rtdb } from "../firebase";
 import { ref, onValue } from "firebase/database";
+import { useNavigate } from 'react-router-dom';
 
 function PropertiesBody() {
     // Dynamic price range values
@@ -351,7 +352,118 @@ function PropertiesBody() {
     const [properties, setProperties] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
 
-    const propertyCount = properties.length;
+    // Filtering logic
+    const filterProperties = (props: any[]) => {
+        return props.filter((property) => {
+            // 1. Budget filter
+            if (dynamicPrices.length > 1 && priceRange) {
+                // Get min/max price from slider
+                const minBudget = dynamicPrices[priceRange[0]];
+                const maxBudget = dynamicPrices[priceRange[1]];
+                // Get property price(s)
+                let propPrices: number[] = [];
+                if (property.unit && unitsTable) {
+                    propPrices = Object.keys(property.unit)
+                        .filter((key) => property.unit[key] && unitsTable[key] && typeof unitsTable[key].price === 'number')
+                        .map((key) => unitsTable[key].price);
+                } else if (property.price) {
+                    propPrices = [Number(property.price)];
+                }
+                // If no price, skip (show)
+                if (propPrices.length > 0) {
+                    const inBudget = propPrices.some((p) => p >= minBudget && p <= maxBudget);
+                    if (!inBudget) return false;
+                }
+            }
+
+            // 2. Location filter
+            if (selectedLocations.length > 0 && !selectedLocations.includes('All Locations')) {
+                // Extract last part after comma (city/province)
+                const propLoc = property.location ? property.location.split(',').pop()?.trim() : '';
+                if (!selectedLocations.includes(propLoc)) return false;
+            }
+
+            // 3. Unit type filter
+            if (selectedUnitTypes.length > 0 && !selectedUnitTypes.includes('All Unit')) {
+                // Get all unit names for this property
+                let propUnitNames: string[] = [];
+                if (property.unit && unitsTable) {
+                    propUnitNames = Object.keys(property.unit)
+                        .filter((key) => property.unit[key] && unitsTable[key] && typeof unitsTable[key].name === 'string')
+                        .map((key) => unitsTable[key].name);
+                }
+                // If no units, skip (show)
+                if (propUnitNames.length > 0) {
+                    const hasUnit = propUnitNames.some((name) => selectedUnitTypes.includes(name));
+                    if (!hasUnit) return false;
+                } else {
+                    // If property has no units, hide if filter is active
+                    return false;
+                }
+            }
+
+            // 4. Property type filter
+            if (selectedPropertyTypes.length > 0 && !selectedPropertyTypes.includes('All Property')) {
+                // property.type can be comma separated
+                const propTypes = property.type ? property.type.split(',').map((t: string) => t.trim()) : [];
+                if (!propTypes.some((t: string) => selectedPropertyTypes.includes(t))) return false;
+            }
+
+            return true;
+        });
+    };
+
+    // Sorting logic
+    const sortProperties = (props: any[]) => {
+        if (selectedSort === 'residential') {
+            // Relevance: sort by id descending (assuming id is property1, property2, ...)
+            return [...props].sort((a, b) => {
+                // Extract number from id
+                const getNum = (id: string) => {
+                    const match = id && id.match(/(\d+)/);
+                    return match ? parseInt(match[1], 10) : 0;
+                };
+                return getNum(b.id) - getNum(a.id);
+            });
+        } else if (selectedSort === 'commercial') {
+            // Pricing Low to High
+            return [...props].sort((a, b) => {
+                const getMinPrice = (property: any) => {
+                    let prices: number[] = [];
+                    if (property.unit && unitsTable) {
+                        prices = Object.keys(property.unit)
+                            .filter((key) => property.unit[key] && unitsTable[key] && typeof unitsTable[key].price === 'number')
+                            .map((key) => unitsTable[key].price);
+                    } else if (property.price) {
+                        prices = [Number(property.price)];
+                    }
+                    return prices.length > 0 ? Math.min(...prices) : Number.MAX_SAFE_INTEGER;
+                };
+                return getMinPrice(a) - getMinPrice(b);
+            });
+        } else if (selectedSort === 'land') {
+            // Pricing High to Low
+            return [...props].sort((a, b) => {
+                const getMinPrice = (property: any) => {
+                    let prices: number[] = [];
+                    if (property.unit && unitsTable) {
+                        prices = Object.keys(property.unit)
+                            .filter((key) => property.unit[key] && unitsTable[key] && typeof unitsTable[key].price === 'number')
+                            .map((key) => unitsTable[key].price);
+                    } else if (property.price) {
+                        prices = [Number(property.price)];
+                    }
+                    return prices.length > 0 ? Math.min(...prices) : Number.MIN_SAFE_INTEGER;
+                };
+                return getMinPrice(b) - getMinPrice(a);
+            });
+        }
+        // Default: All Properties (no sort)
+        return props;
+    };
+
+    const filteredProperties = sortProperties(filterProperties(properties));
+    const propertyCount = filteredProperties.length;
 
     function formatPesoRange(unitObj: any, unitsTable: any) {
         if (!unitObj || !unitsTable) return null;
@@ -367,6 +479,8 @@ function PropertiesBody() {
         const format = (num: number) => "₱ " + num.toLocaleString();
         return prices.length === 1 ? format(min) : `${format(min)} - ${format(max)}`;
     }
+
+    const navigate = useNavigate();
 
     return (
         <div>
@@ -1003,8 +1117,13 @@ function PropertiesBody() {
                     {loading ? (
                         <div>Loading properties...</div>
                     ) : (
-                        properties.map((property) => (
-                            <div className="property-card" key={property.id}>
+                        filteredProperties.map((property) => (
+                            <div
+                                className="property-card"
+                                key={property.id}
+                                style={{ cursor: 'pointer' }}
+                                onClick={() => navigate(`/inner-prop/${property.id}`)}
+                            >
                                 <div className="property-card-image-container" style={{ position: "relative" }}>
                                     <img 
                                         src={

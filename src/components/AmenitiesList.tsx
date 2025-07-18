@@ -27,6 +27,7 @@ const AmenitiesList: React.FC<AmenitiesListProps> = ({ amenities }) => {
         return "/assets/amenities-icons/sunset-lanai.svg";
       case "Celebration Hall":
         return "/assets/amenities-icons/celebration-hall.svg";
+        
       default:
         return "/assets/amenities-icons/default.svg"; 
     }
