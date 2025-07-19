@@ -24,20 +24,12 @@ const images = [
   "/assets/gallery/bloom.png",
 ];
 
-const amenities = [
-  { label: "Lap Pool" },
-  { label: "Kiddie Pool" },
-  { label: "Fitness Gym" },
-  { label: "Sunset Lounge" },
-  { label: "Grand Lobby" },
-  { label: "Sunset Lanai" },
-  { label: "Celebration Hall" },
-];
-
 function InnerProperties() {
   const { id } = useParams();
   const [property, setProperty] = useState<any>(null);
   const [unitsTable, setUnitsTable] = useState<{ [key: string]: any }>({});
+  const [amenitiesTable, setAmenitiesTable] = useState<{ [key: string]: any }>({});
+  const [nearbyestTable, setNearbyestTable] = useState<{ [key: string]: any }>({});
 
   useEffect(() => {
     if (!id) return;
@@ -63,62 +55,98 @@ function InnerProperties() {
     return () => unsubscribe();
   }, []);
 
+  // Fetch amenities table from Firebase
+  useEffect(() => {
+    const amenitiesRef = ref(rtdb, "amenities");
+    const unsubscribe = onValue(amenitiesRef, (snapshot) => {
+      const data = snapshot.val();
+      if (data) {
+        setAmenitiesTable(data);
+      }
+    });
+    return () => unsubscribe();
+  }, []);
+
+  // Fetch nearby establishments table from Firebase
+  useEffect(() => {
+    const nearbyestRef = ref(rtdb, "nearbyest");
+    const unsubscribe = onValue(nearbyestRef, (snapshot) => {
+      const data = snapshot.val();
+      if (data) {
+        setNearbyestTable(data);
+      }
+    });
+    return () => unsubscribe();
+  }, []);
+
   // Prepare units for this property
   let propertyUnits: Array<{ name: string; area: number; price: number; image: string }> = [];
+  
   if (property && property.unit && unitsTable && Object.keys(unitsTable).length > 0) {
-    propertyUnits = Object.keys(property.unit)
-      .filter(key => property.unit[key] && unitsTable[key])
+    // Get unit data from property.unit and combine with global units table
+    propertyUnits = Object.entries(property.unit)
+      .map(([unitKey, unitData]: [string, any]) => {
+        // Get the unit name from the global units table
+        const unitName = unitsTable[unitKey]?.name || "Unnamed Unit";
+        
+        // Use unit data from property (it contains price and area)
+        return {
+          name: unitName,
+          area: unitData.area || 0,
+          price: unitData.price || 0,
+          image: unitData.unit_image_url && unitData.unit_image_url.trim() !== ""
+            ? unitData.unit_image_url
+            : "/assets/unit-type/placeholder.png"
+        };
+      })
+      .filter(unit => unit.price > 0); // Only include units with valid price
+  }
+
+  // Prepare amenities for this property
+  let propertyAmenities: Array<{ label: string; icon: string }> = [];
+  
+  if (property && property.amenities && amenitiesTable) {
+    // Get amenities from property that are marked as true
+    propertyAmenities = Object.keys(property.amenities)
+      .filter(key => property.amenities[key] === true && amenitiesTable[key])
       .map(key => ({
-        name: unitsTable[key].name,
-        area: unitsTable[key].area,
-        price: unitsTable[key].price,
-        // Use previous images if available, fallback to placeholder
-        image:
-          unitsTable[key].image ||
-          (unitsTable[key].name === "Aria"
-            ? "https://firebasestorage.googleapis.com/v0/b/dmdc-freelance.firebasestorage.app/o/properties%2Fpark.png?alt=media&token=79495b40-b674-4ce7-b9c7-4eb2aaee041c"
-            : unitsTable[key].name === "Sonata"
-            ? "https://firebasestorage.googleapis.com/v0/b/dmdc-freelance.firebasestorage.app/o/properties%2Fshore.png?alt=media&token=0b199c00-af9b-4a0c-881f-6bd60decbcad"
-            : unitsTable[key].name === "Anne House Model"
-            ? "/assets/unit-type/unit3.jpg"
-            : unitsTable[key].name === "Annika House Model"
-            ? "/assets/unit-type/unit3.jpg"
-            : "/assets/unit-type/placeholder.png"),
+        label: amenitiesTable[key].name,
+        icon: amenitiesTable[key].icon_link && amenitiesTable[key].icon_link.trim() !== ""
+          ? amenitiesTable[key].icon_link
+          : "https://firebasestorage.googleapis.com/v0/b/dmdc-freelance.firebasestorage.app/o/amenities_icons%2Fdefault-icon.svg?alt=media&token=57e0af54-c470-4f03-850f-e7f26c50f016"
       }));
   }
 
-  const propertyName = property?.name || "Property";
-  const location = property?.location || "";
-  // Compute price range from unit prices using global unitsTable (like PropertiesBody)
+  // Calculate price range from unit prices
   let priceRange = "";
-  if (property && property.unit && unitsTable && Object.keys(unitsTable).length > 0) {
-    const prices = Object.keys(property.unit)
-      .filter(key => property.unit[key] && unitsTable[key] && typeof unitsTable[key].price === 'number')
-      .map(key => unitsTable[key].price);
+  if (propertyUnits.length > 0) {
+    const prices = propertyUnits.map(unit => unit.price).filter(price => price > 0);
     if (prices.length > 0) {
       const min = Math.min(...prices);
       const max = Math.max(...prices);
       priceRange = min === max ? `₱${min.toLocaleString()}` : `₱${min.toLocaleString()} - ₱${max.toLocaleString()}`;
     }
   }
-  const description = property?.description || "";
 
   return (
     <>
       <div className="inner-properties-pg">
-        <Crumbs pageName={propertyName} />
+        <Crumbs pageName={property?.name || "Property"} />
         <Hero
-          name={propertyName}
-          location={location}
+          name={property?.name || ""}
+          location={property?.location || ""}
           priceRange={priceRange}
-          description={description}
+          description={property?.description || ""}
           virtualtour_link={property?.virtualtour_link}
           image={property?.images?.mainImage}
         />
         <ImageGallery images={images} />
-        <AmenitiesList amenities={amenities} />
+        <AmenitiesList amenities={propertyAmenities} />
         <UnitType units={propertyUnits} />
-        <NearbyEstablishments />
+        <NearbyEstablishments 
+          property={property}
+          nearbyestTable={nearbyestTable}
+        />
         <FAQs />
         <FeaturedProp />
       </div>

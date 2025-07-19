@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import "../css/UnitType.css"; 
 
@@ -6,7 +6,7 @@ interface Unit {
   name: string;
   area: number;
   price: number;
-  image?: string; // Add image property
+  image?: string;
 }
 
 interface UnitTypeProps {
@@ -14,10 +14,11 @@ interface UnitTypeProps {
 }
 
 const UnitType: React.FC<UnitTypeProps> = ({ units }) => {
+  // Only show units that are truly available (status true) - already filtered by parent
   const [selectedUnit, setSelectedUnit] = useState<Unit | null>(units && units.length > 0 ? units[0] : null);
 
   // Ensure the first unit is selected if units prop changes or is loaded later
-  React.useEffect(() => {
+  useEffect(() => {
     if (units.length > 0 && (!selectedUnit || !units.some(u => u.name === selectedUnit.name))) {
       setSelectedUnit(units[0]);
     }

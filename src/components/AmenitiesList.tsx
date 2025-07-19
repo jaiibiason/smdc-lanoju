@@ -3,7 +3,8 @@ import ".././App.css";
 import "../css/AmenitiesList.css";
 
 interface Amenity {
-  label: string; 
+  label: string;
+  icon?: string;
 }
 
 interface AmenitiesListProps {
@@ -11,39 +12,28 @@ interface AmenitiesListProps {
 }
 
 const AmenitiesList: React.FC<AmenitiesListProps> = ({ amenities }) => {
-  const getIcon = (label: string): string => {
-    switch (label) {
-      case "Lap Pool":
-        return "/assets/amenities-icons/lap-pool.svg";
-      case "Kiddie Pool":
-        return "/assets/amenities-icons/kiddie-pool.svg";
-      case "Fitness Gym":
-        return "/assets/amenities-icons/fitness-gym.svg";
-      case "Sunset Lounge":
-        return "/assets/amenities-icons/sunset-lounge.svg";
-      case "Grand Lobby":
-        return "/assets/amenities-icons/grand-lobby.svg";
-      case "Sunset Lanai":
-        return "/assets/amenities-icons/sunset-lanai.svg";
-      case "Celebration Hall":
-        return "/assets/amenities-icons/celebration-hall.svg";
-        
-      default:
-        return "/assets/amenities-icons/default.svg"; 
-    }
-  };
-
   return (
     <div className="amenities-list-bg">
       <div className="amenities-list">
         {amenities.map((amenity, index) => (
           <div key={index} className="amenity-item">
-            <img src={import.meta.env.BASE_URL + getIcon(amenity.label)} alt={amenity.label} className="amenity-icon" />
+            <img
+              src={
+                amenity.icon && amenity.icon.trim() !== ""
+                  ? amenity.icon
+                  : "https://firebasestorage.googleapis.com/v0/b/dmdc-freelance.firebasestorage.app/o/amenities_icons%2Fdefault-icon.svg?alt=media&token=57e0af54-c470-4f03-850f-e7f26c50f016"
+              }
+              alt={amenity.label}
+              className="amenity-icon"
+              onError={e => {
+                (e.target as HTMLImageElement).src =
+                  "https://firebasestorage.googleapis.com/v0/b/dmdc-freelance.firebasestorage.app/o/amenities_icons%2Fdefault-icon.svg?alt=media&token=57e0af54-c470-4f03-850f-e7f26c50f016";
+              }}
+            />
             <p className="amenity-label">{amenity.label}</p>
           </div>
         ))}
       </div>
-
     </div>
   );
 };

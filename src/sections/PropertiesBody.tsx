@@ -25,77 +25,12 @@ function PropertiesBody() {
         );
     };
 
-
-
     // State for location section collapse
     const [isLocationCollapsed, setIsLocationCollapsed] = useState(false);
 
     // Dynamic location options from DB
     const [locationOptions, setLocationOptions] = useState<string[]>([]);
-    useEffect(() => {
-        const propertiesRef = ref(rtdb, "properties");
-        const unsubscribeProps = onValue(propertiesRef, (snapshot) => {
-            const data = snapshot.val();
-            const props = data
-                ? Object.entries(data).map(([id, value]) =>
-                    typeof value === 'object' && value !== null
-                        ? { id, ...value }
-                        : { id, value }
-                  )
-                : [];
-            setProperties(props);
-            setLoading(false);
-
-            // Extract unique locations (after last comma, keep original case)
-            const locSet = new Set<string>();
-            props.forEach((prop: any) => {
-                if (prop.location) {
-                    const loc = prop.location.split(',').pop()?.trim();
-                    if (loc) locSet.add(loc);
-                }
-            });
-            setLocationOptions(Array.from(locSet));
-        });
-
-        // Fetch amenities
-        const amenitiesRef = ref(rtdb, "amenities");
-        const unsubscribeAmenities = onValue(amenitiesRef, (snapshot) => {
-            const data = snapshot.val();
-            if (data) {
-                const arr = Object.entries(data).map(([key, value]: any) => ({
-                    key,
-                    name: value.name
-                }));
-                setMasterAmenities(arr);
-            }
-        });
-
-        // Fetch nearbyest
-        const nearbyestRef = ref(rtdb, "nearbyest");
-        const unsubscribeNearbyest = onValue(nearbyestRef, (snapshot) => {
-            const data = snapshot.val();
-            if (data) {
-                setMasterNearbyest(data);
-            }
-        });
-
-        // Fetch units
-        const unitsRef = ref(rtdb, "units");
-        const unsubscribeUnits = onValue(unitsRef, (snapshot) => {
-            const data = snapshot.val();
-            if (data) {
-                setUnitsTable(data);
-            }
-        });
-
-        return () => {
-            unsubscribeProps();
-            unsubscribeAmenities();
-            unsubscribeNearbyest();
-            unsubscribeUnits();
-        };
-    }, []);
-
+    
     // State for location filter
     const [selectedLocations, setSelectedLocations] = useState<string[]>([]);
     const handleLocationChange = (location: string) => {
@@ -128,9 +63,6 @@ function PropertiesBody() {
     const [isUnitTypeCollapsed, setIsUnitTypeCollapsed] = useState(false);
     const [unitTypeOptions, setUnitTypeOptions] = useState<string[]>([]);
     const [selectedUnitTypes, setSelectedUnitTypes] = useState<string[]>([]);
-    // Extract unique unit type names from unitsTable (must be after unitsTable is declared)
-    // This must be after unitsTable is declared (line 222+)
-
 
     const handleUnitTypeChange = (unitType: string) => {
         if (unitType === "All Unit") {
@@ -203,45 +135,12 @@ function PropertiesBody() {
 
     // Fetch amenities, nearbyest, and units from the root of the database
     const [masterAmenities, setMasterAmenities] = useState<{ key: string, name: string }[]>([]);
-    const [masterNearbyest, setMasterNearbyest] = useState<{ [key: string]: { distance: number, name: string } }>({});
+    const [masterNearbyest, setMasterNearbyest] = useState<{ [key: string]: { category: string, name: string } }>({});
     const [unitsTable, setUnitsTable] = useState<{ [key: string]: any }>({});
-
-    // Dynamically extract unique unit names for filter and dynamic price range
-    useEffect(() => {
-        if (unitsTable && typeof unitsTable === 'object') {
-            // Unit names
-            const names = Object.values(unitsTable)
-                .map((unit: any) => unit.name)
-                .filter((name): name is string => typeof name === 'string');
-            const uniqueNames = Array.from(new Set(names));
-            setUnitTypeOptions(uniqueNames);
-
-            // Dynamic price range
-            const prices = Object.values(unitsTable)
-                .map((unit: any) => typeof unit.price === 'number' ? unit.price : null)
-                .filter((price): price is number => price !== null && !isNaN(price));
-            if (prices.length > 0) {
-                // Find min/max, round down/up to nearest 100k or 1M for better UX
-                const minPrice = Math.min(...prices);
-                const maxPrice = Math.max(...prices);
-                // Round down min to nearest 100k, up max to nearest 100k
-                const roundBase = minPrice < 2000000 ? 100000 : 1000000;
-                const roundedMin = Math.floor(minPrice / roundBase) * roundBase;
-                const roundedMax = Math.ceil(maxPrice / roundBase) * roundBase;
-                // Generate price steps (6 steps, inclusive)
-                let steps = 5;
-                let stepSize = Math.max(Math.round((roundedMax - roundedMin) / steps / roundBase) * roundBase, roundBase);
-                if (stepSize === 0) stepSize = roundBase;
-                const priceArr = [];
-                for (let p = roundedMin; p < roundedMax; p += stepSize) {
-                    priceArr.push(p);
-                }
-                priceArr.push(roundedMax);
-                setDynamicPrices(priceArr);
-                setPriceRange([0, priceArr.length - 1]);
-            }
-        }
-    }, [unitsTable]);
+    
+    // Properties from Realtime Database
+    const [properties, setProperties] = useState<any[]>([]);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         // Fetch properties
@@ -253,17 +152,21 @@ function PropertiesBody() {
                     typeof value === 'object' && value !== null
                         ? { id, ...value }
                         : { id, value }
-                  )
+                )
                 : [];
             setProperties(props);
             setLoading(false);
 
-            // Extract unique locations (after last comma, keep original case)
+            // Extract unique provinces from locations (after comma, trimmed)
             const locSet = new Set<string>();
             props.forEach((prop: any) => {
                 if (prop.location) {
-                    const loc = prop.location.split(',').pop()?.trim();
-                    if (loc) locSet.add(loc);
+                    const parts = prop.location.split(',');
+                    // Province is always the last part after the last comma
+                    const province = parts.length > 1
+                        ? parts[parts.length - 1].trim()
+                        : prop.location.trim();
+                    if (province) locSet.add(province);
                 }
             });
             setLocationOptions(Array.from(locSet));
@@ -320,6 +223,54 @@ function PropertiesBody() {
         };
     }, []);
 
+    // Dynamically extract unique unit names for filter and dynamic price range
+    useEffect(() => {
+        if (unitsTable && typeof unitsTable === 'object') {
+            // Unit names
+            const unitNames = Object.entries(unitsTable)
+                .map(([_, unit]: [string, any]) => unit.name)
+                .filter((name): name is string => typeof name === 'string');
+            
+            const uniqueNames = Array.from(new Set(unitNames));
+            setUnitTypeOptions(uniqueNames);
+
+            // Dynamic price range
+            const allPrices: number[] = [];
+            
+            // Get prices from all property units
+            properties.forEach(property => {
+                if (property.unit) {
+                    Object.entries(property.unit).forEach(([unitKey, unitData]: [string, any]) => {
+                        if (unitData && typeof unitData.price === 'number') {
+                            allPrices.push(unitData.price);
+                        }
+                    });
+                }
+            });
+            
+            if (allPrices.length > 0) {
+                // Find min/max, round down/up to nearest 100k or 1M for better UX
+                const minPrice = Math.min(...allPrices);
+                const maxPrice = Math.max(...allPrices);
+                // Round down min to nearest 100k, up max to nearest 100k
+                const roundBase = minPrice < 2000000 ? 100000 : 1000000;
+                const roundedMin = Math.floor(minPrice / roundBase) * roundBase;
+                const roundedMax = Math.ceil(maxPrice / roundBase) * roundBase;
+                // Generate price steps (6 steps, inclusive)
+                let steps = 5;
+                let stepSize = Math.max(Math.round((roundedMax - roundedMin) / steps / roundBase) * roundBase, roundBase);
+                if (stepSize === 0) stepSize = roundBase;
+                const priceArr = [];
+                for (let p = roundedMin; p < roundedMax; p += stepSize) {
+                    priceArr.push(p);
+                }
+                priceArr.push(roundedMax);
+                setDynamicPrices(priceArr);
+                setPriceRange([0, priceArr.length - 1]);
+            }
+        }
+    }, [unitsTable, properties]);
+
     // Responsive state for mobile and tablet
     const [isMobile, setIsMobile] = useState(false);
     const [isTablet, setIsTablet] = useState(false);
@@ -348,10 +299,6 @@ function PropertiesBody() {
     const [selectedSort, setSelectedSort] = useState(sortOptions[0].value);
     const [isSortDropdownOpen, setIsSortDropdownOpen] = useState(false);
 
-    // Properties from Realtime Database
-    const [properties, setProperties] = useState<any[]>([]);
-    const [loading, setLoading] = useState(true);
-
     // Filtering logic
     const filterProperties = (props: any[]) => {
         return props.filter((property) => {
@@ -360,15 +307,17 @@ function PropertiesBody() {
                 // Get min/max price from slider
                 const minBudget = dynamicPrices[priceRange[0]];
                 const maxBudget = dynamicPrices[priceRange[1]];
-                // Get property price(s)
+                
+                // Get property unit prices
                 let propPrices: number[] = [];
-                if (property.unit && unitsTable) {
-                    propPrices = Object.keys(property.unit)
-                        .filter((key) => property.unit[key] && unitsTable[key] && typeof unitsTable[key].price === 'number')
-                        .map((key) => unitsTable[key].price);
-                } else if (property.price) {
-                    propPrices = [Number(property.price)];
+                if (property.unit) {
+                    propPrices = Object.values(property.unit)
+                        .filter((unit: any) => 
+                            unit && typeof unit.price === 'number'
+                        )
+                        .map((unit: any) => unit.price);
                 }
+                
                 // If no price, skip (show)
                 if (propPrices.length > 0) {
                     const inBudget = propPrices.some((p) => p >= minBudget && p <= maxBudget);
@@ -376,30 +325,27 @@ function PropertiesBody() {
                 }
             }
 
-            // 2. Location filter
+            // 2. Location filter - match by province only
             if (selectedLocations.length > 0 && !selectedLocations.includes('All Locations')) {
-                // Extract last part after comma (city/province)
-                const propLoc = property.location ? property.location.split(',').pop()?.trim() : '';
-                if (!selectedLocations.includes(propLoc)) return false;
+                if (!property.location) return false;
+                const parts = property.location.split(',');
+                const province = parts.length > 1
+                    ? parts[parts.length - 1].trim()
+                    : property.location.trim();
+                if (!selectedLocations.includes(province)) return false;
             }
 
             // 3. Unit type filter
             if (selectedUnitTypes.length > 0 && !selectedUnitTypes.includes('All Unit')) {
-                // Get all unit names for this property
-                let propUnitNames: string[] = [];
-                if (property.unit && unitsTable) {
-                    propUnitNames = Object.keys(property.unit)
-                        .filter((key) => property.unit[key] && unitsTable[key] && typeof unitsTable[key].name === 'string')
-                        .map((key) => unitsTable[key].name);
-                }
-                // If no units, skip (show)
-                if (propUnitNames.length > 0) {
-                    const hasUnit = propUnitNames.some((name) => selectedUnitTypes.includes(name));
-                    if (!hasUnit) return false;
-                } else {
-                    // If property has no units, hide if filter is active
-                    return false;
-                }
+                // Check if property has units with selected unit types
+                if (!property.unit) return false;
+                
+                const hasMatchingUnit = Object.keys(property.unit).some(unitKey => {
+                    const unitInfo = unitsTable[unitKey];
+                    return unitInfo && selectedUnitTypes.includes(unitInfo.name);
+                });
+                
+                if (!hasMatchingUnit) return false;
             }
 
             // 4. Property type filter
@@ -416,27 +362,25 @@ function PropertiesBody() {
     // Sorting logic
     const sortProperties = (props: any[]) => {
         if (selectedSort === 'residential') {
-            // Relevance: sort by id descending (assuming id is property1, property2, ...)
+            // Relevance: sort by id descending (assuming id is PTY0001, PTY0002, ...)
             return [...props].sort((a, b) => {
                 // Extract number from id
                 const getNum = (id: string) => {
                     const match = id && id.match(/(\d+)/);
                     return match ? parseInt(match[1], 10) : 0;
                 };
-                return getNum(b.id) - getNum(a.id);
+                return getNum(a.id) - getNum(b.id);
             });
         } else if (selectedSort === 'commercial') {
             // Pricing Low to High
             return [...props].sort((a, b) => {
                 const getMinPrice = (property: any) => {
-                    let prices: number[] = [];
-                    if (property.unit && unitsTable) {
-                        prices = Object.keys(property.unit)
-                            .filter((key) => property.unit[key] && unitsTable[key] && typeof unitsTable[key].price === 'number')
-                            .map((key) => unitsTable[key].price);
-                    } else if (property.price) {
-                        prices = [Number(property.price)];
-                    }
+                    if (!property.unit) return Number.MAX_SAFE_INTEGER;
+                    
+                    const prices = Object.values(property.unit)
+                        .filter((unit: any) => unit && typeof unit.price === 'number')
+                        .map((unit: any) => unit.price);
+                        
                     return prices.length > 0 ? Math.min(...prices) : Number.MAX_SAFE_INTEGER;
                 };
                 return getMinPrice(a) - getMinPrice(b);
@@ -444,18 +388,16 @@ function PropertiesBody() {
         } else if (selectedSort === 'land') {
             // Pricing High to Low
             return [...props].sort((a, b) => {
-                const getMinPrice = (property: any) => {
-                    let prices: number[] = [];
-                    if (property.unit && unitsTable) {
-                        prices = Object.keys(property.unit)
-                            .filter((key) => property.unit[key] && unitsTable[key] && typeof unitsTable[key].price === 'number')
-                            .map((key) => unitsTable[key].price);
-                    } else if (property.price) {
-                        prices = [Number(property.price)];
-                    }
-                    return prices.length > 0 ? Math.min(...prices) : Number.MIN_SAFE_INTEGER;
+                const getMaxPrice = (property: any) => {
+                    if (!property.unit) return Number.MIN_SAFE_INTEGER;
+                    
+                    const prices = Object.values(property.unit)
+                        .filter((unit: any) => unit && typeof unit.price === 'number')
+                        .map((unit: any) => unit.price);
+                        
+                    return prices.length > 0 ? Math.max(...prices) : Number.MIN_SAFE_INTEGER;
                 };
-                return getMinPrice(b) - getMinPrice(a);
+                return getMaxPrice(b) - getMaxPrice(a);
             });
         }
         // Default: All Properties (no sort)
@@ -465,13 +407,16 @@ function PropertiesBody() {
     const filteredProperties = sortProperties(filterProperties(properties));
     const propertyCount = filteredProperties.length;
 
-    function formatPesoRange(unitObj: any, unitsTable: any) {
-        if (!unitObj || !unitsTable) return null;
-        const prices: number[] = Object.keys(unitObj)
-            .filter((key) => unitObj[key] && unitsTable[key] && typeof unitsTable[key].price === "number")
-            .map((key) => unitsTable[key].price);
+    function formatPesoRange(unitObj: any) {
+        if (!unitObj) return null;
+        
+        // Get all unit prices from the property's units
+        const prices: number[] = Object.values(unitObj)
+            .filter((unit: any) => unit && typeof unit.price === 'number')
+            .map((unit: any) => unit.price);
 
         if (prices.length === 0) return null;
+        
         const min = Math.min(...prices);
         const max = Math.max(...prices);
 
@@ -1166,10 +1111,8 @@ function PropertiesBody() {
                                         </div>
                                         <span className="property-card-price">
                                             {property.unit
-                                                ? formatPesoRange(property.unit, unitsTable)
-                                                : property.price
-                                                    ? "₱ " + Number(property.price).toLocaleString()
-                                                    : price}
+                                                ? formatPesoRange(property.unit)
+                                                : price}
                                         </span>
                                     </div>
                                     <div className="property-card-extra">
@@ -1178,10 +1121,11 @@ function PropertiesBody() {
                                                 {property.amenities
                                                     ? masterAmenities
                                                         .filter(a => property.amenities[a.key])
+                                                        .slice(0, 4) // Limit to 4 amenities
                                                         .map((a, idx) => (
                                                             <li key={idx}>{a.name}</li>
                                                         ))
-                                                    : amenities.map((amenity, idx) => (
+                                                    : amenities.slice(0, 4).map((amenity, idx) => (
                                                         <li key={idx}>{amenity}</li>
                                                     ))
                                                 }
@@ -1194,7 +1138,7 @@ function PropertiesBody() {
                                                         .filter(key => property.nearby[key] && masterNearbyest[key])
                                                         .map((key, idx) => (
                                                             <li key={idx}>
-                                                                {masterNearbyest[key].distance}km from {masterNearbyest[key].name}
+                                                                {property.nearby[key].distance}km from {masterNearbyest[key].name}
                                                             </li>
                                                         ))
                                                     : landmarks.map((landmark, idx) => (
@@ -1204,18 +1148,6 @@ function PropertiesBody() {
                                             </ul>
                                         </div>
                                     </div>
-                                    {property.units && (
-                                        <div style={{ marginTop: 10 }}>
-                                            <strong>Units:</strong>
-                                            <ul>
-                                                {Object.entries(property.units).map(([unitKey, unitObj]: any) => (
-                                                    <li key={unitKey}>
-                                                        {unitObj.name} - {unitObj.area} sqm, {unitObj.bedrooms} BR
-                                                    </li>
-                                                ))}
-                                            </ul>
-                                        </div>
-                                    )}
                                 </div>
                             </div>
                         ))
