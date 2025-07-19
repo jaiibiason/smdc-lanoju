@@ -88,6 +88,4 @@ const UnitType: React.FC<UnitTypeProps> = ({ units }) => {
   );
 };
 
-
-
 export default UnitType;
