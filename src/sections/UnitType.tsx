@@ -16,6 +16,13 @@ interface UnitTypeProps {
 const UnitType: React.FC<UnitTypeProps> = ({ units }) => {
   const [selectedUnit, setSelectedUnit] = useState<Unit | null>(units && units.length > 0 ? units[0] : null);
 
+  // Ensure the first unit is selected if units prop changes or is loaded later
+  React.useEffect(() => {
+    if (units.length > 0 && (!selectedUnit || !units.some(u => u.name === selectedUnit.name))) {
+      setSelectedUnit(units[0]);
+    }
+  }, [units]);
+
   if (!units || units.length === 0) {
     return (
       <section className="unit-type">
