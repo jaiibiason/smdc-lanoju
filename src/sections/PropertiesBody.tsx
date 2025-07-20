@@ -11,7 +11,7 @@ import mageFilterIcon from "../assets/mage_filter-2.svg"; // Import the filter i
 import closeFilterIcon from "../assets/close_filter.svg"; // Import close icon
 import { rtdb } from "../firebase";
 import { ref, onValue } from "firebase/database";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 function PropertiesBody() {
     // Dynamic price range values
@@ -426,6 +426,29 @@ function PropertiesBody() {
     }
 
     const navigate = useNavigate();
+    const locationHook = useLocation();
+
+    // Parse query params for filters
+    useEffect(() => {
+        const params = new URLSearchParams(locationHook.search);
+        const unitType = params.get('unitType')?.split(',').filter(Boolean) || [];
+        const locationParam = params.get('location')?.split(',').filter(Boolean) || [];
+        const propertyType = params.get('propertyType')?.split(',').filter(Boolean) || [];
+        const minPrice = params.get('minPrice');
+        const maxPrice = params.get('maxPrice');
+
+        if (unitType.length > 0) setSelectedUnitTypes(unitType);
+        if (locationParam.length > 0) setSelectedLocations(locationParam);
+        if (propertyType.length > 0) setSelectedPropertyTypes(propertyType);
+        if (minPrice && maxPrice && dynamicPrices.length > 1) {
+            const minIdx = dynamicPrices.indexOf(Number(minPrice));
+            const maxIdx = dynamicPrices.indexOf(Number(maxPrice));
+            if (minIdx !== -1 && maxIdx !== -1) {
+                setPriceRange([minIdx, maxIdx]);
+            }
+        }
+        // eslint-disable-next-line
+    }, [locationHook.search, dynamicPrices.length]);
 
     return (
         <div>
