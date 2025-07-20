@@ -450,6 +450,23 @@ function PropertiesBody() {
         // eslint-disable-next-line
     }, [locationHook.search, dynamicPrices.length]);
 
+    // Add temporary filter states for mobile overlay
+    const [tempSelectedLocations, setTempSelectedLocations] = useState<string[]>([]);
+    const [tempSelectedUnitTypes, setTempSelectedUnitTypes] = useState<string[]>([]);
+    const [tempSelectedPropertyTypes, setTempSelectedPropertyTypes] = useState<string[]>([]);
+    const [tempPriceRange, setTempPriceRange] = useState<[number, number]>([0, dynamicPrices.length - 1]);
+
+    // Sync temp states with actual filter states when opening mobile filter
+    useEffect(() => {
+        if (showFilters) {
+            setTempSelectedLocations([...selectedLocations]);
+            setTempSelectedUnitTypes([...selectedUnitTypes]);
+            setTempSelectedPropertyTypes([...selectedPropertyTypes]);
+            setTempPriceRange([...priceRange]);
+        }
+        // eslint-disable-next-line
+    }, [showFilters]);
+
     return (
         <div>
             <div className="properties-body-container">
@@ -592,20 +609,26 @@ function PropertiesBody() {
                                                 />
                                             </span>
                                             Location <span className="filter-count">(
-                                                {selectedLocations.includes("All Locations")
+                                                {tempSelectedLocations.includes("All Locations")
                                                     ? locationOptions.length - 1
-                                                    : selectedLocations.length}
+                                                    : tempSelectedLocations.length}
                                             )</span>
                                         </span>
                                     </div>
                                     {!isLocationCollapsed && (
                                         <div className="selected-filters">
-                                            {selectedLocations
+                                            {tempSelectedLocations
                                                 .filter((location) => location !== "All Locations")
                                                 .map((location, index) => (
                                                     <div key={index} className="selected-filter">
                                                         {location.charAt(0).toUpperCase() + location.slice(1)}
-                                                        <span onClick={() => handleLocationChange(location)}>
+                                                        <span onClick={() => {
+                                                            if (location === "All Locations") {
+                                                                setTempSelectedLocations([]);
+                                                            } else {
+                                                                setTempSelectedLocations(prev => prev.filter(l => l !== location));
+                                                            }
+                                                        }}>
                                                             <img src={closeFilterIcon} alt="Remove" style={{ width: "100%", height: "100%" }} />
                                                         </span>
                                                     </div>
@@ -617,8 +640,14 @@ function PropertiesBody() {
                                             <label>
                                                 <input
                                                     type="checkbox"
-                                                    checked={selectedLocations.includes("All Locations")}
-                                                    onChange={() => handleLocationChange("All Locations")}
+                                                    checked={tempSelectedLocations.includes("All Locations")}
+                                                    onChange={() => {
+                                                        if (tempSelectedLocations.includes("All Locations")) {
+                                                            setTempSelectedLocations([]);
+                                                        } else {
+                                                            setTempSelectedLocations(["All Locations", ...locationOptions]);
+                                                        }
+                                                    }}
                                                 />
                                                 All Locations
                                             </label>
@@ -626,8 +655,21 @@ function PropertiesBody() {
                                                 <label key={index}>
                                                     <input
                                                         type="checkbox"
-                                                        checked={selectedLocations.includes(location)}
-                                                        onChange={() => handleLocationChange(location)}
+                                                        checked={tempSelectedLocations.includes(location)}
+                                                        onChange={() => {
+                                                            setTempSelectedLocations(prev => {
+                                                                const updated = prev.includes(location)
+                                                                    ? prev.filter(l => l !== location)
+                                                                    : [...prev, location];
+                                                                if (prev.includes("All Locations") && !updated.includes(location)) {
+                                                                    return updated.filter(l => l !== "All Locations");
+                                                                }
+                                                                if (updated.length === locationOptions.length) {
+                                                                    return ["All Locations", ...locationOptions];
+                                                                }
+                                                                return updated;
+                                                            });
+                                                        }}
                                                     />
                                                     {location}
                                                 </label>
@@ -650,20 +692,26 @@ function PropertiesBody() {
                                                 />
                                             </span>
                                             Unit Type <span className="filter-count">(
-                                                {selectedUnitTypes.includes("All Unit")
+                                                {tempSelectedUnitTypes.includes("All Unit")
                                                     ? unitTypeOptions.length
-                                                    : selectedUnitTypes.length}
+                                                    : tempSelectedUnitTypes.length}
                                             )</span>
                                         </span>
                                     </div>
                                     {!isUnitTypeCollapsed && (
                                         <div className="selected-filters">
-                                            {selectedUnitTypes
+                                            {tempSelectedUnitTypes
                                                 .filter((unitType) => unitType !== "All Unit")
                                                 .map((unitType, index) => (
                                                     <div key={index} className="selected-filter">
                                                         {unitType}
-                                                        <span onClick={() => handleUnitTypeChange(unitType)}>
+                                                        <span onClick={() => {
+                                                            if (unitType === "All Unit") {
+                                                                setTempSelectedUnitTypes([]);
+                                                            } else {
+                                                                setTempSelectedUnitTypes(prev => prev.filter(u => u !== unitType));
+                                                            }
+                                                        }}>
                                                             <img src={closeFilterIcon} alt="Remove" style={{ width: "100%", height: "100%" }} />
                                                         </span>
                                                     </div>
@@ -675,8 +723,14 @@ function PropertiesBody() {
                                             <label>
                                                 <input
                                                     type="checkbox"
-                                                    checked={selectedUnitTypes.includes("All Unit")}
-                                                    onChange={() => handleUnitTypeChange("All Unit")}
+                                                    checked={tempSelectedUnitTypes.includes("All Unit")}
+                                                    onChange={() => {
+                                                        if (tempSelectedUnitTypes.includes("All Unit")) {
+                                                            setTempSelectedUnitTypes([]);
+                                                        } else {
+                                                            setTempSelectedUnitTypes(["All Unit", ...unitTypeOptions]);
+                                                        }
+                                                    }}
                                                 />
                                                 All Unit
                                             </label>
@@ -684,8 +738,21 @@ function PropertiesBody() {
                                                 <label key={index}>
                                                     <input
                                                         type="checkbox"
-                                                        checked={selectedUnitTypes.includes(unitType)}
-                                                        onChange={() => handleUnitTypeChange(unitType)}
+                                                        checked={tempSelectedUnitTypes.includes(unitType)}
+                                                        onChange={() => {
+                                                            setTempSelectedUnitTypes(prev => {
+                                                                const updated = prev.includes(unitType)
+                                                                    ? prev.filter(u => u !== unitType)
+                                                                    : [...prev, unitType];
+                                                                if (prev.includes("All Unit") && !updated.includes(unitType)) {
+                                                                    return updated.filter(u => u !== "All Unit");
+                                                                }
+                                                                if (updated.length === unitTypeOptions.length) {
+                                                                    return ["All Unit", ...unitTypeOptions];
+                                                                }
+                                                                return updated;
+                                                            });
+                                                        }}
                                                     />
                                                     {unitType}
                                                 </label>
@@ -708,20 +775,26 @@ function PropertiesBody() {
                                                 />
                                             </span>
                                             Property Type <span className="filter-count">(
-                                                {selectedPropertyTypes.includes("All Property")
+                                                {tempSelectedPropertyTypes.includes("All Property")
                                                     ? propertyTypeOptions.length
-                                                    : selectedPropertyTypes.length}
+                                                    : tempSelectedPropertyTypes.length}
                                             )</span>
                                         </span>
                                     </div>
                                     {!isPropertyTypeCollapsed && (
                                         <div className="selected-filters">
-                                            {selectedPropertyTypes
+                                            {tempSelectedPropertyTypes
                                                 .filter((propertyType) => propertyType !== "All Property")
                                                 .map((propertyType, index) => (
                                                     <div key={index} className="selected-filter">
                                                         {propertyType}
-                                                        <span onClick={() => handlePropertyTypeChange(propertyType)}>
+                                                        <span onClick={() => {
+                                                            if (propertyType === "All Property") {
+                                                                setTempSelectedPropertyTypes([]);
+                                                            } else {
+                                                                setTempSelectedPropertyTypes(prev => prev.filter(p => p !== propertyType));
+                                                            }
+                                                        }}>
                                                             <img src={closeFilterIcon} alt="Remove" style={{ width: "100%", height: "100%" }} />
                                                         </span>
                                                     </div>
@@ -733,8 +806,14 @@ function PropertiesBody() {
                                             <label>
                                                 <input
                                                     type="checkbox"
-                                                    checked={selectedPropertyTypes.includes("All Property")}
-                                                    onChange={() => handlePropertyTypeChange("All Property")}
+                                                    checked={tempSelectedPropertyTypes.includes("All Property")}
+                                                    onChange={() => {
+                                                        if (tempSelectedPropertyTypes.includes("All Property")) {
+                                                            setTempSelectedPropertyTypes([]);
+                                                        } else {
+                                                            setTempSelectedPropertyTypes(["All Property", ...propertyTypeOptions]);
+                                                        }
+                                                    }}
                                                 />
                                                 All Property
                                             </label>
@@ -742,8 +821,21 @@ function PropertiesBody() {
                                                 <label key={index}>
                                                     <input
                                                         type="checkbox"
-                                                        checked={selectedPropertyTypes.includes(propertyType)}
-                                                        onChange={() => handlePropertyTypeChange(propertyType)}
+                                                        checked={tempSelectedPropertyTypes.includes(propertyType)}
+                                                        onChange={() => {
+                                                            setTempSelectedPropertyTypes(prev => {
+                                                                const updated = prev.includes(propertyType)
+                                                                    ? prev.filter(p => p !== propertyType)
+                                                                    : [...prev, propertyType];
+                                                                if (prev.includes("All Property") && !updated.includes(propertyType)) {
+                                                                    return updated.filter(p => p !== "All Property");
+                                                                }
+                                                                if (updated.length === propertyTypeOptions.length) {
+                                                                    return ["All Property", ...propertyTypeOptions];
+                                                                }
+                                                                return updated;
+                                                            });
+                                                        }}
                                                     />
                                                     {propertyType}
                                                 </label>
@@ -751,25 +843,165 @@ function PropertiesBody() {
                                         </div>
                                     )}
                                 </div>
+                                {/* Budget Slider */}
+                                <div className="property-slider-container">
+                                    <label>Budget</label>
+                                    <div className="slider-wrapper">
+                                        <Range
+                                            min={0}
+                                            max={dynamicPrices.length - 1}
+                                            values={tempPriceRange}
+                                            onChange={(indices) => {
+                                                setTempPriceRange([indices[0], indices[1]]);
+                                            }}
+                                            renderTrack={({ props, children }) => (
+                                                <div
+                                                    {...props}
+                                                    style={{
+                                                        ...props.style,
+                                                        height: '2px',
+                                                        width: '100%',
+                                                        background: getTrackBackground({
+                                                            values: tempPriceRange,
+                                                            colors: ['#ddd', '#1A3D8F', '#ddd'],
+                                                            min: 0,
+                                                            max: dynamicPrices.length - 1,
+                                                        }),
+                                                        borderRadius: '4px',
+                                                        position: 'relative',
+                                                    }}
+                                                >
+                                                    {dynamicPrices.map((value, index) => (
+                                                        <div
+                                                            key={index}
+                                                            style={{
+                                                                position: 'absolute',
+                                                                left: `${(index / (dynamicPrices.length - 1)) * 100}%`,
+                                                                top: '0',
+                                                                height: '18px',
+                                                                width: '0.5px',
+                                                                backgroundColor: '#8B8B8B',
+                                                                transform: 'translateX(-50%)',
+                                                            }}
+                                                        >
+                                                            <div
+                                                                style={{
+                                                                    position: 'absolute',
+                                                                    top: '20px',
+                                                                    textAlign: 'center',
+                                                                    transform: 'translateX(-50%)',
+                                                                }}
+                                                            >
+                                                                <span
+                                                                    style={{
+                                                                        fontSize: '10px',
+                                                                        color: '#8B8B8B',
+                                                                    }}
+                                                                >
+                                                                    {value >= 1000000 ? `${Math.round(value / 1000000)}M` : `${Math.round(value / 1000)}K`}
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    ))}
+                                                    {children}
+                                                </div>
+                                            )}
+                                            renderThumb={({ props, isDragged }) => (
+                                                <div
+                                                    {...props}
+                                                    style={{
+                                                        ...props.style,
+                                                        height: '14px',
+                                                        width: '14px',
+                                                        backgroundColor: '#1A3D8F',
+                                                        borderRadius: '50%',
+                                                        display: 'flex',
+                                                        justifyContent: 'center',
+                                                        alignItems: 'center',
+                                                        boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.2)',
+                                                        border: isDragged ? '2px solid white' : 'none',
+                                                    }}
+                                                />
+                                            )}
+                                        />
+                                    </div>
+                                    <div className="min-max-container">
+                                        <div className="min-section">
+                                            <label>Min</label>
+                                            <select
+                                                className="dropdown"
+                                                value={dynamicPrices[tempPriceRange[0]]}
+                                                onChange={(e) => {
+                                                    const newMin = parseInt(e.target.value, 10);
+                                                    setTempPriceRange([
+                                                        dynamicPrices.indexOf(newMin),
+                                                        tempPriceRange[1],
+                                                    ]);
+                                                }}
+                                            >
+                                                {dynamicPrices.map((price, index) => (
+                                                    <option
+                                                        key={index}
+                                                        value={price}
+                                                        disabled={index > tempPriceRange[1]}
+                                                    >
+                                                        {price >= 1000000 ? `${Math.round(price / 1000000)}M` : `${Math.round(price / 1000)}K`}
+                                                    </option>
+                                                ))}
+                                            </select>
+                                        </div>
+                                        <div className="max-section">
+                                            <label>Max</label>
+                                            <select
+                                                className="dropdown"
+                                                value={dynamicPrices[tempPriceRange[1]]}
+                                                onChange={(e) => {
+                                                    const newMax = parseInt(e.target.value, 10);
+                                                    setTempPriceRange([
+                                                        tempPriceRange[0],
+                                                        dynamicPrices.indexOf(newMax),
+                                                    ]);
+                                                }}
+                                            >
+                                                {dynamicPrices.map((price, index) => (
+                                                    <option
+                                                        key={index}
+                                                        value={price}
+                                                        disabled={index < tempPriceRange[0]}
+                                                    >
+                                                        {price >= 1000000 ? `${Math.round(price / 1000000)}M` : `${Math.round(price / 1000)}K`}
+                                                    </option>
+                                                ))}
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             <div className="mobile-filters-actions">
                                 <button
                                     className="mobile-apply-filter-btn"
-                                    onClick={() => setShowFilters(false)}
+                                    onClick={() => {
+                                        setSelectedLocations(tempSelectedLocations);
+                                        setSelectedUnitTypes(tempSelectedUnitTypes);
+                                        setSelectedPropertyTypes(tempSelectedPropertyTypes);
+                                        setPriceRange(tempPriceRange);
+                                        setShowFilters(false);
+                                    }}
                                 >
                                     Apply Filter
                                 </button>
                                 <button
                                     className="mobile-clear-filter-btn"
                                     onClick={() => {
-                                        setSelectedLocations([]);
-                                        setSelectedUnitTypes([]);
-                                        setSelectedPropertyTypes([]);
-                                        setPriceRange([0, dynamicPrices.length - 1]);
+                                        setTempSelectedLocations([]);
+                                        setTempSelectedUnitTypes([]);
+                                        setTempSelectedPropertyTypes([]);
+                                        setTempPriceRange([0, dynamicPrices.length - 1]);
                                     }}
                                 >
                                     Clear Filter
                                 </button>
+
                             </div>
                         </div>
                     )}
