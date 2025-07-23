@@ -163,7 +163,10 @@ function InnerProperties() {
           promotional_highlight={property?.promotional_highlight}
           financing_options={property?.financing_options}
         />
-        <ImageGallery images={galleryImages} />
+        <ImageGallery 
+          images={galleryImages} 
+          propertyName={property?.name || "Property"}
+        />
         <AmenitiesList amenities={propertyAmenities} />
         <UnitType units={propertyUnits} />
         <NearbyEstablishments 
