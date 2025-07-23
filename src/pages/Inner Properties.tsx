@@ -128,6 +128,26 @@ function InnerProperties() {
     }
   }
 
+  // Prepare gallery images from property.images (all keys except mainImage)
+  let galleryImages: string[] = [];
+  if (property && property.images) {
+    galleryImages = Object.entries(property.images)
+      .filter(([key]) => key !== "mainImage")
+      .map(([_, url]) => String(url))
+      .filter((url) => typeof url === "string" && url.trim() !== "");
+  }
+
+  // Add unit images to gallery if available
+  if (property && property.unit) {
+    Object.values(property.unit).forEach((unit: any) => {
+      if (unit.unit_image_url && typeof unit.unit_image_url === "string" && unit.unit_image_url.trim() !== "") {
+        
+          galleryImages.push(unit.unit_image_url);
+        
+      }
+    });
+  }
+
   return (
     <>
       <div className="inner-properties-pg">
@@ -139,8 +159,11 @@ function InnerProperties() {
           description={property?.description || ""}
           virtualtour_link={property?.virtualtour_link}
           image={property?.images?.mainImage}
+          property_specifics={property?.property_specifics}
+          promotional_highlight={property?.promotional_highlight}
+          financing_options={property?.financing_options}
         />
-        <ImageGallery images={images} />
+        <ImageGallery images={galleryImages} />
         <AmenitiesList amenities={propertyAmenities} />
         <UnitType units={propertyUnits} />
         <NearbyEstablishments 
