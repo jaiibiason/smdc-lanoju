@@ -31,6 +31,11 @@ function InnerProperties() {
   const [amenitiesTable, setAmenitiesTable] = useState<{ [key: string]: any }>({});
   const [nearbyestTable, setNearbyestTable] = useState<{ [key: string]: any }>({});
 
+  // Scroll to top when component mounts or when ID changes
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [id]);
+
   useEffect(() => {
     if (!id) return;
     const propertyRef = ref(rtdb, `properties/${id}`);
