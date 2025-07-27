@@ -1468,12 +1468,7 @@ function PropertiesBody() {
                     ) : (
                         <div className="no-properties-found">
                             <div className="no-properties-found-icon">
-                                {/* Gold search icon SVG */}
-                                <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
-                                    <circle cx="20" cy="20" r="18" stroke="#E1A000" strokeWidth="2" fill="#fffbe6"/>
-                                    <path d="M27.5 27.5L33 33" stroke="#E1A000" strokeWidth="2" strokeLinecap="round"/>
-                                    <circle cx="18" cy="18" r="7" stroke="#E1A000" strokeWidth="2" fill="none"/>
-                                </svg>
+                                <img src={magnifyingGlassIcon} alt="No Results" style={{ width: 40, height: 40 }} />
                             </div>
                             <div className="no-properties-found-title">
                                 No Properties Found
