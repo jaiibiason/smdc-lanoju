@@ -959,3 +959,57 @@
   z-index: 10;
   background: #fff;
 }
+
+.no-properties-found {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 0 40px 0;
+  text-align: center;
+  margin: 32px 0;
+  box-shadow: 0 2px 12px 0 rgba(225, 160, 0, 0.06);
+}
+
+.no-properties-found-icon {
+  width: 64px;
+  height: 64px;
+  margin-bottom: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fffbe6;
+  border-radius: 50%;
+  border: 2px solid #E1A000;
+}
+
+.no-properties-found-title {
+  color: #E1A000;
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.no-properties-found-desc {
+  color: #555;
+  font-size: 16px;
+  margin-bottom: 24px;
+  max-width: 340px;
+}
+
+.clear-search-btn {
+  background-color: #E1A000;
+  color: white;
+  border: none;
+  padding: 10px 28px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 500;
+  transition: background-color 0.3s;
+  box-shadow: 0 2px 8px 0 rgba(225, 160, 0, 0.08);
+}
+
+.clear-search-btn:hover {
+  background-color: #c79500;
+}

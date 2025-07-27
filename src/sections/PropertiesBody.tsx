@@ -1466,9 +1466,21 @@ function PropertiesBody() {
                             </div>
                         ))
                     ) : (
-                        // Add "No properties found" message when search has no results
                         <div className="no-properties-found">
-                            <p>No properties found matching your search criteria.</p>
+                            <div className="no-properties-found-icon">
+                                {/* Gold search icon SVG */}
+                                <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+                                    <circle cx="20" cy="20" r="18" stroke="#E1A000" strokeWidth="2" fill="#fffbe6"/>
+                                    <path d="M27.5 27.5L33 33" stroke="#E1A000" strokeWidth="2" strokeLinecap="round"/>
+                                    <circle cx="18" cy="18" r="7" stroke="#E1A000" strokeWidth="2" fill="none"/>
+                                </svg>
+                            </div>
+                            <div className="no-properties-found-title">
+                                No Properties Found
+                            </div>
+                            <div className="no-properties-found-desc">
+                                Sorry, we couldn't find any properties that match your search and filter criteria. Try adjusting your filters or search terms.
+                            </div>
                             <button 
                                 onClick={() => {
                                     setSearchQuery('');
