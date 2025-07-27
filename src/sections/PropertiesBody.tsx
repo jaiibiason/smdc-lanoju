@@ -5,7 +5,7 @@ import arrowUpIcon from "../assets/ep_arrow-up.svg"; // Import the arrow-up icon
 import arrowDownIcon from "../assets/ep_arrow-down.svg"; // Import the arrow-down icon
 import HeaderImg from '../assets/temp_prptHeader.png'
 import locationIcon from "../assets/lsicon_location-outline.svg"; // Import location icon
-import { useState, useEffect } from 'react'; // Import useState and useEffect
+import { useState, useEffect, useRef } from 'react'; // Import useState, useEffect, and useRef
 import { Range, getTrackBackground } from 'react-range'; // Import Range and getTrackBackground
 import mageFilterIcon from "../assets/mage_filter-2.svg"; // Import the filter icon
 import closeFilterIcon from "../assets/close_filter.svg"; // Import close icon
@@ -17,6 +17,9 @@ function PropertiesBody() {
     // Dynamic price range values
     const [dynamicPrices, setDynamicPrices] = useState<number[]>([1000000, 3000000, 5000000, 10000000, 15000000, 30000000]);
     const [priceRange, setPriceRange] = useState<[number, number]>([0, 5]);
+    
+    // Add search query state - moved to the top with other state declarations
+    const [searchQuery, setSearchQuery] = useState<string>('');
 
     // Helper to find closest value in dynamicPrices
     const findClosestValue = (value: number) => {
@@ -141,6 +144,12 @@ function PropertiesBody() {
     // Properties from Realtime Database
     const [properties, setProperties] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
+
+    // Add temporary filter states for mobile overlay
+    const [tempSelectedLocations, setTempSelectedLocations] = useState<string[]>([]);
+    const [tempSelectedUnitTypes, setTempSelectedUnitTypes] = useState<string[]>([]);
+    const [tempSelectedPropertyTypes, setTempSelectedPropertyTypes] = useState<string[]>([]);
+    const [tempPriceRange, setTempPriceRange] = useState<[number, number]>([0, dynamicPrices.length - 1]);
 
     useEffect(() => {
         // Fetch properties
@@ -302,6 +311,14 @@ function PropertiesBody() {
     // Filtering logic
     const filterProperties = (props: any[]) => {
         return props.filter((property) => {
+            // Search filter - filter by name or location
+            if (searchQuery.trim() !== '') {
+                const query = searchQuery.trim().toLowerCase();
+                const matchesName = property.name?.toLowerCase().includes(query);
+                const matchesLocation = property.location?.toLowerCase().includes(query);
+                if (!matchesName && !matchesLocation) return false;
+            }
+            
             // 1. Budget filter
             if (dynamicPrices.length > 1 && priceRange) {
                 // Get min/max price from slider
@@ -450,12 +467,6 @@ function PropertiesBody() {
         // eslint-disable-next-line
     }, [locationHook.search, dynamicPrices.length]);
 
-    // Add temporary filter states for mobile overlay
-    const [tempSelectedLocations, setTempSelectedLocations] = useState<string[]>([]);
-    const [tempSelectedUnitTypes, setTempSelectedUnitTypes] = useState<string[]>([]);
-    const [tempSelectedPropertyTypes, setTempSelectedPropertyTypes] = useState<string[]>([]);
-    const [tempPriceRange, setTempPriceRange] = useState<[number, number]>([0, dynamicPrices.length - 1]);
-
     // Sync temp states with actual filter states when opening mobile filter
     useEffect(() => {
         if (showFilters) {
@@ -467,10 +478,58 @@ function PropertiesBody() {
         // eslint-disable-next-line
     }, [showFilters]);
 
+    // Infinite scroll state
+    const [visibleCount, setVisibleCount] = useState(8);
+    const rightSectionRef = useRef<HTMLDivElement>(null);
+
+    // Height sync state
+    const leftSectionRef = useRef<HTMLDivElement>(null);
+    const [leftSectionHeight, setLeftSectionHeight] = useState<number | undefined>(undefined);
+
+    // Sync right section height with left section
+    useEffect(() => {
+        const updateHeight = () => {
+            if (leftSectionRef.current) {
+                setLeftSectionHeight(leftSectionRef.current.offsetHeight);
+            }
+        };
+        updateHeight();
+        window.addEventListener('resize', updateHeight);
+        return () => window.removeEventListener('resize', updateHeight);
+    }, [searchQuery, selectedLocations, selectedUnitTypes, selectedPropertyTypes, priceRange, properties, isMobile, isTablet, showFilters]);
+
+    // Reset visibleCount when filters/search change
+    useEffect(() => {
+        setVisibleCount(8);
+    }, [searchQuery, selectedLocations, selectedUnitTypes, selectedPropertyTypes, priceRange, properties]);
+
+    // Infinite scroll handler
+    useEffect(() => {
+        const handleScroll = () => {
+            const container = rightSectionRef.current;
+            if (!container) return;
+            // Check if user scrolled near bottom (100px threshold)
+            if (container.scrollTop + container.clientHeight >= container.scrollHeight - 100) {
+                if (visibleCount < filteredProperties.length) {
+                    setVisibleCount((prev) => Math.min(prev + 8, filteredProperties.length));
+                }
+            }
+        };
+        const container = rightSectionRef.current;
+        if (container) {
+            container.addEventListener('scroll', handleScroll);
+        }
+        return () => {
+            if (container) {
+                container.removeEventListener('scroll', handleScroll);
+            }
+        };
+    }, [filteredProperties.length, visibleCount]);
+
     return (
         <div>
             <div className="properties-body-container">
-                <div className="left-section">
+                <div className="left-section" ref={leftSectionRef}>
                     <p>Showing {propertyCount} properties</p>
                 </div>
                 {/* Only show sort filter here on desktop */}
@@ -539,46 +598,22 @@ function PropertiesBody() {
             </div>
 
             <div className="main-body">
-                <div className="left-main-section">
+                <div className="left-main-section sticky-left-filter" ref={leftSectionRef}>
                     {/* 2. Search bar */}
                     <div className="search-bar-container">
                         <input 
                             type="text" 
                             className="search-bar" 
                             placeholder="Search for an SMDC property" 
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
                         />
                         <span className="search-icon">
                             <img src={magnifyingGlassIcon} alt="Search" />
                         </span>
                     </div>
-                    {/* 3. Sort filter for mobile */}
-                    {(isMobile || isTablet) && (
-                        <div className="right-section" style={{ margin: "16px 0" }}>
-                            <span className="Sort">Sort by: </span>
-                            {/* Use native select for mobile/tablet */}
-                            <select
-                                className="dropdown"
-                                value={selectedSort}
-                                onChange={e => setSelectedSort(e.target.value)}
-                            >
-                                {sortOptions.map(opt => (
-                                    <option key={opt.value} value={opt.value}>{opt.label}</option>
-                                ))}
-                            </select>
-                        </div>
-                    )}
-                    {/* Mobile: Filter button */}
-                    {(isMobile || isTablet) && (
-                        <button
-                            className="mobile-filter-btn"
-                            onClick={() => setShowFilters((prev) => !prev)}
-                        >
-                            <img src={mageFilterIcon} alt="Filter" />
-                            Filter
-                        </button>
-                    )}
-
-                    {/* Overlay mobile filters */}
+                    
+                    {/* Mobile search bar - optional for consistent UX in mobile filters */}
                     {(isMobile || isTablet) && showFilters && (
                         <div className="mobile-filters-overlay">
                             <div className="mobile-filters-header" style={{ display: 'flex', alignItems: 'center', gap: 8, justifyContent: 'space-between' }}>
@@ -594,6 +629,18 @@ function PropertiesBody() {
                                 </button>
                             </div>
                             <div className="mobile-filters-content">
+                                {/* Add search bar to mobile filters */}
+                                <div className="mobile-search-container" style={{ marginBottom: '16px' }}>
+                                    <label>Search</label>
+                                    <input 
+                                        type="text" 
+                                        className="search-bar" 
+                                        placeholder="Search by property name or location" 
+                                        value={searchQuery}
+                                        onChange={(e) => setSearchQuery(e.target.value)}
+                                    />
+                                </div>
+                                
                                 {/* Location Filter */}
                                 <div className="location-container">
                                     <div
@@ -1313,11 +1360,23 @@ function PropertiesBody() {
                         )}
                     </div>
                 </div>
-                <div className="right-main-section">
+                <div
+                    className="right-main-section"
+                    ref={rightSectionRef}
+                    style={{
+                        height: leftSectionHeight ? leftSectionHeight : 'auto',
+                        overflowY: 'auto',
+                        paddingRight: 8,
+                        boxSizing: 'border-box'
+                    }}
+                >
                     {loading ? (
-                        <div>Loading properties...</div>
-                    ) : (
-                        filteredProperties.map((property) => (
+                        <div className="loading-container">
+                            <div className="loading-spinner"></div>
+                            <div className="loading-text">Loading properties...</div>
+                        </div>
+                    ) : filteredProperties.length > 0 ? (
+                        filteredProperties.slice(0, visibleCount).map((property) => (
                             <div
                                 className="property-card"
                                 key={property.id}
@@ -1406,6 +1465,23 @@ function PropertiesBody() {
                                 </div>
                             </div>
                         ))
+                    ) : (
+                        // Add "No properties found" message when search has no results
+                        <div className="no-properties-found">
+                            <p>No properties found matching your search criteria.</p>
+                            <button 
+                                onClick={() => {
+                                    setSearchQuery('');
+                                    setSelectedLocations([]);
+                                    setSelectedUnitTypes([]);
+                                    setSelectedPropertyTypes([]);
+                                    setPriceRange([0, dynamicPrices.length - 1]);
+                                }}
+                                className="clear-search-btn"
+                            >
+                                Clear all filters
+                            </button>
+                        </div>
                     )}
                 </div>
             </div>

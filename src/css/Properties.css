@@ -151,6 +151,12 @@
 .right-main-section {
   width: 70%;
   /* Add additional styles as needed */
+  /* Hide scrollbar for all browsers */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and  Edge */
+}
+.right-main-section::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
 }
 
 .property-slider-container {
@@ -491,6 +497,39 @@
 
 .properties-dropdown-option:hover {
   background-color: #f0f0f0;
+}
+
+/* Loading Spinner Styles */
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+  padding: 40px 0;
+}
+
+.loading-spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid rgba(225, 160, 0, 0.2); /* gold with transparency */
+  border-radius: 50%;
+  border-top-color: #E1A000; /* gold */
+  animation: spin 1s linear infinite;
+  margin-bottom: 15px;
+}
+
+.loading-text {
+  color: #E1A000;
+  font-size: 16px;
+  font-weight: 500;
+  margin-top: 10px;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 @media (max-width: 960px) {
@@ -911,4 +950,12 @@
         background-color: #fff;
         border-radius: 0;
     }
+}
+
+.sticky-left-filter {
+  position: sticky;
+  top: 0;
+  align-self: flex-start;
+  z-index: 10;
+  background: #fff;
 }

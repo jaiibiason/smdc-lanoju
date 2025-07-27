@@ -156,7 +156,7 @@ function InnerProperties() {
   return (
     <>
       <div className="inner-properties-pg">
-        <Crumbs pageName={property?.name || "Property"} />
+        <Crumbs pageName="Property" title={property?.name || "Property"} />
         <Hero
           name={property?.name || ""}
           location={property?.location || ""}
