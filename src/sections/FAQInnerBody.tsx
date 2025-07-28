@@ -3,13 +3,14 @@ import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import "../css/FAQ.css";
 import magnifyingGlassIcon from "../assets/ph_magnifying-glass-light.svg";
+import AnswerWhyInvest from "../faq-answers/AnswerWhyInvest";
+// ...import other answer components as needed...
 
 const faqCards = [
     {
         title: "What to Know Before Buying",
         questions: [
-            { question: "Why invest in real estate in the Philippines?", answer: "Answer here" },
-            { question: "What is the difference between pre-selling and ready-for-occupancy?", answer: "Answer here" },
+            { question: "Why invest in real estate in the Philippines?", answerComponent: AnswerWhyInvest },
             { question: "How much should I budget for a condo investment?", answer: "Answer here" },
             { question: "What is the difference between downpayment and amortization?", answer: "Answer here" },
             { question: "What taxes and fees should I expect?", answer: "Answer here" }
@@ -108,13 +109,13 @@ const FAQInnerBody: React.FC = () => {
         return () => window.removeEventListener("resize", checkMobile);
     }, []);
 
-    // Find the answer for the active question
-    const getActiveAnswer = () => {
+    // Find the answer component for the active question
+    const getActiveAnswerComponent = () => {
         for (const card of faqCards) {
             const found = card.questions.find(q => q.question === activeQuestion);
-            if (found) return found.answer;
+            if (found && found.answerComponent) return found.answerComponent;
         }
-        return "";
+        return null;
     };
 
     return (
@@ -127,7 +128,10 @@ const FAQInnerBody: React.FC = () => {
                         </h1>
                         {activeQuestion && (
                             <div className="faq-selected-answer">
-                                {getActiveAnswer()}
+                                {(() => {
+                                    const AnswerComponent = getActiveAnswerComponent();
+                                    return AnswerComponent ? <AnswerComponent /> : null;
+                                })()}
                             </div>
                         )}
                     </div>
@@ -220,7 +224,10 @@ const FAQInnerBody: React.FC = () => {
                         </h1>
                         {activeQuestion && (
                             <div className="faq-selected-answer">
-                                {getActiveAnswer()}
+                                {(() => {
+                                    const AnswerComponent = getActiveAnswerComponent();
+                                    return AnswerComponent ? <AnswerComponent /> : null;
+                                })()}
                             </div>
                         )}
                     </div>
