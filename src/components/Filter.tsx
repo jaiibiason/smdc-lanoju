@@ -1,43 +1,161 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Range, getTrackBackground } from 'react-range';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { rtdb } from '../firebase';
+import { ref, onValue } from "firebase/database";
 import '../css/Filter.css'
 import '../App.css'
 
 interface SearchFilters {
-  propertyType: string[];
+  unitType: string[];
   location: string[];
-  hasGarage: boolean;
-  hasGarden: boolean;
+  propertyType: string[];
   priceRange: [number, number];
 }
 
 function Filter() {
+  // State for filter options from DB
+  const [unitTypeOptions, setUnitTypeOptions] = useState<string[]>([]);
+  const [locationOptions, setLocationOptions] = useState<string[]>([]);
+  const [propertyTypeOptions, setPropertyTypeOptions] = useState<string[]>([]);
 
   // State for filters
   const [filters, setFilters] = useState<SearchFilters>({
-    propertyType: [],
+    unitType: [],
     location: [],
-    hasGarage: false,
-    hasGarden: false,
-    priceRange: [1000000, 30000000], // Example price range
+    propertyType: [],
+    priceRange: [1000000, 30000000],
   });
 
-  const propertyTypes = ["House", "Apartment", "Condo"];
-  const locations = ["City", "Suburb", "Rural", "Coastal"];
-  const [isPropertyTypeOpen, setIsPropertyTypeOpen] = useState(false);
+  const [isUnitTypeOpen, setIsUnitTypeOpen] = useState(false);
   const [isLocationOpen, setIsLocationOpen] = useState(false);
+  const [isPropertyTypeOpen, setIsPropertyTypeOpen] = useState(false);
 
-  // Fixed price range values
+  // Refs for dropdowns
+  const unitTypeRef = useRef<HTMLDivElement>(null);
+  const locationRef = useRef<HTMLDivElement>(null);
+
+  // Close dropdowns when clicking outside or opening another dropdown
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        unitTypeRef.current &&
+        !unitTypeRef.current.contains(event.target as Node) &&
+        isUnitTypeOpen
+      ) {
+        setIsUnitTypeOpen(false);
+      }
+      if (
+        locationRef.current &&
+        !locationRef.current.contains(event.target as Node) &&
+        isLocationOpen
+      ) {
+        setIsLocationOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [isUnitTypeOpen, isLocationOpen]);
+
+  // Add state for dynamic price range
+  const [dynamicPrices, setDynamicPrices] = useState<number[]>([1000000, 3000000, 5000000, 10000000, 15000000, 30000000]);
+
+  // Fetch options from DB (like PropertiesBody)
+  useEffect(() => {
+    // Fetch units for unit types
+    const unitsRef = ref(rtdb, "units");
+    const unsubscribeUnits = onValue(unitsRef, (snapshot) => {
+      const data = snapshot.val();
+      if (data) {
+        const names = Object.values(data)
+          .map((unit: any) => unit.name)
+          .filter((name): name is string => typeof name === 'string');
+        setUnitTypeOptions(Array.from(new Set(names)));
+      }
+    });
+
+    // Fetch properties for location and property type
+    const propertiesRef = ref(rtdb, "properties");
+    const unsubscribeProps = onValue(propertiesRef, (snapshot) => {
+      const data = snapshot.val();
+      const props = data
+        ? Object.entries(data).map(([id, value]) =>
+            typeof value === 'object' && value !== null
+              ? { id, ...value }
+              : { id, value }
+          )
+        : [];
+
+      // Locations (province)
+      const locSet = new Set<string>();
+      props.forEach((prop: any) => {
+        if (prop.location) {
+          const parts = prop.location.split(',');
+          const province = parts.length > 1
+            ? parts[parts.length - 1].trim()
+            : prop.location.trim();
+          if (province) locSet.add(province);
+        }
+      });
+      setLocationOptions(Array.from(locSet));
+
+      // Property types
+      const typeSet = new Set<string>();
+      props.forEach((prop: any) => {
+        if (prop.type) {
+          prop.type.split(',').forEach((typeStr: string) => {
+            const t = typeStr.trim();
+            if (t) typeSet.add(t);
+          });
+        }
+      });
+      setPropertyTypeOptions(Array.from(typeSet));
+
+      // Dynamic price range
+      const allPrices: number[] = [];
+      props.forEach((property: any) => {
+        if (property.unit) {
+          Object.values(property.unit).forEach((unit: any) => {
+            if (unit && typeof unit.price === 'number') {
+              allPrices.push(unit.price);
+            }
+          });
+        }
+      });
+      if (allPrices.length > 0) {
+        const minPrice = Math.min(...allPrices);
+        const maxPrice = Math.max(...allPrices);
+        const roundBase = minPrice < 2000000 ? 100000 : 1000000;
+        const roundedMin = Math.floor(minPrice / roundBase) * roundBase;
+        const roundedMax = Math.ceil(maxPrice / roundBase) * roundBase;
+        let steps = 5;
+        let stepSize = Math.max(Math.round((roundedMax - roundedMin) / steps / roundBase) * roundBase, roundBase);
+        if (stepSize === 0) stepSize = roundBase;
+        const priceArr: number[] = [];
+        for (let p = roundedMin; p < roundedMax; p += stepSize) {
+          priceArr.push(p);
+        }
+        priceArr.push(roundedMax);
+        setDynamicPrices(priceArr);
+        setFilters((prev) => ({
+          ...prev,
+          priceRange: [priceArr[0], priceArr[priceArr.length - 1]],
+        }));
+      }
+    });
+
+    return () => {
+      unsubscribeUnits();
+      unsubscribeProps();
+    };
+  }, []);
+
   const fixedPrices = [1000000, 3000000, 5000000, 10000000, 15000000, 30000000];
 
-  const MIN = -1000000; // Minimum slider value
-  const MAX = 32000000; // Maximum slider value
-
-  const handleDropdownChange = (field: keyof SearchFilters, value: string) => {
-    setFilters((prev) => ({
-      ...prev,
-      [field]: value,
-    }));
+  const findClosestValue = (value: number) => {
+    return dynamicPrices.reduce((prev, curr) =>
+      Math.abs(curr - value) < Math.abs(prev - value) ? curr : prev
+    );
   };
 
   const handleMultiSelectChange = (
@@ -47,32 +165,23 @@ function Filter() {
   ) => {
     setFilters((prev) => {
       const currentValue = prev[field];
-  
       if (Array.isArray(currentValue)) {
         const isAlreadySelected = (currentValue as string[]).includes(selected);
-  
         if (selected === "All Options") {
-          // Toggle all options: clear all if already selected, otherwise select all
           return {
             ...prev,
             [field]: currentValue.length === options.length ? [] : options,
           };
         }
-  
-        // Handle individual option selection
         const updatedValues = isAlreadySelected
           ? currentValue.filter((item) => item !== selected)
           : [...currentValue, selected];
-  
-        // Automatically untick "All Options" if not all individual options are selected
         const allOptionsSelected = updatedValues.length === options.length;
-  
         return {
           ...prev,
-        [field]: allOptionsSelected ? options : updatedValues,
+          [field]: allOptionsSelected ? options : updatedValues,
         };
       }
-  
       return prev;
     });
   };
@@ -85,7 +194,6 @@ function Filter() {
     return selectedOptions.join(", ");
   };
 
-
   const handleCheckboxChange = (field: keyof SearchFilters) => {
     setFilters((prev) => ({
       ...prev,
@@ -93,14 +201,7 @@ function Filter() {
     }));
   };
 
-  const findClosestValue = (value: number) => {
-    return fixedPrices.reduce((prev, curr) =>
-      Math.abs(curr - value) < Math.abs(prev - value) ? curr : prev
-    );
-  };
-
   const handleSliderChange = (values: number[]) => {
-    // Snap both thumbs to the nearest fixed price
     const snappedValues: [number, number] = [
       findClosestValue(values[0]),
       findClosestValue(values[1]),
@@ -111,162 +212,186 @@ function Filter() {
     }));
   };
 
+  // --- REDIRECT ON SEARCH ---
+  const navigate = useNavigate();
+  const location = useLocation();
+
   const handleSearch = () => {
-    console.log('Searching properties with filters:', filters);
-    // Perform search logic here (e.g., API call)
+    // Build query string from filters
+    const params = new URLSearchParams();
+    if (filters.unitType.length > 0) params.set('unitType', filters.unitType.join(','));
+    if (filters.location.length > 0) params.set('location', filters.location.join(','));
+    if (filters.propertyType.length > 0) params.set('propertyType', filters.propertyType.join(','));
+    if (filters.priceRange.length === 2) {
+      params.set('minPrice', String(filters.priceRange[0]));
+      params.set('maxPrice', String(filters.priceRange[1]));
+    }
+    navigate(`/properties?${params.toString()}`);
   };
 
   return (
     <>
       <div className="filter-cont">
         <div className="filter-card">
-
           <div className="dropdowns">
-
-            {/* Multi-Select Dropdown for Property Type */}
-            <div className="multi-select-dropdown">
-  <label>Property Type</label>
-  <div
-    className={`dropdown-placeholder ${isPropertyTypeOpen ? 'selected' : ''}`} 
-    onClick={() => setIsPropertyTypeOpen(!isPropertyTypeOpen)}
-  >
-    {getPlaceholderText(filters.propertyType)}
-    <span className="dropdown-arrow">
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="12"
-        height="7"
-        fill="currentColor"
-        viewBox="0 0 12 7"
-      >
-        <path
-          d={
-            isPropertyTypeOpen
-              ? "M0.147077 6.35435C-0.0485327 6.15944 -0.0490966 5.84285 0.145817 5.64724L5.6108 0.162761C5.82574 -0.0529522 6.17505 -0.0529512 6.39 0.162761L11.855 5.64724C12.0499 5.84285 12.0493 6.15944 11.8537 6.35435C11.6581 6.54926 11.3415 6.5487 11.1466 6.35309L6.0004 1.18851L0.854183 6.35309C0.659269 6.5487 0.342687 6.54926 0.147077 6.35435Z"
-              : "M11.8527 0.645818C12.0484 0.840732 12.0489 1.15731 11.854 1.35292L6.38902 6.83741C6.17408 7.05312 5.82477 7.05312 5.60982 6.83741L0.14484 1.35292C-0.0500734 1.15731 -0.0495088 0.840731 0.1461 0.645817C0.34171 0.450903 0.658292 0.451467 0.853206 0.647077L5.99942 5.81166L11.1456 0.647077C11.3406 0.451468 11.6571 0.450904 11.8527 0.645818Z"
-          }
-          fill="#616161"
-        />
-      </svg>
-    </span>
-  </div>
-  {isPropertyTypeOpen && (
-    <div className="dropdown-menu">
-      <label className="dropdown-option">
-        <input
-          type="checkbox"
-          checked={filters.propertyType.length === propertyTypes.length}
-          onChange={() =>
-            handleMultiSelectChange(
-              "propertyType",
-              "All Options",
-              propertyTypes
-            )
-          }
-        />
-        All Options
-      </label>
-      {propertyTypes.map((type, index) => (
-        <label key={index} className="dropdown-option">
-          <input
-            type="checkbox"
-            checked={filters.propertyType.includes(type)}
-            onChange={() =>
-              handleMultiSelectChange("propertyType", type, propertyTypes)
-            }
-          />
-          {type}
-        </label>
-      ))}
-    </div>
-  )}
-</div>
-
-        {/* Multi-Select Dropdown for Location */}
-        <div className="multi-select-dropdown">
-          <label>Location</label>
-          <div
-            className="dropdown-placeholder"
-            onClick={() => setIsLocationOpen(!isLocationOpen)}
-          >
-            {getPlaceholderText(filters.location)}
-            <span className="dropdown-arrow">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="12"
-                height="7"
-                fill="currentColor"
-                viewBox="0 0 12 7"
+            {/* Multi-Select Dropdown for Unit Type */}
+            <div className="multi-select-dropdown" ref={unitTypeRef}>
+              <label>Unit Type</label>
+              <div
+                className={`dropdown-placeholder ${isUnitTypeOpen ? 'selected' : ''}`} 
+                onClick={() => {
+                  setIsUnitTypeOpen((open) => {
+                    if (!open) {
+                      setIsLocationOpen(false);
+                      setIsPropertyTypeOpen(false);
+                    }
+                    return !open;
+                  });
+                }}
               >
-                <path
-                  d={isLocationOpen ? 
-                    "M0.147077 6.35435C-0.0485327 6.15944 -0.0490966 5.84285 0.145817 5.64724L5.6108 0.162761C5.82574 -0.0529522 6.17505 -0.0529512 6.39 0.162761L11.855 5.64724C12.0499 5.84285 12.0493 6.15944 11.8537 6.35435C11.6581 6.54926 11.3415 6.5487 11.1466 6.35309L6.0004 1.18851L0.854183 6.35309C0.659269 6.5487 0.342687 6.54926 0.147077 6.35435Z"
-                    : 
-                    "M11.8527 0.645818C12.0484 0.840732 12.0489 1.15731 11.854 1.35292L6.38902 6.83741C6.17408 7.05312 5.82477 7.05312 5.60982 6.83741L0.14484 1.35292C-0.0500734 1.15731 -0.0495088 0.840731 0.1461 0.645817C0.34171 0.450903 0.658292 0.451467 0.853206 0.647077L5.99942 5.81166L11.1456 0.647077C11.3406 0.451468 11.6571 0.450904 11.8527 0.645818Z" 
-                  }
-                  fill="#616161"
-                />
-              </svg>
-            </span>
+                {getPlaceholderText(filters.unitType)}
+                <span className="dropdown-arrow">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="12"
+                    height="7"
+                    fill="currentColor"
+                    viewBox="0 0 12 7"
+                  >
+                    <path
+                      d={
+                        isUnitTypeOpen
+                          ? "M0.147077 6.35435C-0.0485327 6.15944 -0.0490966 5.84285 0.145817 5.64724L5.6108 0.162761C5.82574 -0.0529522 6.17505 -0.0529512 6.39 0.162761L11.855 5.64724C12.0499 5.84285 12.0493 6.15944 11.8537 6.35435C11.6581 6.54926 11.3415 6.5487 11.1466 6.35309L6.0004 1.18851L0.854183 6.35309C0.659269 6.5487 0.342687 6.54926 0.147077 6.35435Z"
+                          : "M11.8527 0.645818C12.0484 0.840732 12.0489 1.15731 11.854 1.35292L6.38902 6.83741C6.17408 7.05312 5.82477 7.05312 5.60982 6.83741L0.14484 1.35292C-0.0500734 1.15731 -0.0495088 0.840731 0.1461 0.645817C0.34171 0.450903 0.658292 0.451467 0.853206 0.647077L5.99942 5.81166L11.1456 0.647077C11.3406 0.451468 11.6571 0.450904 11.8527 0.645818Z"
+                      }
+                      fill="#616161"
+                    />
+                  </svg>
+                </span>
+              </div>
+              {isUnitTypeOpen && (
+                <div className="dropdown-menu">
+                  <label className="dropdown-option">
+                    <input
+                      type="checkbox"
+                      checked={filters.unitType.length === unitTypeOptions.length}
+                      onChange={() =>
+                        handleMultiSelectChange(
+                          "unitType",
+                          "All Options",
+                          unitTypeOptions
+                        )
+                      }
+                    />
+                    All Options
+                  </label>
+                  {unitTypeOptions.map((type, index) => (
+                    <label key={index} className="dropdown-option">
+                      <input
+                        type="checkbox"
+                        checked={filters.unitType.includes(type)}
+                        onChange={() =>
+                          handleMultiSelectChange("unitType", type, unitTypeOptions)
+                        }
+                      />
+                      {type}
+                    </label>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Multi-Select Dropdown for Location */}
+            <div className="multi-select-dropdown" ref={locationRef}>
+              <label>Location</label>
+              <div
+                className="dropdown-placeholder"
+                onClick={() => {
+                  setIsLocationOpen((open) => {
+                    if (!open) {
+                      setIsUnitTypeOpen(false);
+                      setIsPropertyTypeOpen(false);
+                    }
+                    return !open;
+                  });
+                }}
+              >
+                {getPlaceholderText(filters.location)}
+                <span className="dropdown-arrow">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="12"
+                    height="7"
+                    fill="currentColor"
+                    viewBox="0 0 12 7"
+                  >
+                    <path
+                      d={isLocationOpen ? 
+                        "M0.147077 6.35435C-0.0485327 6.15944 -0.0490966 5.84285 0.145817 5.64724L5.6108 0.162761C5.82574 -0.0529522 6.17505 -0.0529512 6.39 0.162761L11.855 5.64724C12.0499 5.84285 12.0493 6.15944 11.8537 6.35435C11.6581 6.54926 11.3415 6.5487 11.1466 6.35309L6.0004 1.18851L0.854183 6.35309C0.659269 6.5487 0.342687 6.54926 0.147077 6.35435Z"
+                        : 
+                        "M11.8527 0.645818C12.0484 0.840732 12.0489 1.15731 11.854 1.35292L6.38902 6.83741C6.17408 7.05312 5.82477 7.05312 5.60982 6.83741L0.14484 1.35292C-0.0500734 1.15731 -0.0495088 0.840731 0.1461 0.645817C0.34171 0.450903 0.658292 0.451467 0.853206 0.647077L5.99942 5.81166L11.1456 0.647077C11.3406 0.451468 11.6571 0.450904 11.8527 0.645818Z" 
+                      }
+                      fill="#616161"
+                    />
+                  </svg>
+                </span>
+              </div>
+              {isLocationOpen && (
+                <div className="dropdown-menu">
+                  <label className="dropdown-option">
+                    <input
+                      type="checkbox"
+                      checked={filters.location.length === locationOptions.length}
+                      onChange={() =>
+                        handleMultiSelectChange(
+                          "location",
+                          "All Options",
+                          locationOptions
+                        )
+                      }
+                    />
+                    All Options
+                  </label>
+                  {locationOptions.map((loc, index) => (
+                    <label key={index} className="dropdown-option">
+                      <input
+                        type="checkbox"
+                        checked={filters.location.includes(loc)}
+                        onChange={() =>
+                          handleMultiSelectChange("location", loc, locationOptions)
+                        }
+                      />
+                      {loc}
+                    </label>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
-          {isLocationOpen && (
-            <div className="dropdown-menu">
-              <label className="dropdown-option">
+
+          {/* Property Type Checkboxes */}
+          <div className="checkboxes" style={{ margin: "16px 0" }}>
+            {propertyTypeOptions.map((type, idx) => (
+              <div key={idx} className="checkb-wrapper">
                 <input
                   type="checkbox"
-                  checked={filters.location.length === locations.length}
-                  onChange={() =>
-                    handleMultiSelectChange(
-                      "location",
-                      "All Options",
-                      locations
-                    )
-                  }
+                  id={`propertyType-${type}`}
+                  checked={filters.propertyType.includes(type)}
+                  onChange={() => {
+                    setFilters((prev) => {
+                      const already = prev.propertyType.includes(type);
+                      return {
+                        ...prev,
+                        propertyType: already
+                          ? prev.propertyType.filter((t) => t !== type)
+                          : [...prev.propertyType, type],
+                      };
+                    });
+                  }}
                 />
-                All Options
-              </label>
-              {locations.map((loc, index) => (
-                <label key={index} className="dropdown-option">
-                  <input
-                    type="checkbox"
-                    checked={filters.location.includes(loc)}
-                    onChange={() =>
-                      handleMultiSelectChange("location", loc, locations)
-                    }
-                  />
-                  {loc}
-                </label>
-              ))}
-            </div>
-          )}
-        </div>
-
-
-          </div>
-
-          {/* Checkboxes */}
-          <div className='checkboxes'>
-            <div className="checkb-wrapper">
-              <input
-                type="checkbox"
-                id='preselling'
-                checked={filters.hasGarage}
-                onChange={() => handleCheckboxChange('hasGarage')}
-              />
-              <label htmlFor='preselling'>
-                Preselling
-              </label>
-            </div>
-            <div className="checkb-wrapper">
-              <input
-                type="checkbox"
-                checked={filters.hasGarden}
-                onChange={() => handleCheckboxChange('hasGarden')}
-              />
-              <label>
-                Ready for Occupancy
-              </label>
-            </div>
+                <label htmlFor={`propertyType-${type}`}>{type}</label>
+              </div>
+            ))}
           </div>
 
           {/* Price Range Slider */}
@@ -274,16 +399,16 @@ function Filter() {
             <label>Budget</label>
             <div className="slider-wrapper">
               <Range
-                min={0} // Slider track starts from 0 (even spacing index)
-                max={fixedPrices.length - 1} // Slider track ends at the last index of fixedPrices
+                min={0}
+                max={dynamicPrices.length - 1}
                 values={[
-                  fixedPrices.indexOf(filters.priceRange[0]),
-                  fixedPrices.indexOf(filters.priceRange[1]),
-                ]} // Use indices of fixedPrices as slider values
+                  dynamicPrices.indexOf(filters.priceRange[0]),
+                  dynamicPrices.indexOf(filters.priceRange[1]),
+                ]}
                 onChange={(indices) => {
                   const snappedValues: [number, number] = [
-                    fixedPrices[indices[0]],
-                    fixedPrices[indices[1]],
+                    dynamicPrices[indices[0]],
+                    dynamicPrices[indices[1]],
                   ];
                   setFilters((prev) => ({
                     ...prev,
@@ -300,27 +425,26 @@ function Filter() {
                       background: getTrackBackground({
                         values: [
                           filters.priceRange.map((value) =>
-                            fixedPrices.indexOf(value)
+                            dynamicPrices.indexOf(value)
                           )[0],
                           filters.priceRange.map((value) =>
-                            fixedPrices.indexOf(value)
+                            dynamicPrices.indexOf(value)
                           )[1],
                         ],
                         colors: ['#ddd', '#1A3D8F', '#ddd'],
                         min: 0,
-                        max: fixedPrices.length - 1,
+                        max: dynamicPrices.length - 1,
                       }),
                       borderRadius: '4px',
                       position: 'relative',
                     }}
                   >
-                    {/* Render Evenly Spaced Marks */}
-                    {fixedPrices.map((value, index) => (
+                    {dynamicPrices.map((value, index) => (
                       <div
                         key={index}
                         style={{
                           position: 'absolute',
-                          left: `${(index / (fixedPrices.length - 1)) * 100}%`,
+                          left: `${(index / (dynamicPrices.length - 1)) * 100}%`,
                           top: '0',
                           height: '18px',
                           width: '0.5px',
@@ -328,7 +452,6 @@ function Filter() {
                           transform: 'translateX(-50%)',
                         }}
                       >
-                        {/* Static Labels Below Marks */}
                         <div
                           style={{
                             position: 'absolute',
@@ -343,7 +466,7 @@ function Filter() {
                               color: '#8B8B8B',
                             }}
                           >
-                            ₱{value / 1000000}M
+                            {value >= 1000000 ? `${Math.round(value / 1000000)}M` : `${Math.round(value / 1000)}K`}
                           </span>
                         </div>
                       </div>
@@ -367,18 +490,12 @@ function Filter() {
                       border: isDragged ? '2px solid white' : 'none',
                     }}
                   >
-                    {/* Optional: Dynamic Label */}
                   </div>
                 )}
               />
             </div>
           </div>
 
-          {/* Display Selected Price Range
-      <p>
-        Selected Price Range: {filters.priceRange[0] / 1000000}M -{' '}
-        {filters.priceRange[1] / 1000000}M
-      </p> */}
           {/* Search Button */}
           <div>
             <button className='search-btn' onClick={handleSearch}>
@@ -389,11 +506,9 @@ function Filter() {
             </button>
           </div>
         </div>
-
       </div>
-      {/* </div> */}
     </>
-  )
+  );
 }
 
-export default Filter
+export default Filter;
